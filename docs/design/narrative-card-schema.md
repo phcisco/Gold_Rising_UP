@@ -81,25 +81,26 @@ history: []                          # 程序维护，只追加
 
 | id | 含义 | 官方来源 |
 |---|---|---|
-| lbma_pm | LBMA 黄金下午定盘价（美元/盎司） | LBMA，经 SPDR 历史文件 |
-| gc_front | COMEX 黄金主力连续 | CME，经 Yahoo |
+| gold_nav_implied | GLD 官方 NAV 隐含金价（≈ LBMA 下午定盘，美元/盎司） | SPDR 官方档案 |
+| gc_c1, gc_c2 | COMEX 黄金活跃合约与次活跃合约 | CME 经 Yahoo |
+| gc_front | COMEX 黄金近月连续（长历史参考） | CME，经 Yahoo |
 | xau_eur, xau_jpy, xau_cny | 多币种计价金价 | 派生 |
 | dfii10 | 10Y TIPS 实际收益率 | FRED DFII10 |
 | t10yie | 10Y 盈亏平衡通胀 | FRED T10YIE |
 | dgs2, dgs10, dgs30 | 名义国债收益率 | FRED |
 | curve_2s10s, curve_2s30s | 曲线斜率（百分点） | 派生 |
 | effr | 有效联邦基金利率 | FRED EFFR |
-| ff_path | 联邦基金期货复算的 FOMC 概率分布与隐含路径 | CME ZQ 合约经 Yahoo |
+| ff_next_change_bp, ff_cum_change_bp | 联邦基金期货复算的下次 FOMC 隐含变动（bp）与未来 12 个月累计隐含变动（bp） | CME ZQ 合约经 Yahoo |
 | dxy | 美元指数 | ICE 经 Yahoo |
 | usdcny, usdjpy, eurusd | 汇率（人民币为在岸 CNY=X） | Yahoo |
 | vix | VIX | FRED VIXCLS |
 | move | MOVE 指数 | Yahoo ^MOVE |
 | hy_oas | 高收益债利差 | FRED BAMLH0A0HYM2 |
 | gold_copper_ratio, gold_oil_ratio | 比价 | 派生 |
-| btc | 比特币 | Yahoo |
-| cot_mm_net, cot_mm_net_pctl | CFTC 管理基金黄金净多头及分位 | CFTC 公开报告 API |
+| btc, spx, brent, wti, copper, silver | 比特币、标普 500、布伦特、WTI、铜、白银 | Yahoo |
+| cot_mm_net, cot_mm_net_pctl, cot_oi | CFTC 管理基金黄金净多头、其 5 年分位、总持仓 | CFTC 公开报告 API |
 | gld_tonnes | GLD 信托持仓吨数 | SPDR |
-| gc_term_spread | COMEX 近月与次月价差 | Yahoo 合约 |
+| gc_term_spread | COMEX 活跃与次活跃合约价差 | Yahoo 合约 |
 | sge_au9999, shfe_au, shanghai_premium | 上金所现货、上期所期货、沪金溢价 | 上金所/上期所经 Tushare 或 AKShare |
 | cb_purchases | 央行净购金（月） | WGC/IMF |
 | gold_silver_ratio | 金银比 | 派生 |

@@ -1,0 +1,177 @@
+id: real_rate_anchor_regime_switch
+name: 实际利率旧锚回归与体制 A/B 切换
+status: active
+lifecycle_state: 主导
+lifecycle_since: 2026-08-28
+lifecycle_rationale: >-
+  2026 年 6 月 17 日 FOMC 声明以 12-0 写入"The Committee will deliver price stability"，7 月 29 日三位地区行长（Hammack、Kashkari、Logan）异议主张加息 25bp，
+  8 月 28 日主席 Warsh 在 Jackson Hole 称"65 个月持续高通胀的责任完全在央行"。财政部曲线显示 10Y TIPS 实际收益率从 2 月 27 日 1.72% 升至 9 月 2 日 2.45%
+  （7 月 31 日 2.47% 为年内高点），同期 10Y 盈亏平衡稳定在 2.3% 附近；黄金主力合约自 1 月 29 日 5318 美元峰值跌至 9 月 3 日 4476 美元（约 -16%）。
+  纽约联储 ACM 分解显示 2026 年 10Y 收益率上行几乎全部来自风险中性利率（1 月 2 日 3.48% → 9 月 1 日 4.08%），期限溢价基本不变（0.80 → 0.78），
+  即市场在为"联储主动"而非"财政贬值"定价。实际利率与金价的负相关已重新成为主导定价逻辑。
+pricing_degree: 部分
+pricing_rationale: >-
+  价格已反映一部分：金价自峰值回撤约 16%，8 月 28 日单日 -2.9%（GC=F 收盘 4609.7 → 4478.1）。但持仓尚未出清：CFTC 管理基金黄金净多头 2026-08-25 为 144,747 张，
+  为 2026 年高点、近五年第 78.5 百分位（且该数据截止于 Warsh 讲话前）；SPDR GLD 持仓 9 月 2 日 1056.62 吨，比 20 个交易日前（8 月 5 日 1014.15 吨）增加约 42 吨，
+  下跌途中仍在流入（但仍低于 2 月 27 日 1101.33 吨的年内高点，高于 7 月 17 日 999.02 吨的低点）。这说明"实际利率压制金价"的下行尚未被多头充分接受，仍有拥挤度需要释放。
+direction: bear
+horizon: 3-12m
+thesis: 只要联储保持主动且可信（体制 B），10Y 实际收益率就是金价主锚，实际利率上行压制金价；体制切换的开关握在联储对通胀的反应函数手中。
+logic_chain:
+  - 通胀（CPI 7 月 3.36%，PCE 12 个月 3.7%）高于目标，联储在声明中承诺"deliver price stability"并有三票主张加息
+  - 市场把名义收益率上行全部归因于实际利率与政策路径，盈亏平衡通胀稳定甚至回落
+  - 实际收益率是持有黄金的机会成本，实际收益率升至 2.4% 以上使无息资产相对吸引力下降
+  - 金价按旧范式跟随实际利率反向运动；黄金对"主权信用溢价"的定价被暂时关闭
+  - 若联储在通胀高于 3% 时转向宽松或屈从压力，市场将切回体制 A，实际利率与金价脱钩
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    体制 B（当前）：实际利率上行即金价下行，负相关成立。体制 A（联储被动、财政主导）：实际利率被压低或被市场视为"不可信的低"，
+    金价按期限溢价、通胀风险溢价与主权信用定价，实际利率与金价脱钩甚至同向。判断当前处于体制 B 的依据：6 月与 7 月声明措辞、7 月纪要"收益率上行由实际利率贡献、
+    长期通胀补偿稳定"、ACM 分解显示期限溢价未上升。
+evidence_indicators:
+  - indicator_id: dfii10
+    expected_sign: up
+    weight: high
+    rationale: 体制 B 下的主锚；2026-09-02 为 2.45%，年内高点 2.47%（7 月 31 日）
+  - indicator_id: t10yie
+    expected_sign: flat
+    weight: high
+    rationale: 盈亏平衡稳定（2.34%）说明市场相信联储，收益率上行是实际利率而非通胀补偿
+  - indicator_id: curve_2s30s
+    expected_sign: down
+    weight: medium
+    rationale: 熊平（1 月 29 日 1.32 → 9 月 2 日 0.88）是"联储主动"而非"财政失控"的曲线形态
+  - indicator_id: gc_front
+    expected_sign: down
+    weight: high
+    rationale: 金价与实际利率负相关的直接结果
+  - indicator_id: ff_path
+    expected_sign: up
+    weight: medium
+    rationale: 联邦基金期货条上倾（Sep26 3.70% → Sep27 4.24%）表明市场为加息周期定价
+pricing_proxies:
+  - indicator_id: cot_mm_net_pctl
+    note: 拥挤度，8 月 25 日 78.5 百分位（五年），尚未出清
+  - indicator_id: gld_tonnes
+    note: 9 月 2 日 1056.62 吨、20 日增 42 吨，下跌中仍流入
+  - name: polymarket_fed_sep_hike
+    url: https://gamma-api.polymarket.com/events?tag_slug=fed
+    note: 9 月加息 25bp 赔率 51.5%，2026 年内加息 70.5%，2026 年零降息 89%
+verification_signals:
+  - id: v1
+    description: 9 月 16 日 FOMC 加息 25bp 或维持并保留"will deliver price stability"措辞，金价当日随实际利率反向变动
+    type: qual
+    next_check: 2026-09-16
+  - id: v2
+    description: 10Y TIPS 实际收益率 20 日内升破 2.55%（超过 7 月 31 日 2.47% 年内高点）
+    type: quant
+    rule: {indicator_id: dfii10, op: gt, value: 2.55, window_days: 20}
+    next_check: 2026-09-30
+  - id: v3
+    description: CFTC 管理基金净多头回落至 10 万张以下（拥挤度出清，体制 B 定价完成的标志）
+    type: quant
+    rule: {indicator_id: cot_mm_net, op: lt, value: 100000, window_days: 60}
+    next_check: 2026-10-31
+  - id: v4
+    description: 10Y 盈亏平衡维持在 2.2%–2.5% 区间，说明通胀补偿未参与收益率上行
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: t10yie, op: gt, value: 2.2}
+        - {indicator_id: t10yie, op: lt, value: 2.5}
+    next_check: 2026-09-30
+  - id: v5
+    description: 金价与 10Y 实际收益率 60 日滚动相关系数显著为负（需新增派生指标 gold_real_yield_corr_60d）
+    type: qual
+    next_check: 2026-10-15
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，10Y 实际收益率仍高于 2.3% 而金价创出高于 5318 美元的新高——实际利率与金价脱钩，体制已切回 A
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: dfii10, op: gt, value: 2.3}
+        - {indicator_id: gc_front, op: gt, value: 5318}
+    deadline: 2026-12-31
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: 联储在 PCE 通胀仍高于 3% 时降息或明确停止紧缩，且声明删去"will deliver price stability"（定性，AI 判定）
+    type: qual
+    deadline: 2027-03-31
+  - id: f3
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，10Y 盈亏平衡升破 2.6% 且 2s30s 走陡超过 1.2 个百分点（通胀补偿与期限溢价同时上行，体制 A 特征）
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: t10yie, op: gt, value: 2.6}
+        - {indicator_id: curve_2s30s, op: gt, value: 1.2}
+    deadline: 2026-12-31
+tensions:
+  - narrative_id: fiscal_dominance_term_premium
+    note: 财政主导要求联储被动；两者在同一时点只能一个是主导叙事
+  - narrative_id: fed_independence_erosion
+    note: 独立性受损是体制 B 转 A 的机制；该叙事升温即本叙事失效的前兆
+  - narrative_id: ycc_financial_repression
+    note: 曲线控制意味着实际利率被人为压低，旧锚失效
+news_queries:
+  - Fed Warsh real yields gold
+  - FOMC September 2026 decision statement
+  - TIPS real yield 10-year record 2026
+  - gold price real interest rates correlation
+counterargument: >-
+  实际收益率 2.45% 已是年内高位，若加息落地导致增长放缓，市场会迅速重新定价降息，实际利率回落；黄金 16% 的回撤可能主要是投机持仓与 GLD 的拥挤度释放，
+  而央行购金（簇二）对实际利率不敏感，会在低位承接。此外，以 CPI 3.4% 计算的事后实际政策利率仍只有约 0.3%，"紧缩"更多是预期而非现实。
+sources:
+  - title: Federal Reserve issues FOMC statement, June 17, 2026
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260617a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Federal Reserve issues FOMC statement, July 29, 2026
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Minutes of the Federal Open Market Committee, July 28-29, 2026
+    url: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260729.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Chairman Kevin Warsh, "In Our Time", Jackson Hole, August 28, 2026
+    url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Daily Treasury Par Real Yield Curve Rates, 2026
+    url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_real_yield_curve&field_tdr_date_value=2026&page&_format=csv
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+  - title: Daily Treasury Par Yield Curve Rates, 2026
+    url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+  - title: ACM Treasury Term Premia (Excel)
+    url: https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls
+    publisher: Federal Reserve Bank of New York
+    accessed: 2026-09-03
+    type: primary
+  - title: CFTC Traders in Financial Futures, Gold (088691)
+    url: https://publicreporting.cftc.gov/resource/72hh-3qpy.json
+    publisher: CFTC
+    accessed: 2026-09-03
+    type: primary
+  - title: SPDR Gold Shares historical archive
+    url: https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&exchange=NYSE&lang=en
+    publisher: State Street / SPDR
+    accessed: 2026-09-03
+    type: primary
+history: []
