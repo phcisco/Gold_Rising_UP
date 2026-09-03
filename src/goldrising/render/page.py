@@ -85,7 +85,8 @@ def render_card(entry: dict[str, Any]) -> str:
     if pct is None:
         pct, pct_label = entry.get("pct_5y"), "5 年"
     if pct is None:
-        pct, pct_label = entry.get("pct_all"), "全史"
+        first = str(entry.get("first_date") or "")[:7]
+        pct, pct_label = entry.get("pct_all"), (f"自 {first} " if first else "全史")
     hint = gold_sign_hint(entry)
     prov = entry.get("provenance") or {}
     stale_note = ""
@@ -122,8 +123,12 @@ def render_overview(snapshot: dict[str, Any]) -> str:
     for e in tier1:
         chg_txt, chg_cls = fmt_change(e, "1d" if e.get("frequency") == "daily" else "5d")
         chg20, cls20 = fmt_change(e, "20d")
-        pct = e.get("pct_10y") if e.get("pct_10y") is not None else e.get("pct_5y")
+        pct = e.get("pct_10y")
         pct_txt = f"{pct:.0f}" if pct is not None else "—"
+        if pct is None and e.get("pct_5y") is not None:
+            pct_txt = f"{e['pct_5y']:.0f}（5 年）"
+        elif pct is None and e.get("pct_all") is not None:
+            pct_txt = f"{e['pct_all']:.0f}（自 {str(e.get('first_date') or '')[:4]}）"
         z = e.get("z_250")
         z_txt = f"{z:+.1f}" if isinstance(z, int | float) else "—"
         rows.append(

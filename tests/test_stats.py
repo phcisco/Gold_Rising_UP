@@ -73,3 +73,9 @@ def test_staleness_and_sparkline() -> None:
     assert staleness_days(None, date(2026, 9, 3)) is None
     pts = sparkline_points(_series([1.0, 2.0, 3.0]), n=2)
     assert len(pts) == 2 and pts[-1][1] == 3.0
+
+
+def test_percentile_window_needs_coverage() -> None:
+    s = _series(list(range(1, 787)))  # 约 3 年日频
+    assert percentile_of_last(s, window=2520, min_obs=int(2520 * 0.8)) is None
+    assert percentile_of_last(s, window=252, min_obs=int(252 * 0.8)) is not None
