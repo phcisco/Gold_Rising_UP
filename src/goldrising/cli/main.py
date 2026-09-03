@@ -87,6 +87,24 @@ def cmd_render(args: argparse.Namespace, ws: Workspace) -> int:
     return 0
 
 
+def cmd_narratives(args: argparse.Namespace, ws: Workspace) -> int:
+    from goldrising.contracts import load_registry
+    from goldrising.narratives import load_cards, validate_collection
+
+    reg = load_registry(ws.registry_path)
+    directory = Path(args.dir).resolve() if args.dir else ws.narratives_dir
+    cards = load_cards(directory)
+    if not cards:
+        print(f"{directory} 下没有叙事卡")
+        return 1
+    problems = validate_collection(cards, reg)
+    errors = [x for x in problems if x.level == "error"]
+    for x in problems:
+        print(str(x))
+    print(f"共 {len(cards)} 张卡，{len(errors)} 个错误，{len(problems) - len(errors)} 个警告")
+    return 1 if errors else 0
+
+
 def cmd_run(args: argparse.Namespace, ws: Workspace) -> int:
     from goldrising.compute.snapshot import build_snapshot
     from goldrising.contracts import load_registry
@@ -142,6 +160,11 @@ def build_parser() -> argparse.ArgumentParser:
     rend = sub.add_parser("render", help="渲染页面")
     rend.add_argument("verb", choices=["page"])
     rend.set_defaults(func=cmd_render)
+
+    nar = sub.add_parser("narratives", help="叙事库")
+    nar.add_argument("verb", choices=["validate"])
+    nar.add_argument("--dir", help="叙事卡目录（默认 narratives/）")
+    nar.set_defaults(func=cmd_narratives)
 
     run = sub.add_parser("run", help="每日全流程")
     run.add_argument("verb", choices=["daily"])
