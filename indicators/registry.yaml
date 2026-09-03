@@ -694,7 +694,7 @@ indicators:
     stage: 2
     source: {provider: manual, series: aisc_margin, publisher: 世界黄金协会 / 矿商季报, url: "https://www.gold.org/goldhub/data/gold-mine-production"}
 
-  # ---------------- 第 0 阶段调研新增（2026-09-03，来源见 docs/research/gold-narratives-2026-09.md 指标规格） ----------------
+  # ---------------- 第 0 阶段调研新增（2026-09-03，来源见 docs/research/gold-pricing-logic-2026-09.md 第三部分） ----------------
   - id: dgs5
     name: 5 年期国债收益率
     group: opportunity_cost

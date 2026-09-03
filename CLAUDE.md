@@ -34,7 +34,7 @@
 - `bash scripts/install-launchd.sh install|status|run-now`：工作日 07:30 定时任务（周二至周六）。
 
 ## 阶段状态
-- 第 0 阶段（已完成 2026-09-03）：叙事库 `narratives/*.yaml` 20 张卡（12 活跃、5 退潮、3 归档），体制判断在 `narratives/_library.yaml`，总报告 `docs/research/gold-narratives-2026-09.md`。分簇原稿在 `docs/research/drafts/` 与 `narratives/drafts/`。
+- 第 0 阶段（已完成 2026-09-03）：叙事库 `narratives/*.yaml` 20 张卡（12 活跃、5 退潮、3 归档），体制判断在 `narratives/_library.yaml`，调研报告 `docs/research/gold-pricing-logic-2026-09.md`（面向读者），机器侧索引 `docs/research/appendix-narrative-library-2026-09.md`。分簇原稿在 `docs/research/drafts/` 与 `narratives/drafts/`。
 - 子代理调研只能用 curl 抓取（WebFetch/WebSearch 在后台代理中会挂起），约定见 `docs/research/RESEARCH_TOOLING.md`。
 - 第 1 阶段：数据层与 L1 行情台（本仓库当前）。
 - 第 2 阶段：规则层扩展、AI 分析师、L2 到 L4；第 3 阶段：L5、校准审计、飞书推送。
