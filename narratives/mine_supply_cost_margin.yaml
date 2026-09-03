@@ -1,0 +1,155 @@
+id: mine_supply_cost_margin
+name: 矿业供给、成本与矿商利润率
+status: active
+lifecycle_state: 主导
+lifecycle_since: 2026-04-01
+lifecycle_rationale: WGC GDT Q2 2026：Q2 矿产金 966t 为二季度历史最高、H1 1,867t 为上半年纪录，但回收金同比 -6%（326t）、生产商连续第十个季度净解除对冲（Q2 -23t）， 总供给同比持平（1,269t），价格对供给的弹性极低；Metals Focus/WGC：Q1 2026 行业平均 AISC 创纪录 1,785 美元/盎司（同比 +16%，连续 28 年同比上升）， 但 AISC 利润率创纪录 3,076 美元/盎司；三大矿商 Q2 季报：Newmont AISC 1,621 美元、实现价 4,414 美元、季度 FCF 22 亿美元创二季度纪录； Barrick AISC 1,866 美元、实现价 4,417 美元；Agnico Eagle AISC 1,459 美元、实现价 4,483 美元、FCF 13.35 亿美元创纪录。 “供给刚性 + 利润率创纪录”在矿业股定价中占主导地位。
+pricing_degree: 部分
+pricing_rationale: 矿商现金流与回购（Newmont 自上次业绩以来回购 17 亿美元、Barrick 季度回购 12 亿、Agnico 季度回报 6.25 亿美元）已被股价反映， 但矿业股相对金价的比值（gdx_gld_ratio）与利润率水平是否匹配需程序计算；成本端的第二轮冲击（Q2 起中东冲突推高燃料、运费、氰化物与炸药成本， 加纳、布基纳法索、马里的滑动特许权使用费在 4,500 美元以上升至 9.5% 至 12%）尚未完全体现在 Q2 数字里，因而为“部分”。
+direction: mixed
+horizon: 3-12m
+thesis: 矿产金创纪录但总供给因回收下降与解除对冲而持平，供给端不构成金价压力；同时创纪录的利润率使矿业股成为金价的高贝塔表达，但成本与特许权使用费的第二轮上升正在侵蚀边际。
+logic_chain:
+- 金价 4,000 美元以上使几乎所有在产矿山盈利，矿产金以约 2% 的年增速缓慢响应，长项目周期限制供给弹性
+- 回收金在高价下反而下降：近市场存量耗尽、持有者预期继续上涨、无广泛经济困境（WGC 展望）
+- 生产商持续解除对冲（连续十个季度）等于减少远期卖盘，供给端对价格的压制进一步减弱
+- 成本上升由特许权使用费（占 AISC 从 6% 升至 12%）、能源与供应链驱动，属价格的函数，不会因金价回落而同步下降，形成利润率的非对称风险
+- 矿业股利润率为金价的杠杆函数：金价每下跌 10%，AISC 利润率下降约 15%（按 4,400 美元实现价与 1,700 美元 AISC 估算）
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 对金价方向为 mixed，但对矿业股（GDX/GDXU）而言体制敏感度极高：联储被动体制下金价上行、利润率放大、回购加速； 联储可信体制下金价回落而成本刚性（特许权使用费虽随价下降但能源与工资不降），利润率压缩幅度大于金价跌幅，矿业股跑输黄金。
+evidence_indicators:
+- indicator_id: aisc_margin
+  expected_sign: up
+  weight: high
+  rationale: 行业平均 AISC 利润率（季度），Q1 2026 为 3,076 美元/盎司；Q2 预计因季均价 -7.2% 与成本上升而回落
+- indicator_id: gdx_gld_ratio
+  expected_sign: up
+  weight: high
+  rationale: 矿业股相对黄金的表现是市场对利润率持续性的投票
+- indicator_id: gdx_beta_60
+  expected_sign: up
+  weight: medium
+  rationale: 贝塔上升说明市场把矿业股当作金价的杠杆表达，与创纪录利润率一致
+- indicator_id: gold_oil_ratio
+  expected_sign: up
+  weight: medium
+  rationale: 金油比上升意味着能源成本相对收入下降，直接改善 AISC 利润率；中东冲突推高油价是本季成本主线
+pricing_proxies:
+- indicator_id: gdx_gld_ratio
+  note: 若比值已回到 2020 年或 2011 年高位区间而利润率未再扩张，则利润率叙事已充分定价
+- name: miner_buyback_pace
+  url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0001164727&type=8-K
+  note: 三大矿商季度回购与分红金额（季报），衡量管理层对利润率持续性的信心
+verification_signals:
+- id: v1
+  description: 三大矿商 Q3 2026 季报（10 月下旬）AISC 环比升幅不超过 5%，且实现价高于 4,300 美元，利润率维持 2,600 美元以上
+  type: qual
+  next_check: 2026-10-30
+- id: v2
+  description: GDT Q3 2026 回收金同比继续下降且生产商净对冲继续为负
+  type: qual
+  next_check: 2026-10-30
+- id: v3
+  description: gdx_gld_ratio 60 日变化为正且 GDX 60 日贝塔高于 1.5
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: gdx_gld_ratio
+      op: change_gt
+      value: 0
+      window_days: 84
+    - indicator_id: gdx_beta_60
+      op: gt
+      value: 1.5
+  next_check: 2026-09-30
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: WGC/Metals Focus 公布的 Q2 或 Q3 2026 行业平均 AISC 利润率低于 2,200 美元/盎司（较 Q1 纪录回落超 28%）
+  type: quant
+  rule:
+    indicator_id: aisc_margin
+    op: lt
+    value: 2200
+  deadline: 2027-01-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: GDT Q3 2026 总供给同比增长超过 5%（回收金随价格反弹或对冲重启），显示供给弹性回归
+  type: quant
+  rule:
+    indicator_id: total_gold_supply_q
+    op: change_gt
+    value: 5
+    window_days: 365
+  deadline: 2026-10-30
+- id: f3
+  version: 1
+  created: 2026-09-03
+  description: 两家以上大型矿商宣布重启远期卖出对冲或因成本超预期下修全年产量与成本指引（定性）
+  type: qual
+  deadline: 2026-12-31
+tensions:
+- narrative_id: etf_western_investor_return
+  note: 不冲突；矿业股是西方风险偏好回归时的首选杠杆，但西方缺席时矿业股常跑输实物
+- narrative_id: cb_reserve_reallocation
+  note: 无直接冲突；央行只买实物不买矿业股，央行地板不为矿业股提供支撑
+news_queries:
+- gold miners AISC Q3 2026 Newmont Barrick Agnico
+- gold royalty sliding scale Ghana Burkina Faso Mali
+- gold recycling supply Metals Focus
+- producer hedging gold forward sales 2026
+- GDX gold miners margins buyback
+counterargument: 成本上升已连续 28 年且 Q2 起进入第二轮（能源、运费、化学品、特许权使用费），矿商 2026 年 AISC 指引普遍上调（Agnico 资本开支指引从 22 至 24 亿升至 26 至 28 亿美元， Barrick 成本指引以 4,500 美元金价为假设），若金价回到 4,000 美元以下，利润率将从 3,000 美元级别快速压缩；矿产金创纪录本身是缓慢的供给响应， 多年后将成为价格压力。
+sources:
+- title: Gold Demand Trends Q2 2026 — Supply
+  url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/supply
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: Record gold prices outpace rising mining costs in Q1'26（AISC 1,785 美元，利润率 3,076 美元）
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/record-gold-prices-outpace-rising-mining-costs-q126
+  publisher: Metals Focus via World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: Newmont Q2 2026 earnings release (Exhibit 99.1, 8-K 2026-07-23)
+  url: https://www.sec.gov/Archives/edgar/data/1164727/000116472726000034/newmontq22026earningsrelea.htm
+  publisher: Newmont Corporation via SEC EDGAR
+  accessed: 2026-09-03
+  type: primary
+- title: Barrick Reports Second Quarter 2026 Results (Exhibit 99.1, 6-K 2026-08-11)
+  url: https://www.sec.gov/Archives/edgar/data/756894/000119312526343857/d67611dex991.htm
+  publisher: Barrick Mining Corporation via SEC EDGAR
+  accessed: 2026-09-03
+  type: primary
+- title: Agnico Eagle Reports Second Quarter 2026 Results (Exhibit 99.1, 6-K 2026-07-30)
+  url: https://www.sec.gov/Archives/edgar/data/2809/000110465926088794/tm2619289d4_ex99-1.htm
+  publisher: Agnico Eagle Mines via SEC EDGAR
+  accessed: 2026-09-03
+  type: primary
+proposed_indicators:
+- id: total_gold_supply_q
+  name: 季度黄金总供给（矿产 + 回收 + 净对冲，吨）
+  source: WGC GDT 表 1
+  url: https://www.gold.org/goldhub/research/gold-demand-trends
+  frequency: quarterly
+  lag: 约 1 个月
+  tier: 2
+  rationale: 证伪条件 f2 所需；页面表格免登录可抓
+- id: miner_realized_price_aisc
+  name: 三大矿商季度实现价与 AISC（Newmont、Barrick、Agnico）
+  source: SEC EDGAR 8-K/6-K Exhibit 99.1
+  url: https://data.sec.gov/submissions/CIK0001164727.json
+  frequency: quarterly
+  lag: 约 3 至 6 周
+  tier: 2
+  rationale: 免费官方；EDGAR API 可自动发现最新季报，替代 WGC 的滞后行业均值
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster2），初始状态 主导 / 定价 部分
+cluster: cluster2

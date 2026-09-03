@@ -93,7 +93,7 @@ def cmd_narratives(args: argparse.Namespace, ws: Workspace) -> int:
 
     reg = load_registry(ws.registry_path)
     directory = Path(args.dir).resolve() if args.dir else ws.narratives_dir
-    cards = load_cards(directory)
+    cards = load_cards(directory, include_drafts=bool(args.include_drafts))
     if not cards:
         print(f"{directory} 下没有叙事卡")
         return 1
@@ -164,6 +164,7 @@ def build_parser() -> argparse.ArgumentParser:
     nar = sub.add_parser("narratives", help="叙事库")
     nar.add_argument("verb", choices=["validate"])
     nar.add_argument("--dir", help="叙事卡目录（默认 narratives/）")
+    nar.add_argument("--include-drafts", action="store_true", help="把 drafts/ 子目录也纳入校验")
     nar.set_defaults(func=cmd_narratives)
 
     run = sub.add_parser("run", help="每日全流程")

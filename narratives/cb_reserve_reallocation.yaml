@@ -1,0 +1,170 @@
+id: cb_reserve_reallocation
+name: 央行储备再配置与去美元化
+status: active
+lifecycle_state: 共识
+lifecycle_since: 2026-06-16
+lifecycle_rationale: WGC 2026 央行调查（76 家，2026-06-16 发布）：89% 预期全球央行金储备未来 12 个月上升，创纪录的 45% 预期本行增持，74% 预期美元在全球储备中占比五年内中度或显著下降； WGC GDT Q2 2026：央行净购 289t（二季度历史最高，Q1 下修后为 57t），H1 合计 345t；外汇局数据：人民银行 2026 年 7 月末黄金储备 7,608 万盎司（2,366t）， 7 月单月 +64 万盎司（19.9t），为 2023 年 10 月以来最大单月增量、连续第 21 个月增持，且 1 至 7 月逐月加速（+1.2/0.9/5.0/8.1/10.0/14.9/19.9t）。 叙事已被卖方、WGC 与央行自身普遍接受，属“共识”而非“主导”。
+pricing_degree: 充分
+pricing_rationale: 基线（年均约 1,000t 的官方购金）已写入所有主流供需预测（WGC 展望：2026 年“维持强劲但低于 2025”）；Q2 创二季度纪录的 289t 购金发生在金价下跌 8%（季均）的季度里， 说明持续购金本身不再推升价格，而是提供下方支撑。增量信息（人民银行逐月加速、未报告购买高企）只部分定价：Q1 初值从 244t 下修到 57t（-77%）而金价当季仍创新高， 显示市场对季度数字的边际反应弱。风险不对称：购金放缓对价格的伤害大于继续购金的推升。
+direction: bull
+horizon: years
+thesis: 官方部门以约每年 1,000t 的价格不敏感买盘持续把黄金从私人部门转移到储备，构成金价的结构性地板，但这一地板已被市场充分预期。
+logic_chain:
+- 地缘碎片化与金融制裁使外汇储备的“主权负债属性”成为风险，黄金作为无对手方资产被重新评估
+- 新兴市场央行（波兰、中国、乌兹别克、哈萨克、捷克、新加坡等）以本币国内购金或出售美元资产的方式增持
+- 官方购金对价格不敏感且在价格回落时加速（Q2 2026 价跌买多），压缩金价左尾
+- 私人部门可得的新增供给（矿产 + 回收约 1,270t/季）中约四分之一被官方吸收，供需边际收紧
+- 黄金占全球储备比例上升主要来自估值效应，形成“储备再配置”叙事的自我强化，但也埋下 IMF 式反弹的种子
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bull
+  note: 央行购金主要由地缘与储备治理动机驱动，对美国利率体制不敏感，方向在两种体制下不反转；但在“联储可信、实际利率高”的体制下， 部分以流动性为先的央行（土耳其 Q1 卖出 83t、俄罗斯年内净卖 44t）会成为卖方，购金净额下降、地板变薄。
+evidence_indicators:
+- indicator_id: cb_purchases
+  expected_sign: up
+  weight: high
+  rationale: WGC 月度“央行黄金统计”与季度 GDT 的官方净购金；注意 IMF IFS 数据滞后两个月，季度初值有大幅修正风险（Q1 2026 从 244t 修至 57t）
+- indicator_id: dxy
+  expected_sign: down
+  weight: medium
+  rationale: 去美元化叙事若成立，美元储备份额下降应伴随美元趋势走弱；美元走强而央行仍买则说明购金是“非美元敞口对冲”而非美元崩溃预期
+- indicator_id: usdcny
+  expected_sign: flat
+  weight: low
+  rationale: 人民银行购金与人民币汇率稳定诉求并行；人民币若大幅贬值，购金往往放缓（外汇局需保留美元流动性）
+pricing_proxies:
+- indicator_id: cot_mm_net_pctl
+  note: 投机盘拥挤度；若管理基金净多处于高分位而央行购金放缓，则地板叙事被过度依赖
+- name: wgc_cb_survey_intent
+  url: https://www.gold.org/goldhub/research/central-bank-gold-reserves-survey-2026
+  note: 45% 本行增持意向为历史峰值，属情绪极值型代理（年度）
+- name: pboc_monthly_addition
+  url: https://www.safe.gov.cn/safe/2026/0205/27113.html
+  note: 人民银行月度增量（万盎司）是最及时的官方购金高频代理，每月 7 日左右发布
+verification_signals:
+- id: v1
+  description: 外汇局 8 月数据显示人民银行 8 月增持不低于 40 万盎司（约 12t），加速趋势延续
+  type: quant
+  rule:
+    indicator_id: pboc_gold_reserves_oz
+    op: change_gt
+    value: 40
+    window_days: 31
+  next_check: 2026-09-07
+- id: v2
+  description: WGC 7 月央行统计（约 9 月初发布）报告的官方净购金不低于 30t，且波兰、中国以外出现两家以上 5t 级买家
+  type: qual
+  next_check: 2026-09-10
+- id: v3
+  description: GDT Q3 2026 央行净购金不低于 200t（含未报告购买估计）
+  type: quant
+  rule:
+    indicator_id: cb_purchases
+    op: gt
+    value: 200
+    window_days: 92
+  next_check: 2026-10-30
+- id: v4
+  description: 2027 年 WGC 央行调查中“本行增持”意向不低于 40%，且“美元占比下降”预期不低于 70%
+  type: qual
+  next_check: 2027-06-30
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: GDT Q3 与 Q4 2026 央行净购金连续两个季度低于 150t（含未报告估计）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: cb_purchases
+      op: lt
+      value: 150
+      window_days: 92
+    - indicator_id: cb_purchases
+      op: lt
+      value: 150
+      window_days: 184
+  deadline: 2027-02-15
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 人民银行连续 3 个月报告零增持或减持（外汇局月度黄金储备万盎司不变或下降）
+  type: quant
+  rule:
+    indicator_id: pboc_gold_reserves_oz
+    op: change_lt
+    value: 1
+    window_days: 92
+  deadline: 2027-03-10
+- id: f3
+  version: 1
+  created: 2026-09-03
+  description: 两家以上 G20 央行公开采纳 IMF Note 2026/007 的建议（将黄金限制在投资档、暂停国内购金计划），且购金意向调查同步转弱（定性，AI 判定）
+  type: qual
+  deadline: 2027-06-30
+tensions:
+- narrative_id: imf_gold_reserve_caution
+  note: IMF 主张黄金是高风险储备资产、国内购金计划应避免，与央行调查中 50% 受访者以本币国内购金直接冲突
+- narrative_id: etf_western_investor_return
+  note: 不冲突但存在替代关系：若西方 ETF 回归成为边际买家，央行地板的重要性下降；反之央行是唯一买家时价格上行缺乏弹性
+news_queries:
+- central bank gold purchases PBoC SAFE gold reserves
+- National Bank of Poland gold reserves 700 tonnes
+- 外汇局 黄金储备 万盎司 月度
+- IMF IFS official gold holdings unreported buying
+- de-dollarization reserve diversification gold share
+counterargument: IMF Note 2026/007 指出黄金储备占比上升“压倒性地”来自估值效应而非实物累积；H1 2026 央行净购金 345t 是 2022 年以来最弱上半年， 且 Q1 初值被下修 77%，说明“每年 1,000t”的基线并不牢靠；若金价维持在 4,000 美元以上，更多央行会像土耳其、俄罗斯一样把黄金当作流动性来源而卖出。
+sources:
+- title: Gold Demand Trends Q2 2026 — Central banks
+  url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/central-banks
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: Central Bank Gold Reserves Survey 2026
+  url: https://www.gold.org/goldhub/research/central-bank-gold-reserves-survey-2026
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: 官方储备资产（2026 年）xlsx（黄金 7,608 万盎司，2026 年 7 月末）
+  url: https://www.safe.gov.cn/safe/file/file/20260807/a93297db52ad4910b9d6bd5ecc6b00a1.xlsx
+  publisher: 国家外汇管理局
+  accessed: 2026-09-03
+  type: primary
+- title: 官方储备资产（2025 年）xlsx（2025 年 12 月末 7,415 万盎司）
+  url: https://www.safe.gov.cn/safe/file/file/20260107/38fac3914d6d42a58b3f349871b1ff2e.xlsx
+  publisher: 国家外汇管理局
+  accessed: 2026-09-03
+  type: primary
+- title: Central bank gold statistics June 2026
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/central-bank-gold-statistics-june-2026
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: China gold market update — Strong official sector buying in July
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/china-gold-market-update-strong-official-sector-buying-july
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+proposed_indicators:
+- id: pboc_gold_reserves_oz
+  name: 人民银行黄金储备（万盎司，月末）
+  source: 国家外汇管理局 官方储备资产 xlsx
+  url: https://www.safe.gov.cn/safe/whcb/index.html
+  frequency: monthly
+  lag: 约 7 天（每月 7 日前后发布上月末）
+  tier: 1
+  rationale: 免费、官方、最及时的央行购金高频代理；2026 年逐月加速是本簇最强的新证据
+- id: imf_ifs_official_gold
+  name: IMF IFS 各国官方黄金持有量
+  source: IMF / WGC 月度央行统计
+  url: https://www.gold.org/goldhub/data/gold-reserves-by-country
+  frequency: monthly
+  lag: 约 2 个月（IFS）；WGC xlsx 需免费注册登录，页面文本免登录
+  tier: 2
+  rationale: 为 cb_purchases 提供分国别明细；注意季度初值修正风险
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster2），初始状态 共识 / 定价 充分
+cluster: cluster2

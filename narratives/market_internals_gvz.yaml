@@ -1,0 +1,219 @@
+id: market_internals_gvz
+name: 市场内部结构：GVZ/VIX 极值、金银比、铂钯与矿业股相对强弱
+status: active
+lifecycle_state: 主导
+lifecycle_since: 2026-08-20
+lifecycle_rationale: Cboe 数据至 2026-09-02：GVZ 26.14（10 年 93 分位），VIX 15.20（10 年 35 分位、1 年 12 分位），GVZ/VIX 比 1.72（10 年 98.6 分位， 自 2009 年以来 98.1 分位）。比值自 8 月 20 日起持续高于 1.5。历史上比值高于 2.0 的日子只出现在两段：2013 年 4 至 5 月的黄金崩盘 （2.0 至 2.28）与 2026 年 1 月 26 日至 2 月 3 日的贵金属吹泡顶部（2.02 至 2.73，1 月 29 日为历史峰值，恰是黄金历史高点当日）。 含义：黄金正处于“自身波动率体制”——波动由黄金内部资金与持仓驱动，而非宏观风险（股票波动率处于低位），方向两可但幅度大。 当前黄金 20 日已实现波动率 23.1%、60 日 25.6%，GVZ 26.1 略高于已实现，期权隐含溢价约 3 个波动点，不算极端。 复合结构：银 66.40（1 月 26 日高点 115.08，-42%）、铂 1,780（高点 2,852）、钯 1,373（高点 2,170）年内均为负； 金银比由 1 月低点 44 回升至 67.4，金铂比由 2.13 升至 2.51——1 月吹泡后资金集中回到黄金； GDX/GLD 0.242 为年内最高（年初 0.216，1 月黄金顶部时 0.218），GDX 近一月 +28.4% 对 GLD +8.4%。
+pricing_degree: 部分
+pricing_rationale: CFTC 管理基金黄金净多 144,747 手（8 月 25 日，5 年 79 分位、2015 年以来 73 分位），已高于 1 月高点时的 137,444 手， 未平仓 427,957 手连续四周上升；白银管理基金净多仅 14,073 手（已出清）。持仓抬高但未到极端，期权隐含波动率溢价温和， ETF 北美仍净流出——拥挤度“部分”。
+direction: mixed
+horizon: weeks
+thesis: GVZ 高、VIX 低、比值处 99 分位说明黄金波动由自身资金驱动而非宏观风险；这是仓位管理信号而非方向信号，历史上此类极值既出现在顶部也出现在反弹起点，杠杆品种（GDXU）风险最大。
+logic_chain:
+- GVZ 度量 GLD 期权隐含的 30 日波动率，VIX 度量标普 500；两者之比剔除宏观风险的共同成分
+- 比值极高意味着期权市场为黄金定价的不确定性远超股票，即黄金有自己的故事（持仓、亚洲场外与零售、期权活动）
+- 2012 年以来比值向上穿越 1.5 的 7 次事件中，后 60 日黄金收益从 -17.0%（2013-04）到 +10.4%（2025-10）不等，无一致方向
+- 因此正确用法是：极值时降低杠杆、拉宽止损、关注持仓与 ETF 流向而非猜方向
+- 复合内部结构（金银比、金铂比上升、矿业股领涨）说明资金选择黄金作为贵金属中的“质量”，同时股市风险偏好外溢到金矿股
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 极值本身无方向，方向由体制决定：2013 年比值极值出现在联储缩减 QE 预期（体制 B）下，以崩盘收场； 2025 年 10 月与 12 月的极值出现在宽松预期（体制 A）下，以续涨收场；2026 年 1 月极值出现在体制切换前夜，以顶部收场。 当前联储偏鹰（体制 B），历史类比偏向下行风险，但 8 月的反弹是逆体制的，需要用持仓与流向而非体制单独判断。
+evidence_indicators:
+- indicator_id: gvz_vix_ratio
+  expected_sign: up
+  weight: high
+  rationale: 叙事的定义变量，98.6 分位
+- indicator_id: gvz
+  expected_sign: up
+  weight: medium
+  rationale: 黄金自身隐含波动率水平
+- indicator_id: gold_silver_ratio
+  expected_sign: up
+  weight: medium
+  rationale: 上升表示资金在贵金属内向黄金集中（防御性），2013 年崩盘前也曾上升
+- indicator_id: gdx_gld_ratio
+  expected_sign: up
+  weight: medium
+  rationale: 矿业股相对强弱创年内新高，反映股市风险偏好外溢到金矿股
+- indicator_id: cot_mm_net_pctl
+  expected_sign: up
+  weight: medium
+  rationale: 投机持仓抬升是自身波动率体制的燃料
+- indicator_id: platinum
+  expected_sign: flat
+  weight: low
+  rationale: 铂钯年内深跌显示 1 月贵金属泡沫已出清，黄金是复合中唯一年内为正的品种
+pricing_proxies:
+- indicator_id: cot_mm_net_pctl
+  note: 5 年 79 分位
+- indicator_id: gld_tonnes
+  note: 北美 ETF 仍净流出，与期货多头背离
+- indicator_id: gc_term_spread
+  note: 近月与次月价差，观察实物紧张或融资成本
+- name: gvz_realized_spread
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/GVZ_History.csv
+  note: GVZ 减 20 日已实现波动率，当前约 +3 个波动点
+verification_signals:
+- id: v1
+  description: GVZ/VIX 比 30 日内回落至 1.3 以下且黄金高于 4,500（自身波动率体制以上行方式解除）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: gvz_vix_ratio
+      op: lt
+      value: 1.3
+    - indicator_id: gc_front
+      op: gt
+      value: 4500
+  next_check: 2026-10-02
+- id: v2
+  description: 金银比升破 75（防御性轮动加深，2013 年形态）
+  type: quant
+  rule:
+    indicator_id: gold_silver_ratio
+    op: gt
+    value: 75
+  next_check: 2026-09-30
+- id: v3
+  description: GDX/GLD 比升破 0.25 并维持 10 个交易日（矿业股确认）
+  type: quant
+  rule:
+    indicator_id: gdx_gld_ratio
+    op: gt
+    value: 0.25
+  next_check: 2026-09-30
+- id: v4
+  description: CFTC 管理基金净多分位升破 90（拥挤）
+  type: quant
+  rule:
+    indicator_id: cot_mm_net_pctl
+    op: gt
+    value: 90
+  next_check: 2026-09-30
+- id: v5
+  description: GVZ 减 20 日已实现波动率超过 8 个波动点（期权市场为事件定价，通常先于大幅波动；proposed 指标 gvz_realized_spread）
+  type: quant
+  rule:
+    indicator_id: gvz_realized_spread
+    op: gt
+    value: 8
+  next_check: 2026-09-30
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 到 2026-10-31，GVZ 低于 20 且 GVZ/VIX 比低于 1.2——自身波动率体制结束，卡片归档
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: gvz
+      op: lt
+      value: 20
+    - indicator_id: gvz_vix_ratio
+      op: lt
+      value: 1.2
+  deadline: 2026-10-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: VIX 升破 25 而 GVZ 不升——黄金波动率转为宏观驱动，“自身波动率体制”的判断失效
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: vix
+      op: gt
+      value: 25
+    - indicator_id: gvz
+      op: lt
+      value: 28
+  deadline: 2026-12-31
+tensions:
+- narrative_id: risk_on_bear_case
+  note: 矿业股领涨依赖股市风险偏好；若风险偏好逆转，GDX 贝塔将放大黄金下行
+- narrative_id: dollar_cycle
+  note: 黄金自身定价与美元无关的判断在两卡中一致，无冲突，列出以便交叉验证
+- narrative_id: asia_physical_demand
+  note: GVZ 极值与亚洲价格发现权重上升、1 月期权活动升温相关；上海溢价应与本卡交叉核对
+news_queries:
+- gold volatility GVZ options activity
+- gold silver ratio
+- gold miners GDX outperform gold
+- COMEX gold open interest managed money
+- platinum palladium price collapse
+counterargument: 比值极值有一半来自分母：VIX 处于 1 年 12 分位，是股票波动率异常低而非黄金波动率异常高；GVZ 26 只比 2026 年 1 至 7 月的 均值 25 至 36 更低，是 1 月吹泡后波动率均值回归尚未完成的余波。事件研究显示比值极值没有一致方向，把它当作卖出或买入信号都会出错， 它只应改变仓位规模。此外 CFTC 净多 79 分位远未到 2016 年 273,076 手的历史极值。
+sources:
+- title: Cboe GVZ History CSV（至 2026-09-02）
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/GVZ_History.csv
+  publisher: Cboe
+  accessed: 2026-09-03
+  type: primary
+- title: Cboe VIX History CSV（至 2026-09-02）
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv
+  publisher: Cboe
+  accessed: 2026-09-03
+  type: primary
+- title: Cboe VXSLV（白银 ETF 波动率）与 OVX History CSV（至 2026-09-02）
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/VXSLV_History.csv
+  publisher: Cboe
+  accessed: 2026-09-03
+  type: primary
+- title: CFTC Disaggregated Futures Only, COMEX Gold 088691 与 Silver 084691（至 2026-08-25）
+  url: https://publicreporting.cftc.gov/resource/72hh-3qpy.json?$where=cftc_contract_market_code='084691'&$order=report_date_as_yyyy_mm_dd%20DESC&$limit=8
+  publisher: U.S. Commodity Futures Trading Commission
+  accessed: 2026-09-03
+  type: primary
+- title: Yahoo Finance chart API, GC=F / SI=F / PL=F / PA=F / GDX / GDXJ / GLD（日频至 2026-09-03）
+  url: https://query1.finance.yahoo.com/v8/finance/chart/SI%3DF?range=2y&interval=1d
+  publisher: Yahoo Finance
+  accessed: 2026-09-03
+  type: secondary
+- title: Gold Mid-Year Outlook 2026 – Point break（1 月 5,500 美元盘中高点、期权活动、已实现波动率超过 50%）
+  url: https://www.gold.org/goldhub/research/gold-mid-year-outlook-2026
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: Gold the safe haven versus silver the wildcard（2026-03-18）
+  url: https://www.gold.org/goldhub/research/gold-safe-haven-versus-silver-wildcard
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: secondary
+proposed_indicators:
+- id: gvz_realized_spread
+  name: GVZ 减黄金 20 日已实现波动率
+  source: 派生自 Cboe GVZ 与 Yahoo GC=F
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/GVZ_History.csv
+  frequency: daily
+  lag: 1 个交易日
+  tier: 2
+  rationale: 期权隐含溢价，判断市场是否为事件定价
+- id: vxslv
+  name: Cboe 白银 ETF 波动率指数
+  source: Cboe
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/VXSLV_History.csv
+  frequency: daily
+  lag: 1 个交易日
+  tier: 3
+  rationale: 贵金属复合的投机温度计
+- id: cot_mm_net_silver
+  name: CFTC 管理基金白银净多
+  source: U.S. Commodity Futures Trading Commission
+  url: https://publicreporting.cftc.gov/resource/72hh-3qpy.json?$where=cftc_contract_market_code='084691'&$order=report_date_as_yyyy_mm_dd%20DESC&$limit=10
+  frequency: weekly
+  lag: 3 天
+  tier: 3
+  rationale: 判断白银投机是否出清，与金银比互证
+- id: gold_platinum_ratio
+  name: 金铂比
+  source: 派生自 Yahoo GC=F 与 PL=F
+  url: https://query1.finance.yahoo.com/v8/finance/chart/PL%3DF?range=2y&interval=1d
+  frequency: daily
+  lag: 0
+  tier: 3
+  rationale: 贵金属内部的质量轮动
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster3），初始状态 主导 / 定价 部分
+cluster: cluster3

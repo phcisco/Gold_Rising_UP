@@ -1,0 +1,151 @@
+id: fed_independence_erosion
+name: 美联储独立性受损（人事、政策协调、可信度定价）
+status: active
+lifecycle_state: 退潮
+lifecycle_since: 2026-06-17
+lifecycle_rationale: 白宫提名的主席 Warsh（8 月 28 日自述"第 100 天"，即约 5 月 20 日就任）领导下的 FOMC 于 6 月 17 日以 12-0 写入"will deliver price stability"， 7 月 29 日的三票异议（Hammack、Kashkari、Logan）全部主张加息而非降息；7 月 20/29 日贴现率会议纪要显示克利夫兰、明尼阿波利斯、堪萨斯城、达拉斯四家储备银行董事会 申请把一级信贷利率上调至 4%。Warsh 在 Jackson Hole 称"65 个月持续高通胀的责任完全在央行"、2% 是"firm, fixed target"。市场反应与此一致：7 月纪要记载收益率上行 由实际利率驱动、长期通胀补偿稳定；ACM 10Y 期限溢价年初至今基本持平（0.80 → 0.78）。前任主席 Powell 留任理事并投票支持多数。 2025 年主导的"独立性受损"叙事在 2026 年中已明显退潮。
+pricing_degree: 已出清
+pricing_rationale: Polymarket："Trump 在 2026-12-31 前试图解除 Powell 理事职务" 8.0%，"Lisa Cook 在 12-31 前离任" 5.75%，"9 月前解除 Powell" 3.2%——人事风险赔率极低。 利率市场未含独立性溢价：10Y 盈亏平衡 2.34%（2026 年区间 2.18–2.50%）处于区间下半部，30Y 盈亏平衡 2.29%，美元指数 99.4 稳定。 但潜在的重燃点未被定价：Warsh 提议把会议改为每年六次、弱化前瞻指引、任务组含风投与企业人士（Andreessen、McMillon、Sharma），以及尚未被检验的"特朗普任内首次加息"的白宫反应。
+direction: bull
+horizon: 3-12m
+thesis: 若白宫对加息公开施压、人事干预或迫使联储与财政部协调利率，市场将重新定价通胀风险溢价与期限溢价，黄金作为无主权信用风险资产获得溢价；当前该机制处于休眠状态。
+logic_chain:
+- 触发：联储在通胀 3%+ 时加息，白宫公开反对或采取人事行动（解职、提名施压）
+- 市场怀疑联储能否维持"deliver price stability"承诺，盈亏平衡通胀与期限溢价上行
+- 美元走弱，实际利率被市场视为"政治上不可持续的高"，实际利率与金价脱钩
+- 体制由 B 切换到 A，黄金按主权信用溢价重新定价
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 本叙事本身就是体制切换的机制：在体制 B 中，每一次联储顶住压力都证明独立性，金价下行；在体制 A 中，独立性受损是金价溢价的来源。 当前 6 月 12-0 声明、7 月鹰派异议与 Warsh 讲话都属于体制 B 证据。
+evidence_indicators:
+- indicator_id: t10yie
+  expected_sign: up
+  weight: high
+  rationale: 独立性受损最先体现在通胀补偿；当前 2.34%，未见异常
+- indicator_id: curve_2s30s
+  expected_sign: up
+  weight: medium
+  rationale: 可信度受损 → 长端溢价 → 熊陡；当前熊平（0.88）
+- indicator_id: dxy
+  expected_sign: down
+  weight: medium
+  rationale: 央行可信度折价体现在美元；当前 99.4 稳定
+- indicator_id: dfii10
+  expected_sign: down
+  weight: medium
+  rationale: 政治压力下实际利率被压低是叙事成立的必要条件
+pricing_proxies:
+- name: polymarket_trump_fire_powell
+  url: https://gamma-api.polymarket.com/events?closed=false&tag_slug=fed
+  note: 12 月 31 日前 8.0%；Cook 离任 12 月 31 日前 5.75%
+- name: polymarket_fomc_dissent_count
+  url: https://gamma-api.polymarket.com/events?closed=false&tag_slug=fed
+  note: 9 月会议 3 票异议 36.5%、4 票以上 22.5%——委员会分裂本身被高概率定价，但方向为鹰派
+- indicator_id: t10yie
+  note: 盈亏平衡处于 2026 区间下半部，无独立性溢价
+verification_signals:
+- id: v1
+  description: 9 月 16 日加息后 72 小时内白宫或总统公开批评联储或主席（定性）
+  type: qual
+  next_check: 2026-09-19
+- id: v2
+  description: Polymarket "Trump try to fire Powell by 2026-12-31" 或 "Cook out" 赔率升破 20%
+  type: qual
+  next_check: 2026-09-30
+- id: v3
+  description: 10Y 盈亏平衡 20 日内上行超过 15bp 且同期美元指数下跌（可信度折价的组合信号）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: t10yie
+      op: change_gt
+      value: 0.15
+      window_days: 20
+    - indicator_id: dxy
+      op: change_lt
+      value: 0
+      window_days: 20
+  next_check: 2026-09-30
+- id: v4
+  description: FOMC 正式决定 2027 年会议减至六次或取消 SEP/新闻发布会（透明度降低，AI 判定是否被市场解读为政治化）
+  type: qual
+  next_check: 2026-12-09
+- id: v5
+  description: 出现鸽派异议（主张降息）且来自新任理事，或 FOMC 声明删除"will deliver price stability"
+  type: qual
+  next_check: 2026-09-16
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 到 2027-03-31，有效联邦基金利率高于 3.80%（至少一次加息落地）且 10Y 盈亏平衡低于 2.5%——联储顶住压力加息、市场未加入可信度折价，叙事本轮归档
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: effr
+      op: gt
+      value: 3.8
+    - indicator_id: t10yie
+      op: lt
+      value: 2.5
+  deadline: 2027-03-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 到 2027-06-30 无理事解职、无对主席的公开利率要求、无财政部与联储的正式利率协调声明（定性）
+  type: qual
+  deadline: 2027-06-30
+tensions:
+- narrative_id: real_rate_anchor_regime_switch
+  note: 独立性完好是体制 B 的前提；本叙事升温即体制 A 回归
+- narrative_id: fed_hawkish_repricing
+  note: 若独立性受损，市场定价的加息不会兑现
+news_queries:
+- Trump Warsh Fed rate hike criticism
+- Fed independence Powell governor Cook removal
+- FOMC meeting schedule six meetings Warsh
+- Treasury Bessent Fed coordination rates
+counterargument: Warsh 是总统提名却比多数委员更鹰；委员会内部的分裂方向是鹰派（四家储备银行申请加息贴现率）；Powell 留任理事并未被驱逐；预测市场把人事风险定价在 10% 以下。 更少的会议与更少的前瞻指引可以被理解为"减少对市场的依赖、增强纪律"（Warsh 的"hall-of-mirrors"论），而非政治俘获。在通胀 3%+ 的环境下， 即便白宫施压，市场也会先相信数据而不是政治。
+sources:
+- title: Minutes of the Federal Open Market Committee, July 28-29, 2026 (voting record, meeting-schedule discussion)
+  url: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260729.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Minutes of the Board's discount rate meetings on July 20 and July 29, 2026
+  url: https://www.federalreserve.gov/newsevents/pressreleases/files/monetary20260825a1.pdf
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Chairman Kevin Warsh, "In Our Time", Jackson Hole, August 28, 2026
+  url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Chairman Kevin Warsh, Semiannual Monetary Policy Report to the Congress, July 14, 2026
+  url: https://www.federalreserve.gov/newsevents/testimony/warsh20260714a.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Federal Reserve announces the leadership and objectives of its task forces, July 9, 2026
+  url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260709a.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Board of Governors membership page (Last Update May 28, 2026)
+  url: https://www.federalreserve.gov/aboutthefed/bios/board/default.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Polymarket Fed personnel and dissent markets (Gamma API)
+  url: https://gamma-api.polymarket.com/events?closed=false&tag_slug=fed
+  publisher: Polymarket
+  accessed: 2026-09-03
+  type: secondary
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster1），初始状态 退潮 / 定价 已出清
+cluster: cluster1

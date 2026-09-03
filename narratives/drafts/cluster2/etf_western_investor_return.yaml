@@ -1,0 +1,156 @@
+id: etf_western_investor_return
+name: ETF 资金流与西方投资者回归
+status: active
+lifecycle_state: 新兴
+lifecycle_since: 2026-07-17
+lifecycle_rationale: >-
+  SPDR 官方档案：GLD 持金 2026-07-17 触及年内低点 999.0t 后回升至 2026-09-02 的 1,056.6t（+57.6t，+5.8%），其中 9 月 2 日单日 +10.0t；
+  WGC：全球黄金 ETF 7 月净流入 30 亿美元、持仓 +23t 至 4,068t，欧洲领涨（英国 +8.75 亿、瑞士 +6.57 亿美元），北美仅 +0.71 亿美元、年内仍净流出，
+  年初至今全球净流入 110 亿美元仅折合 +39t。CFTC：管理基金黄金净多从 6 月 9 日 105,863 手升至 8 月 25 日 144,747 手（+37%）。
+  西方回归刚刚起步且以欧洲为主，北美尚未确认，属“新兴”。
+pricing_degree: 部分
+pricing_rationale: >-
+  GLD 1,056.6t 仍低于 2026-02-27 的年内峰值 1,101.3t、2020 年峰值约 1,278t 与 2012 年历史峰值 1,353t；全球 ETF 4,068t 低于 2 月 27 日纪录 4,176t；
+  北美年内仍净流出（H1 -61t，2013 年以来最弱上半年）。投机盘已部分定价（管理基金净多两个半月 +37%，WGC 称 7 月末 COMEX 净多 542t、“接近中性”），
+  但持仓型资金（ETF）远未回到峰值，故为“部分”。
+direction: bull
+horizon: 3-12m
+thesis: 缺席上半年的西方 ETF 与机构资金正以欧洲为先导重新进场，若北美跟进，将为金价提供上半年所缺的追涨燃料。
+logic_chain:
+  - 上半年金价在 ETF 净流出（Q2 -45t）与北美流出的情况下站稳 4,000 美元，说明价格由东方与央行托底
+  - 7 月起欧洲资金在实际 Bund 收益率 15 年高位的背景下逆势流入，反映股债对冲失效后的多元化需求
+  - 美国数据转弱、加息预期后移使 10Y TIPS 与美元回落，北美 ETF 与实际利率的负相关重新建立（WGC 图 3）
+  - 若北美从净流出转为持续流入，则供需边际从“央行对冲私人卖出”转为“央行与私人同向买入”，价格弹性显著放大
+  - 机构低配加上 ETF 持仓距峰值仍有 5 至 20% 空间，形成追涨的空间与燃料
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    这是本簇体制敏感度最高的叙事：WGC 明确指出北美 ETF 需求与 10Y TIPS 收益率已恢复负相关，市场定价 2026 年 10 月一次加息、TIPS 接近 2.5%；
+    联储被动（实际利率下行）则西方回流；联储主动可信（实际利率维持高位）则北美 ETF 继续流出、欧洲流入难以独撑，方向反转。
+evidence_indicators:
+  - indicator_id: gld_tonnes
+    expected_sign: up
+    weight: high
+    rationale: SPDR 官方日频持仓，北美投资者最直接的读数；本卡以 20 日变化与距 2 月峰值的差距为主
+  - indicator_id: dfii10
+    expected_sign: down
+    weight: high
+    rationale: 北美 ETF 流向与实际收益率负相关已恢复；TIPS 站上 2.5% 是 WGC 点名的机会成本阈值
+  - indicator_id: cot_mm_net
+    expected_sign: up
+    weight: medium
+    rationale: 投机盘先于持仓型资金进场；净多回到 1 月峰值区间意味着追涨盘已到位
+  - indicator_id: dxy
+    expected_sign: down
+    weight: medium
+    rationale: 美元走弱降低非美投资者的持有成本并同步利多欧洲流入
+pricing_proxies:
+  - indicator_id: cot_mm_net_pctl
+    note: 拥挤度：8 月 25 日净多 144,747 手较 6 月低点 +37%，需与 1 月峰值对比确定分位
+  - indicator_id: gld_tonnes
+    note: 距 2026-02-27 峰值 1,101.3t 的缺口（当前 -44.7t）与距 2020 峰值 1,278t 的缺口（约 -221t）
+  - name: wgc_global_etf_flows_monthly
+    url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows/2026/08
+    note: 分地区月度流量，北美从负转正是关键读数
+verification_signals:
+  - id: v1
+    description: GLD 持金 20 个交易日内增加超过 25t（约 2.5%）
+    type: quant
+    rule: {indicator_id: gld_tonnes, op: change_gt, value: 25, window_days: 28}
+    next_check: 2026-09-30
+  - id: v2
+    description: WGC 8 月 ETF 评论（约 9 月 8 日发布）显示北美 8 月净流入不低于 10 亿美元
+    type: qual
+    next_check: 2026-09-10
+  - id: v3
+    description: GLD 持金收复 2026-02-27 峰值 1,101.3t
+    type: quant
+    rule: {indicator_id: gld_tonnes, op: gt, value: 1101.3}
+    next_check: 2026-11-30
+  - id: v4
+    description: 管理基金净多突破 2026 年 1 月峰值而金价同步创新高（拥挤但被确认）
+    type: qual
+    next_check: 2026-10-15
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 至 2026-11-30，GLD 持金跌回 1,020t 以下（回吐 7 月以来增量的六成以上）
+    type: quant
+    rule: {indicator_id: gld_tonnes, op: lt, value: 1020}
+    deadline: 2026-11-30
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: WGC 9 月与 10 月 ETF 评论连续两个月显示北美净流出且全球持仓下降
+    type: qual
+    deadline: 2026-11-15
+  - id: f3
+    version: 1
+    created: 2026-09-03
+    description: 10Y TIPS 实际收益率站上 2.5% 并维持 20 个交易日，同时 GLD 持金 20 日净减
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: dfii10, op: gt, value: 2.5}
+        - {indicator_id: gld_tonnes, op: change_lt, value: 0, window_days: 28}
+    deadline: 2026-12-31
+tensions:
+  - narrative_id: asia_physical_demand
+    note: 争夺边际买家身份；西方回归时东方往往贴水（当前正是如此）
+  - narrative_id: imf_gold_reserve_caution
+    note: IMF 关于黄金流动性与波动性的论证若被西方机构采纳，会抑制配置型资金回流
+news_queries:
+  - gold ETF inflows North America GLD holdings
+  - European gold ETF inflows UK Switzerland
+  - gold ETF flows World Gold Council monthly
+  - managed money gold net long CFTC
+  - institutional allocation gold pension funds 2026
+counterargument: >-
+  7 月与 8 月的流入是价格回落后的选择性再入场与欧洲区域轮动，北美仅 +0.71 亿美元，年内仍净流出；市场仍定价 10 月加息、10Y TIPS 逼近 2.5%，
+  北美 ETF 与实际利率的负相关恢复意味着西方回归取决于联储转向而非黄金自身叙事；投机盘净多已较 6 月上升 37%，追涨盘部分到位。
+sources:
+  - title: SPDR Gold Shares historical archive（1,056.62t，2026-09-02）
+    url: https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&exchange=NYSE&lang=en
+    publisher: State Street / SPDR Gold Trust
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold ETF Flows July 2026 — Europe's golden heatwave
+    url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows/2026/08
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Demand Trends Q2 2026 — Investment（ETF Q2 -45t，北美 H1 -61t）
+    url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/investment
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Demand Trends Q2 2026 — Outlook（北美 ETF 与 TIPS 负相关恢复、市场定价 10 月加息）
+    url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/outlook
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: CFTC Disaggregated COT — Gold (088691) 管理基金持仓
+    url: https://publicreporting.cftc.gov/resource/72hh-3qpy.json?$where=cftc_contract_market_code='088691'
+    publisher: CFTC
+    accessed: 2026-09-03
+    type: primary
+proposed_indicators:
+  - id: wgc_global_etf_tonnes
+    name: 全球黄金 ETF 持仓吨数与分地区月度流量
+    source: WGC Gold ETF flows 月度评论（文本免登录；xlsx 需免费注册）
+    url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows
+    frequency: monthly
+    lag: 约 6 天（次月 6 日前后）
+    tier: 2
+    rationale: 补足 GLD 之外的欧洲与亚洲流向；北美由负转正是关键读数
+  - id: lbma_pm_implied
+    name: 由 GLD NAV 反推的 LBMA 下午定盘价（NAV/份 ÷ 每份含金盎司）
+    source: SPDR 历史档案
+    url: https://api.spdrgoldshares.com/api/v1/historical-archive?product=gld&exchange=NYSE&lang=en
+    frequency: daily
+    lag: 1 个交易日
+    tier: 1
+    rationale: SPDR 档案已按 ICE 要求删除 LBMA 价格列，registry 中 lbma_pm 的来源说明需改为此反推法（2026-09-02 反推值 4,382.2 美元/盎司；英国假日沿用前值）
+history: []

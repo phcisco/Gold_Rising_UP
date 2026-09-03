@@ -1,0 +1,199 @@
+id: geopolitical_war_premium
+name: 地缘政治与战争溢价：用可观察指标而非新闻情绪跟踪
+status: active
+lifecycle_state: 主导
+lifecycle_since: 2026-03-02
+lifecycle_rationale: 美伊冲突自 2026 年 3 月初起：Caldara–Iacoviello 地缘政治风险日指数（GPRD）3 月 2 日 501 为年内峰值，3 月均值 325 （2022 年全年均值 153）；EIA 8 月 STEO 假设霍尔木兹“持续严重受限”至 8 月并预计约 60 万桶/日中断延续至 2027 年底。 当前 GPRD 9 月 1 日 201（10 年 92 分位），30 日均值 137（77 分位）；Cboe OVX 47.77（10 年 81 分位）。 它是宏观层面的主导事件，但对黄金的传导方向取决于体制：2026 年 3 至 6 月黄金在战争期间下跌，因为冲击通过油价与联储加息 而非避险买盘作用于金价。Polymarket 2026-09-03：以色列-伊朗停火维持至 9 月 30 日 85.5%；霍尔木兹 9 月 30 日前恢复正常 2.4%、 12 月 31 日前 28.5%；美国 9 月 30 日前宣布结束对伊封锁 17.5%；美国 2027 年前入侵伊朗 15.5%。
+pricing_degree: 充分
+pricing_rationale: 原油与波动率市场已充分定价长期受阻：Brent 94 至 96 美元、OVX 81 分位、Polymarket 给年底前恢复正常仅 28.5%。 被低估的是“和平情景”：在联储可信体制下，霍尔木兹恢复导致油价回落与加息预期消退，对黄金反而利多—— 这与直觉相反，是本簇最重要的定价错位候选。黄金自身没有明显的战争溢价：金油比 47（年初 71），GPR 高位时黄金反而下跌。
+direction: mixed
+horizon: 3-12m
+thesis: 战争溢价目前在油不在金；在联储可信体制下，冲突升级通过油价与加息利空黄金、和平通过反向路径利多黄金，应以 GPR、OVX、金油比与预测市场赔率跟踪而非新闻情绪。
+logic_chain:
+- 冲突升级导致原油供给受限，Brent 与 OVX 上升
+- 能源通胀推高整体 CPI 与 PCE，联储在体制 B 下以加息或维持高利率应对
+- 实际利率上升压制黄金；避险买盘不足以抵消（2026 年 3 至 6 月实证：Brent +70%，黄金 -25%）
+- 体制 A 下联储不加息，油价冲击表现为通胀预期上行与美元走弱，黄金上涨
+- 因此对黄金而言，需要同时读取 GPR、OVX、金油比与盈亏平衡，而不是新闻情绪
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 体制决定传导路径。体制 B 下和平是黄金的多头催化剂（油价与加息预期同降），升级是空头催化剂；体制 A 下相反。 判定当前体制的量化签名见 energy_stagflation 卡的 regime_dependency 说明。
+evidence_indicators:
+- indicator_id: gold_oil_ratio
+  expected_sign: up
+  weight: high
+  rationale: 比值上升表示黄金开始承接冲突溢价；下降表示溢价在油
+- indicator_id: dfii10
+  expected_sign: down
+  weight: high
+  rationale: 冲突若通过避险而非加息传导，实际利率应下行
+- indicator_id: t10yie
+  expected_sign: up
+  weight: medium
+  rationale: 油价冲击被定价为通胀而非增长风险
+- indicator_id: vix
+  expected_sign: up
+  weight: low
+  rationale: 冲突外溢到股票风险；当前 15.2 表明股票未定价冲突
+- indicator_id: gc_front
+  expected_sign: up
+  weight: medium
+  rationale: 与 GPR 同向上涨才构成黄金的战争溢价
+pricing_proxies:
+- name: polymarket_hormuz_normal_by_dec31
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  note: 28.5%（2026-09-03）；9 月 30 日前 2.4%
+- name: polymarket_israel_iran_ceasefire_sep30
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  note: 85.5%（2026-09-03）
+- name: cboe_ovx
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/OVX_History.csv
+  note: 47.77，10 年 81 分位（2026-09-02）
+- indicator_id: gold_oil_ratio
+  note: 47.5（2026-09-03），年初 71，4 月 6 日低点 42
+verification_signals:
+- id: v1
+  description: GPRD 30 日均值升破 200 且黄金 20 日动量为正（黄金开始与地缘风险同向；proposed 指标 gpr_ma30）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: gpr_ma30
+      op: gt
+      value: 200
+    - indicator_id: mom_20
+      op: gt
+      value: 0
+  next_check: 2026-09-30
+- id: v2
+  description: 金油比升破 55
+  type: quant
+  rule:
+    indicator_id: gold_oil_ratio
+    op: gt
+    value: 55
+  next_check: 2026-10-31
+- id: v3
+  description: Polymarket“霍尔木兹年底前恢复正常”概率升破 50%——和平情景开始定价，观察黄金反应是否为正（体制 B 预期为正）
+  type: qual
+  next_check: 2026-09-30
+- id: v4
+  description: OVX 回落至 35 以下（原油风险溢价消退；proposed 指标 ovx）
+  type: quant
+  rule:
+    indicator_id: ovx
+    op: lt
+    value: 35
+  next_check: 2026-10-31
+- id: v5
+  description: 9 月 16 日 FOMC 声明删去“中东冲突”表述
+  type: qual
+  next_check: 2026-09-16
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 到 2026-12-31，Brent 低于 70 美元且霍尔木兹恢复正常，而黄金同期下跌超过 10%——“体制 B 下和平利多黄金”的传导被证伪
+  type: qual
+  deadline: 2026-12-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 到 2026-12-31，若冲突升级使 Brent 高于 110 美元，而黄金同期下跌超过 10% 且 10 年实际收益率不升——避险与利率两条路径都失效，黄金对该事件无系统性反应，叙事归档
+  type: qual
+  deadline: 2026-12-31
+tensions:
+- narrative_id: energy_stagflation
+  note: 同一事件的宏观侧面
+- narrative_id: risk_on_bear_case
+  note: 冲突升级会打断风险偏好，但在体制 B 下通过加息路径反而强化看空叙事的机会成本腿
+news_queries:
+- Strait of Hormuz tanker transits
+- Iran ceasefire talks blockade
+- Israel Iran strike escalation
+- oil price Middle East conflict gold
+- OVX oil volatility index
+counterargument: 2026 年黄金完全没有表现为战争对冲：它在战争开始前一个月见顶，在战争期间下跌 25%，GPR 与金价的同期相关为负。 “战争溢价”是原油叙事，黄金只是通过联储反应函数被间接影响。此外 GPR 30 日均值 137 只有 77 分位， 显示“战争疲劳”——市场对同一冲突的边际反应在衰减，除非事件性质升级（美国直接入侵，赔率 15.5%）。
+sources:
+- title: Geopolitical Risk (GPR) Index – daily data（Caldara & Iacoviello，数据至 2026-09-01）
+  url: https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls
+  publisher: Matteo Iacoviello (Federal Reserve Board economist, personal site)
+  accessed: 2026-09-03
+  type: primary
+- title: Short-Term Energy Outlook, August 2026（霍尔木兹假设与 Brent 预测）
+  url: https://www.eia.gov/outlooks/steo/
+  publisher: U.S. Energy Information Administration
+  accessed: 2026-09-03
+  type: primary
+- title: Europe Brent Spot Price FOB, Daily（至 2026-08-31）
+  url: https://www.eia.gov/dnav/pet/hist/RBRTEd.htm
+  publisher: U.S. Energy Information Administration
+  accessed: 2026-09-03
+  type: primary
+- title: Cboe OVX History CSV（至 2026-09-02）
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/OVX_History.csv
+  publisher: Cboe
+  accessed: 2026-09-03
+  type: primary
+- title: Polymarket Gamma API（霍尔木兹、停火、封锁、入侵市场赔率，2026-09-03）
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  publisher: Polymarket
+  accessed: 2026-09-03
+  type: primary
+- title: FOMC Statement, July 29, 2026（“elevated uncertainty that owes, in part, to the conflict in the Middle East”）
+  url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Gold Mid-Year Outlook 2026 – Point break（美伊冲突初期跨资产波动率）
+  url: https://www.gold.org/goldhub/research/gold-mid-year-outlook-2026
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: secondary
+proposed_indicators:
+- id: gpr_daily
+  name: 地缘政治风险日指数 GPRD
+  source: Caldara & Iacoviello
+  url: https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls
+  frequency: daily
+  lag: 1 至 2 日
+  tier: 2
+  rationale: 用新闻文本计数量化地缘风险，替代主观情绪
+- id: gpr_ma30
+  name: GPRD 30 日均值（文件自带 GPRD_MA30 列）
+  source: Caldara & Iacoviello
+  url: https://www.matteoiacoviello.com/gpr_files/data_gpr_daily_recent.xls
+  frequency: daily
+  lag: 1 至 2 日
+  tier: 2
+  rationale: 平滑单日新闻噪音，用于阈值规则
+- id: ovx
+  name: Cboe 原油 ETF 波动率指数
+  source: Cboe
+  url: https://cdn.cboe.com/api/global/us_indices/daily_prices/OVX_History.csv
+  frequency: daily
+  lag: 1 个交易日
+  tier: 2
+  rationale: 冲突溢价在原油市场的定价强度
+- id: polymarket_hormuz_odds
+  name: Polymarket 霍尔木兹恢复正常与停火市场赔率
+  source: Polymarket Gamma API
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  frequency: daily
+  lag: 0
+  tier: 2
+  rationale: 事件概率的市场定价，用于识别和平或升级情景是否被低估
+- id: brent_wti_spread
+  name: Brent 与 WTI 价差
+  source: 派生自 EIA 或 Yahoo BZ=F 与 CL=F
+  url: https://www.eia.gov/dnav/pet/hist/RBRTEd.htm
+  frequency: daily
+  lag: 1 个交易日
+  tier: 3
+  rationale: 海运原油相对内陆原油的溢价，直接反映霍尔木兹类中断
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster3），初始状态 主导 / 定价 充分
+cluster: cluster3

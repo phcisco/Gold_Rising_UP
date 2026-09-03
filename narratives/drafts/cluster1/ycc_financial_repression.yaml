@@ -1,0 +1,148 @@
+id: ycc_financial_repression
+name: 收益率曲线控制 / 金融抑制 / 期限溢价压制
+status: active
+lifecycle_state: 新兴
+lifecycle_since: 2026-07-09
+lifecycle_rationale: >-
+  这是一条"期权型"叙事：制度通道正在被打开，但政策尚未发生。7 月 9 日联储宣布主席任务组，其中"资产负债表政策"组（Dynan、Rajan、Stein）负责审查
+  "充足准备金体制与资产持有构成"；7 月纪要记载"多数参与者"讨论资产负债表政策，明确提到"联储持有国债的适当期限构成"。H.4.1（2026-08-27，截至 8 月 26 日当周）：
+  联储持有国库券 5,414 亿美元、同比 +3,459 亿；名义中长期国债 3.62 万亿、同比 +353 亿；MBS 1.91 万亿、同比 -1,876 亿；国债总持有 4.55 万亿、同比 +3,434 亿，
+  总资产 6.73 万亿、同比 +1,275 亿——资产负债表已在重新扩张，但集中在短端（准备金管理购买）。财政部可流通债务中短债占 22.2%（MSPD 7 月）。
+  反证同样来自一手文本：Warsh 8 月 28 日原则五"非常规政策……应当节制使用，甚至不用"，原则六"货币很重要"，与曲线控制方向相反。
+pricing_degree: 未定价
+pricing_rationale: >-
+  ACM 10Y 期限溢价 0.78% 未被压制到 2020–2021 年的负值区间；30Y 5.27% 接近年内高点；没有任何官方文件提出收益率目标；Polymarket 无相关市场。
+  金价在 8 月下跌时也未表现出对"未来 YCC"的期权定价（CFTC 多头随利率而非任务组新闻变动）。
+direction: bull
+horizon: years
+thesis: 若任务组结论或财政压力促使联储延长持仓久期、把资产负债表用于压低长端收益率（显性或隐性的曲线控制），实际利率将被人为压低而通胀补偿上行，黄金作为金融抑制对冲被重新定价。
+logic_chain:
+  - 利息支出 1.17 万亿（FY2026 前 10 月）与 30Y 5.27% 使财政对长端利率高度敏感
+  - 联储任务组正式把"资产持有构成"列为议题，纪要出现"期限构成"讨论
+  - 若联储把久期延长或承诺购买以稳定"市场功能"，长端实际利率被压低、期限溢价被压缩
+  - 名义收益率低于通胀与名义增长 → 金融抑制 → 持有国债的实际回报为负
+  - 黄金作为不能被压制收益率的储备资产获得溢价（体制 A 的极端形态）
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    只有在体制 A 下成立。在体制 B 下，任务组更可能建议中性或缩短构成、缩表继续，长端由市场定价，实际利率维持高位压制金价。
+    当前所有一手文本（Warsh 原则、加息异议）偏向体制 B，因此本卡为"新兴/未定价"的期权。
+evidence_indicators:
+  - indicator_id: dfii10
+    expected_sign: down
+    weight: high
+    rationale: 曲线控制的直接结果是实际利率被压低
+  - indicator_id: t10yie
+    expected_sign: up
+    weight: high
+    rationale: 压制名义利率而通胀不降 → 通胀补偿上行
+  - indicator_id: dgs30
+    expected_sign: down
+    weight: medium
+    rationale: 长端被锚定
+  - indicator_id: curve_2s30s
+    expected_sign: down
+    weight: low
+    rationale: 显性 YCC 下长端被压平；隐性抑制下则可能先陡后平，方向权重低
+  - indicator_id: dxy
+    expected_sign: down
+    weight: medium
+    rationale: 金融抑制通常伴随美元贬值
+pricing_proxies:
+  - name: acm_term_premium_10y
+    url: https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls
+    note: 0.78%，未被压制
+  - name: fed_ust_coupon_holdings_h41
+    url: https://www.federalreserve.gov/releases/h41/current/h41.htm
+    note: 名义中长期国债 3.62 万亿、同比仅 +353 亿；国库券 +3,459 亿
+  - name: tsy_bill_share_mspd
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1
+    note: 短债占可流通债务 22.2%（7 月）
+verification_signals:
+  - id: v1
+    description: 资产负债表任务组阶段性结论或 FOMC 纪要建议延长持仓久期、或以"市场功能"为由购买附息国债（定性）
+    type: qual
+    next_check: 2026-12-09
+  - id: v2
+    description: H.4.1 名义中长期国债持有 6 个月内增加超过 1,000 亿美元（需 proposed_indicator fed_ust_coupon_holdings）
+    type: qual
+    next_check: 2026-12-31
+  - id: v3
+    description: ACM 10Y 期限溢价跌破 0.30% 而赤字与通胀未下降（压制信号；需 proposed_indicator term_premium_10y）
+    type: qual
+    next_check: 2026-12-31
+  - id: v4
+    description: 10Y 实际收益率 60 日内下行超过 50bp 而 10Y 盈亏平衡不降（实际利率被压、通胀补偿不变或升）
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: dfii10, op: change_lt, value: -0.5, window_days: 60}
+        - {indicator_id: t10yie, op: change_gt, value: 0, window_days: 60}
+    next_check: 2026-11-30
+  - id: v5
+    description: 财政部短债占可流通债务升破 25%，且联储同步扩大国库券购买（财政缩短久期 + 联储吸收 = 隐性抑制）
+    type: qual
+    next_check: 2026-10-20
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2027-06-30，任务组最终报告与 FOMC 决议维持或缩短持仓久期、不设任何收益率目标、不以市场功能为由购买附息债（定性）
+    type: qual
+    deadline: 2027-06-30
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: 到 2027-06-30，10Y 实际收益率仍高于 2.0% 且 30Y 高于 4.8%——长端未被压制
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: dfii10, op: gt, value: 2.0}
+        - {indicator_id: dgs30, op: gt, value: 4.8}
+    deadline: 2027-06-30
+tensions:
+  - narrative_id: real_rate_anchor_regime_switch
+    note: 曲线控制使实际利率失去市场定价意义，旧锚失效
+  - narrative_id: fed_hawkish_repricing
+    note: 一边加息一边压长端在逻辑上可以并存（扭曲操作），但与 Warsh 原则五冲突
+news_queries:
+  - Fed balance sheet task force Dynan Rajan Stein report
+  - Fed Treasury holdings maturity composition duration
+  - yield curve control Treasury financial repression 2026
+  - reserve management purchases bills Fed H.4.1
+counterargument: >-
+  Warsh 在 Jackson Hole 明确表示非常规政策"应当节制使用，甚至不用"并强调"货币很重要"，其任务组的外部领导（Rajan、Stein）以批评量化宽松的外溢效应著称；
+  联储当前的国库券增持是维持充足准备金的技术操作而非久期购买；一个正在讨论加息的委员会不会同时压制长端。任务组的结论"对当前政策没有影响"（Warsh 原话）。
+sources:
+  - title: Federal Reserve announces the leadership and objectives of its task forces to advance the conduct of monetary policy, July 9, 2026
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260709a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Minutes of the Federal Open Market Committee, July 28-29, 2026 (balance sheet discussion)
+    url: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260729.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Factors Affecting Reserve Balances - H.4.1, Release Date August 27, 2026
+    url: https://www.federalreserve.gov/releases/h41/current/h41.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Chairman Kevin Warsh, "In Our Time", Jackson Hole, August 28, 2026 (principles 5 and 6)
+    url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Monthly Statement of the Public Debt, Table 1 (July 2026)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1?sort=-record_date
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: ACM Treasury Term Premia (Excel)
+    url: https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls
+    publisher: Federal Reserve Bank of New York
+    accessed: 2026-09-03
+    type: primary
+history: []

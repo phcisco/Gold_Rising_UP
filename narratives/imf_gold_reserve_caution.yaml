@@ -1,0 +1,112 @@
+id: imf_gold_reserve_caution
+name: IMF 对黄金储备资产的警示（看空）
+status: active
+lifecycle_state: 新兴
+lifecycle_since: 2026-07-31
+lifecycle_rationale: '已核实原文：IMF Note 2026/007《Gold in Central Bank Reserves: Strategic Considerations, Market Risks, and Practical Guidance》（Mak & Vaccaro-Grange，2026 年 7 月，27 页）， imf.org 直连返回 403，经 Wayback 2026-07-31 快照取得 PDF。核心主张：黄金储备占比上升（2019 年 1 月 10% 到 2025 年 8 月超 22%）“压倒性地”来自估值效应而非实物累积； 黄金波动大、对冲与避险属性“依体制与冲击而定”，“在尾部事件中不表现出可靠的避险属性”；黄金“不适合流动性档”，应限于投资档并按流动性调整后的市值（VaR 折扣）计量； 央行应把黄金“视为高风险储备资产”；国内购金计划（尤其非货币黄金）“通常应避免或交由其他公共实体”。 发布不足两月，尚无央行公开回应，属“新兴”。'
+pricing_degree: 未定价
+pricing_rationale: 市场几乎没有为该论点下注：WGC 2026 调查（调查期 2 至 5 月，早于该 Note）显示 45% 央行计划增持、50% 通过本币国内购金计划购买，与 Note 建议直接冲突； 发布后人民银行 7 月增持 19.9t 加速、GLD 与全球 ETF 转为流入、金价 8 月上涨；无卖方将其列为风险因子；Note 自带免责声明“不代表 IMF 执董会或管理层观点”。
+direction: bear
+horizon: years
+thesis: IMF 以官方文件把黄金定性为“高风险储备资产”并劝阻国内购金计划，若被 IMF 项目国与技术援助对象采纳，将在数年尺度上削弱央行购金这一金价地板。
+logic_chain:
+- IMF 在储备充足性评估与技术援助中具有制度影响力，尤其对依赖 IMF 项目或评估的新兴市场
+- Note 提出对黄金按 VaR 计算流动性折扣、在储备充足性指标中不把估值收益视为永久性储备增加
+- 若该框架进入 IMF 第四条款磋商或储备管理指引，央行会把黄金上限锁定在投资档比例、暂停国内购金
+- 近年增量购金恰恰集中在采用国内购金计划的新兴市场（乌兹别克、哈萨克、加纳、俄罗斯、中国部分），正是 Note 点名的对象
+- 央行购金放缓将移除金价左尾的价格不敏感买盘，使黄金重新完全由实际利率与美元定价
+regime_dependency:
+  passive_fed: bear
+  credible_fed: bear
+  note: 方向不反转但强度不同：联储可信、实际利率高的体制下，Note 关于流动性与机会成本的论证更有说服力，央行更易采纳； 联储被动、财政主导的体制下，主权信用风险上升恰恰强化黄金“无对手方”的论点（Note 本身也承认黄金可对冲制裁风险与美元贬值），Note 的影响被稀释。
+evidence_indicators:
+- indicator_id: cb_purchases
+  expected_sign: down
+  weight: high
+  rationale: 叙事成立的直接证据是官方净购金趋势性下降，尤其是国内购金计划国家的下降
+- indicator_id: dfii10
+  expected_sign: up
+  weight: medium
+  rationale: 实际利率越高，IMF 关于黄金机会成本与流动性的论证越易被采纳
+pricing_proxies:
+- name: wgc_cb_survey_intent
+  url: https://www.gold.org/goldhub/research/central-bank-gold-reserves-survey-2026
+  note: 2027 年调查中“本行增持”意向若从 45% 显著回落，是 Note 产生行为影响的第一读数
+- name: pboc_monthly_addition
+  url: https://www.safe.gov.cn/safe/whcb/index.html
+  note: 人民银行月度增量若在 Note 发布后继续加速，则 Note 在最大买家处“未定价”
+verification_signals:
+- id: v1
+  description: IMF 第四条款磋商报告或 FSAP 中出现引用 Note 2026/007 的储备管理建议（定性）
+  type: qual
+  next_check: 2026-12-31
+- id: v2
+  description: 任一近年主要买家（波兰、中国、乌兹别克、哈萨克、捷克、新加坡）公开宣布暂停或设定黄金储备上限
+  type: qual
+  next_check: 2026-12-31
+- id: v3
+  description: GDT Q3 2026 央行净购金低于 150t 且 WGC 归因于政策审慎而非价格
+  type: quant
+  rule:
+    indicator_id: cb_purchases
+    op: lt
+    value: 150
+    window_days: 92
+  next_check: 2026-10-30
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: GDT Q3 与 Q4 2026 央行净购金均不低于 200t，且 2027 年 WGC 央行调查“本行增持”意向不低于 40%
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: cb_purchases
+      op: gte
+      value: 200
+      window_days: 92
+    - indicator_id: cb_purchases
+      op: gte
+      value: 200
+      window_days: 184
+  deadline: 2027-06-30
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 至 2027-06-30 无任何央行、IMF 项目文件或第四条款报告引用该 Note 改变储备政策（定性，AI 判定）
+  type: qual
+  deadline: 2027-06-30
+tensions:
+- narrative_id: cb_reserve_reallocation
+  note: 直接对立：Note 劝阻的国内购金计划正是 WGC 调查中半数央行的购金方式
+- narrative_id: etf_western_investor_return
+  note: Note 关于黄金无可靠尾部避险属性的实证若被机构采纳，将抑制西方配置型资金
+news_queries:
+- IMF Note 2026/007 gold central bank reserves high-risk
+- IMF gold reserve adequacy valuation effects haircut
+- central bank domestic gold purchase program IMF technical assistance
+- Article IV gold reserves recommendation
+counterargument: Note 明言不代表 IMF 执董会观点，且主要针对非货币黄金的国内购金治理风险；它同时承认黄金无信用风险、可对冲制裁与美元贬值、在长久期组合中有最优配置比例。 2022 年以来的购金动机是地缘与制裁风险而非收益优化，IMF 的 VaR 流动性框架不改变这一动机；最大买家中国、波兰不依赖 IMF 项目。
+sources:
+- title: IMF Note 2026/007 — Gold in Central Bank Reserves (PDF via Wayback snapshot 2026-07-31)
+  url: http://web.archive.org/web/20260731075346/https://www.imf.org/-/media/files/publications/imf-notes/2026/english/insea2026007.pdf
+  publisher: International Monetary Fund
+  accessed: 2026-09-03
+  type: primary
+- title: IMF Note 2026/007 原始地址（本机 curl 返回 403，未能直连）
+  url: https://www.imf.org/-/media/files/publications/imf-notes/2026/english/insea2026007.pdf
+  publisher: International Monetary Fund
+  accessed: 2026-09-03
+  type: primary
+- title: Central Bank Gold Reserves Survey 2026（50% 以本币国内购金计划购买）
+  url: https://www.gold.org/goldhub/research/central-bank-gold-reserves-survey-2026
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+proposed_indicators: []
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster2），初始状态 新兴 / 定价 未定价
+cluster: cluster2

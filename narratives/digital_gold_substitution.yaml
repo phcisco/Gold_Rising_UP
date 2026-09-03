@@ -1,0 +1,138 @@
+id: digital_gold_substitution
+name: 数字黄金替代：比特币分流黄金的边际买盘
+status: archived
+lifecycle_state: 已证伪
+lifecycle_since: 2026-09-03
+lifecycle_rationale: 替代叙事要求两个可观察结果：比特币与黄金的资金流与价格反向，以及比特币/黄金比值随替代深化而上升。2025 年至今两者都相反： 2025 年黄金 +64.5%、比特币 -6.3%；过去一年（至 2026-09-03）黄金 +24.5%、比特币 -30.5%；比特币/黄金比值由 2024 年末 35.5 与 2025 年 10 月峰值约 40 跌至 17.4（比特币 77,680 美元，黄金 4,475 美元）。日收益率相关系数始终为零或正：2017 至 2026 年各年 在 -0.05 至 +0.28 之间，当前 60 日 +0.57、20 日 +0.64——这是“同受流动性驱动”的共振，不是替代。 8 月两者同涨（比特币 +22.4%、黄金 +10.9%）进一步说明它们是同一因子的两个高贝塔载体。
+pricing_degree: 已出清
+pricing_rationale: 市场没有再为“比特币抽走黄金资金”下注：比特币较 2025 年 10 月 6 日高点 124,753 美元回撤 38%， Polymarket“比特币年底前跌至 45,000”概率 8.5%（2026-09-03）；黄金 ETF 与 CFTC 多头的变化用利率与风险偏好即可解释，无需替代项。
+direction: bear
+horizon: years
+thesis: 比特币会分流本应流入黄金的“去美元化/贬值对冲”资金，从而压制金价——2025 至 2026 年的价格与相关性数据否定了这一点。
+logic_chain:
+- 年轻投资者与部分机构把比特币视为“数字黄金”，配置从黄金转向比特币
+- 若成立，黄金与比特币价格应反向，且比特币/黄金比值趋势上升
+- 实证：比值由 35.5 跌至 17.4，相关系数为正，黄金创历史新高时比特币下跌
+- 结论：两者是流动性与美元信用的共同受益者，替代关系未被观察到
+regime_dependency:
+  passive_fed: mixed
+  credible_fed: mixed
+  note: 两种体制下都没有观察到替代：体制 A（2024 至 2025 年初）两者同涨，体制 B（2026 年 3 至 6 月）两者同跌。 叙事不依赖联储体制，而依赖“同一笔资金只能选一个”这个前提，而该前提没有数据支持。
+evidence_indicators:
+- indicator_id: btc
+  expected_sign: up
+  weight: high
+  rationale: 叙事成立时应看到比特币上涨而黄金不涨
+- indicator_id: gc_front
+  expected_sign: down
+  weight: high
+  rationale: 同上，黄金相对走弱
+- indicator_id: gld_tonnes
+  expected_sign: down
+  weight: medium
+  rationale: 美国 ETF 资金由黄金转向比特币现货 ETF 应体现为 GLD 持仓下降
+pricing_proxies:
+- name: btc_gold_ratio
+  url: https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?range=10y&interval=1d
+  note: 当前 17.4，2024 年末 35.5，比值下行否定替代
+- name: polymarket_btc_45k_by_yearend
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  note: 8.5%（2026-09-03）
+verification_signals:
+- id: v1
+  description: 重新激活条件：黄金与比特币 60 日相关系数低于 -0.3（proposed 指标 gold_btc_corr_60d；连续 40 个交易日成立由 AI 复核）
+  type: quant
+  rule:
+    indicator_id: gold_btc_corr_60d
+    op: lt
+    value: -0.3
+  next_check: 2026-12-31
+- id: v2
+  description: 重新激活条件：比特币/黄金比值升破 25 且黄金 60 日动量为负
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: btc_gold_ratio
+      op: gt
+      value: 25
+    - indicator_id: mom_60
+      op: lt
+      value: 0
+  next_check: 2026-12-31
+- id: v3
+  description: 重新激活条件：美国现货比特币 ETF 连续两个月净流入而美国黄金 ETF 同期净流出（AI 结合 WGC 月报判定）
+  type: qual
+  next_check: 2026-10-10
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 已命中：2025-01-01 至 2026-09-03 比特币/黄金比值由 35.5 降至 17.4，且任一 60 日窗口内两者相关系数均未低于 -0.3——替代关系在两年内未出现
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: btc
+      op: lt
+      value: 90000
+    - indicator_id: gc_front
+      op: gt
+      value: 4000
+  deadline: 2026-09-03
+tensions:
+- narrative_id: dollar_cycle
+  note: 两者同为美元信用重定价的载体，替代叙事与之逻辑冲突
+news_queries:
+- bitcoin digital gold substitute
+- bitcoin ETF flows versus gold ETF flows
+- bitcoin gold correlation
+- strategic bitcoin reserve
+counterargument: 2024 年比特币 +121% 而黄金 +27.5%，美国零售与部分企业确实把一部分“贬值对冲”预算给了比特币；若比特币重回牛市而黄金横盘， 叙事会以“边际资金分流”的弱形式复活。此外相关性为正不等于没有替代——两者可能同受流动性驱动、同时在配置层面竞争， 只是价格数据无法分辨；这需要 ETF 流向数据来判定，故保留 v3。
+sources:
+- title: Yahoo Finance chart API, BTC-USD（10 年日频至 2026-09-03）
+  url: https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?range=10y&interval=1d
+  publisher: Yahoo Finance
+  accessed: 2026-09-03
+  type: secondary
+- title: Yahoo Finance chart API, GC=F（20 年日频至 2026-09-03，CME 数据二手分发）
+  url: https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?range=20y&interval=1d
+  publisher: Yahoo Finance
+  accessed: 2026-09-03
+  type: secondary
+- title: Polymarket Gamma API, 活跃市场按 24 小时成交量
+  url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+  publisher: Polymarket
+  accessed: 2026-09-03
+  type: primary
+- title: Gold Demand Trends Q2 2026 – Investment（黄金 ETF 与场外买盘）
+  url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/investment
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: Gold ETF Flows, July 2026（发布 2026-08-06；黄金 ETF 在科技股波动中作为分散工具重获流入）
+  url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows/2026/08
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+proposed_indicators:
+- id: gold_btc_corr_60d
+  name: 黄金与比特币日收益率 60 日相关系数
+  source: 派生自 Yahoo GC=F 与 BTC-USD
+  url: https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?range=1y&interval=1d
+  frequency: daily
+  lag: 0
+  tier: 3
+  rationale: 判定替代（负相关）还是共振（正相关）
+- id: btc_gold_ratio
+  name: 比特币/黄金比值
+  source: 派生
+  url: https://query1.finance.yahoo.com/v8/finance/chart/BTC-USD?range=1y&interval=1d
+  frequency: daily
+  lag: 0
+  tier: 3
+  rationale: 替代深化的趋势度量
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster3），初始状态 已证伪 / 定价 已出清
+cluster: cluster3

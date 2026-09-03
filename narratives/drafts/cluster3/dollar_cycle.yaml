@@ -1,0 +1,171 @@
+id: dollar_cycle
+name: 美元周期：金价上涨是美元走弱的伴随，还是黄金的独立定价
+status: active
+lifecycle_state: 边际
+lifecycle_since: 2026-01-27
+lifecycle_rationale: >-
+  美元指数 2026 年 1 月 27 日触及两年低点 96.22，恰在黄金 1 月 29 日创历史高点前两日；此后美元回升至 99 至 101 区间，
+  黄金却先跌 25% 再于 8 月反弹 11%，两者脱钩。截至 2026-09-03：DXY 99.38，年初至今 +1.1%（20 年 79 分位）；
+  黄金以美元计 +3.5%，以欧元计 +4.8%，以日元计 +4.1%，以人民币计 -0.7%（人民币在岸年内升值 4.0% 至 6.7173，两年最强）。
+  黄金对 DXY 的 250 日贝塔为 -2.0，R 方仅 0.13，即美元只解释黄金日度波动的 13%。
+  美元走弱当前不是金价的原因，最多是伴随变量，故为边际叙事。
+pricing_degree: 部分
+pricing_rationale: >-
+  年初至今黄金 +3.5% 而 DXY +1.1%，按贝塔应为 -2.2%，即约 5.7 个百分点的涨幅是黄金自身定价；7 月 31 日以来黄金 +10.6%，
+  DXY -0.45%，贝塔隐含仅 +0.9%，约 9.7 个百分点为黄金自身。多币种金价同向变动（WGC 7 月表：年初至 7 月 31 日美元 -7.8%、
+  欧元 -5.9%、日元 -6.0%、人民币 -9.0%、卢比 +7.3%），说明是“黄金强弱”而非“美元强弱”。
+  市场并未把“弱美元”作为黄金多头的主逻辑下注：DXY 处于 20 年高位区，联储加息预期支撑利差。
+direction: mixed
+horizon: 3-12m
+thesis: 多币种计价金价能区分“黄金强”与“美元弱”；2026 年的金价变动几乎全部是黄金自身定价，美元走弱叙事目前不成立。
+logic_chain:
+  - 传统链条：美元走弱降低非美买家的黄金价格、削弱美元资产吸引力，黄金上涨
+  - 检验方法：若金价以欧元、日元、人民币计价同向同幅变动，则为黄金自身定价；若仅美元金价变动，则为美元现象
+  - 2026 年实证：DXY 年内小幅走强，黄金在美元、欧元、日元计价下均上涨、人民币计价持平，属于黄金自身定价
+  - 体制含义：联储可信并加息时利差支撑美元，美元叙事对黄金为空；联储被动时美元贬值与黄金上涨同源，叙事为多
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    体制 A 下“美元贬值”与“黄金上涨”是同一件事（对美元信用的重新定价），叙事成立且为多；
+    体制 B 下利差支撑美元，黄金若上涨必须是自身定价，美元叙事为空但可能被黄金自身因素压过——这正是 2026 年 8 月的形态。
+evidence_indicators:
+  - indicator_id: dxy
+    expected_sign: down
+    weight: high
+    rationale: 叙事的定义变量；当前 99.38 年内 +1.1%，与叙事相反
+  - indicator_id: xau_eur
+    expected_sign: up
+    weight: high
+    rationale: 欧元金价与美元金价同向上涨说明是黄金自身定价
+  - indicator_id: xau_jpy
+    expected_sign: up
+    weight: medium
+    rationale: 同上，日元口径
+  - indicator_id: xau_cny
+    expected_sign: up
+    weight: high
+    rationale: 人民币升值使人民币金价年内持平，东方买家未获收益；人民币金价重新上行是黄金自身强势的确认
+  - indicator_id: usdcny
+    expected_sign: down
+    weight: medium
+    rationale: 人民币走强既压低人民币金价也反映美元周期转弱
+  - indicator_id: eurusd
+    expected_sign: up
+    weight: low
+    rationale: 欧元为 DXY 最大权重成分
+pricing_proxies:
+  - indicator_id: dxy
+    note: 20 年分位（当前 79 分位）衡量美元周期所处位置
+  - indicator_id: cot_mm_net_pctl
+    note: 黄金投机拥挤度，判断黄金自身定价是否过热
+  - name: fed_h10_broad_dollar
+    url: https://www.federalreserve.gov/releases/h10/current/
+    note: 联储 H.10 名义广义美元指数，比 DXY 更能反映对新兴市场货币的美元周期
+verification_signals:
+  - id: v1
+    description: 黄金与 DXY 的 60 日相关系数低于 -0.6（美元重新成为主驱动；proposed 指标 gold_dxy_corr_60d）
+    type: quant
+    rule: {indicator_id: gold_dxy_corr_60d, op: lt, value: -0.6}
+    next_check: 2026-09-30
+  - id: v2
+    description: DXY 跌破 1 月低点 96.2
+    type: quant
+    rule: {indicator_id: dxy, op: lt, value: 96.2}
+    next_check: 2026-10-31
+  - id: v3
+    description: 人民币金价年内转正且 USDCNY 低于 6.70（黄金在最强货币下仍上涨，确认自身强势）
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: xau_cny, op: gt, value: 30262}
+        - {indicator_id: usdcny, op: lt, value: 6.70}
+    next_check: 2026-09-30
+  - id: v4
+    description: 联储 H.10 广义美元指数 60 日内下跌超过 3%（周期性美元转弱的官方口径确认）
+    type: qual
+    next_check: 2026-10-31
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，DXY 高于 103 且黄金高于 4600——黄金在强美元下上涨，美元叙事对金价无解释力
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: dxy, op: gt, value: 103}
+        - {indicator_id: gc_front, op: gt, value: 4600}
+    deadline: 2026-12-31
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，黄金与 DXY 的 120 日相关系数高于 -0.2（负相关消失，AI 用程序提供的相关系数判定）
+    type: qual
+    deadline: 2026-12-31
+tensions:
+  - narrative_id: energy_stagflation
+    note: 油价冲击在体制 B 下同时推高美元与实际利率，压制黄金；两者共振时美元叙事为空
+  - narrative_id: risk_on_bear_case
+    note: 风险偏好回升通常伴随美元走弱，却也伴随黄金资金流出，方向相互抵消
+news_queries:
+  - dollar index DXY Fed rate differential
+  - yuan appreciation gold Shanghai premium
+  - gold price in euro record high
+  - dollar weakness gold rally
+  - de-dollarization reserves gold
+counterargument: >-
+  美元不是黄金的驱动：DXY 处于 20 年 79 分位，250 日贝塔只解释 13% 的黄金方差；1 月高点后黄金下跌 25% 期间 DXY 仅升 4%。
+  黄金的边际买家是亚洲场外与欧洲 ETF（WGC Q2 与 7 月报告），其行为由本币金价与本地实际利率决定，而非美元指数。
+  反过来说，若联储转向被动，美元贬值与黄金上涨将同源出现，此时这条叙事会重新变成主导——但那是簇一叙事的结果，不是原因。
+sources:
+  - title: Yahoo Finance chart API, DX-Y.NYB / EURUSD=X / JPY=X / CNY=X / GC=F（ICE 与 CME 数据的二手分发，日频至 2026-09-03）
+    url: https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?range=2y&interval=1d
+    publisher: Yahoo Finance
+    accessed: 2026-09-03
+    type: secondary
+  - title: Foreign Exchange Rates – H.10 Weekly, Release Date August 31, 2026
+    url: https://www.federalreserve.gov/releases/h10/current/
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Market Commentary, July 2026（多币种金价表，数据至 2026-07-31）
+    url: https://www.gold.org/goldhub/research/gold-market-commentary-july-2026
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Demand Trends Q2 2026 – Investment（亚洲场外买盘与 ETF 流向）
+    url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/investment
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: Daily Treasury Par Yield Curve Rates, 2026（利差支撑美元的依据）
+    url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+proposed_indicators:
+  - id: gold_dxy_corr_60d
+    name: 黄金与 DXY 日收益率 60 日相关系数
+    source: 派生自 Yahoo GC=F 与 DX-Y.NYB
+    url: https://query1.finance.yahoo.com/v8/finance/chart/GC%3DF?range=1y&interval=1d
+    frequency: daily
+    lag: 0
+    tier: 2
+    rationale: 判断美元是否重新成为黄金主驱动
+  - id: gold_dxy_beta_250d
+    name: 黄金对 DXY 的 250 日贝塔与 R 方
+    source: 派生
+    url: https://query1.finance.yahoo.com/v8/finance/chart/DX-Y.NYB?range=2y&interval=1d
+    frequency: daily
+    lag: 0
+    tier: 3
+    rationale: 把金价变动分解为美元贡献与黄金自身残差
+  - id: fed_broad_dollar
+    name: 联储 H.10 名义广义美元指数
+    source: Federal Reserve
+    url: https://www.federalreserve.gov/releases/h10/current/
+    frequency: daily（周发布）
+    lag: 1 周
+    tier: 2
+    rationale: 覆盖新兴市场货币，对东方黄金需求更相关
+history: []

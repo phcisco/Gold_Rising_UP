@@ -1,0 +1,209 @@
+id: energy_stagflation
+name: 能源供给冲击下的滞胀
+status: active
+lifecycle_state: 主导
+lifecycle_since: 2026-03-02
+lifecycle_rationale: >-
+  2026 年 3 月初美伊冲突导致霍尔木兹海峡通行受限，EIA Brent 现货由 2 月 27 日 71.32 美元升至 4 月 6 日 138.21 美元峰值，
+  7 月初回落至 68 美元附近后再度走高，8 月 31 日报 96.02 美元（EIA，发布日 2026-09-02）。BLS CPI 能源分项同比由 2 月 +0.5% 升至
+  5 月 +23.5%，7 月仍 +14.7%；整体 CPI 同比 5 月见顶 4.25%，7 月 3.36%；核心 CPI 7 月 2.48%、近 3 个月年化仅 1.6%。
+  BEA 7 月 PCE 同比 3.7%、核心 3.3%；Q2 PCE 价格指数年化 5.3%。联储 7 月 29 日声明明确写入“供给冲击推高包括能源在内的部分行业价格”，
+  三票反对要求加息；6 月 SEP 把 2026 年 PCE 预测由 2.7% 上修至 3.6%。这是当前定价宏观的主导叙事，
+  但“滞”的一半并未兑现：Q2 实际 GDP 年化 1.5%，私人国内最终购买 +4.2%，失业率 7 月 4.1% 且在回落。
+pricing_degree: 部分
+pricing_rationale: >-
+  利率市场已充分定价联储对冲击的反应（2 年期由 1 月 2 日 3.47% 升至 9 月 2 日 4.39%；Polymarket 9 月 16 日加息 25bp 概率 51.5%，
+  2026-09-03），但没有定价通胀失锚：10 年盈亏平衡 2.34%，仅比年初高 9bp；10 年实际收益率 2.45%（年初 1.94%）。
+  即市场把它定价为“暂时性供给冲击 + 可信联储”，这对黄金是利空版本；“滞胀推升黄金”的多头版本基本未定价。
+  黄金侧：Q2 全球黄金 ETF 净流出 45 吨（WGC），CFTC 管理基金净多 144,747 手（8 月 25 日，5 年 79 分位）在 8 月回升。
+direction: mixed
+horizon: 3-12m
+thesis: 能源供给冲击推高整体通胀，但是否利多黄金取决于联储是否把它当作必须对抗的通胀——目前联储选择对抗，实际利率上行压制黄金。
+logic_chain:
+  - 霍尔木兹受阻导致原油供给缺口，Brent 与 CPI 能源分项跳升
+  - 整体通胀与 PCE 回到 3.5% 至 4% 区间，联储把“交付价格稳定”写入声明
+  - 体制 A（联储被动）：实际利率被压低、盈亏平衡上行，黄金按通胀对冲与货币贬值定价而上涨
+  - 体制 B（联储主动可信）：名义利率上行由实际利率贡献，盈亏平衡不动，黄金机会成本上升而下跌
+  - 2026 年 3 月至 7 月的实证属于体制 B，黄金自 1 月高点回撤 25%
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    同一冲击下方向完全反转。检验依据是名义利率变动的分解：2026 年 2 月 27 日至 7 月 31 日，10 年名义由 3.97% 升至 4.75%，
+    其中实际利率由 1.72% 升至 2.47%（贡献 75bp），盈亏平衡仅 +3bp——这是体制 B 的签名，黄金同期下跌。
+    若未来出现“盈亏平衡上行、实际利率不动或下行”，则切换到体制 A。
+evidence_indicators:
+  - indicator_id: t10yie
+    expected_sign: up
+    weight: high
+    rationale: 多头版本成立的必要条件是通胀补偿上行而非实际利率上行
+  - indicator_id: dfii10
+    expected_sign: down
+    weight: high
+    rationale: 实际利率若在通胀走高时下行，说明联储被动，黄金受益
+  - indicator_id: curve_2s30s
+    expected_sign: up
+    weight: medium
+    rationale: 熊陡意味着市场质疑联储抗通胀，熊平意味着信任联储；年初 139bp 走平至 88bp 属于后者
+  - indicator_id: gold_oil_ratio
+    expected_sign: flat
+    weight: medium
+    rationale: 金油比由年初 71 跌至 47，说明冲击溢价在油不在金；比值回升是黄金开始承接滞胀溢价的信号
+  - indicator_id: dxy
+    expected_sign: down
+    weight: low
+    rationale: 滞胀多头版本通常伴随美元走弱；美元走强则说明市场押注联储更鹰
+pricing_proxies:
+  - indicator_id: t10yie
+    note: 市场对通胀持续性的定价，当前 2.34% 表示未定价失锚
+  - indicator_id: ff_path
+    note: 联邦基金期货隐含加息路径，衡量“可信联储”版本被定价的程度
+  - indicator_id: cot_mm_net_pctl
+    note: 黄金投机拥挤度
+  - name: polymarket_fed_sept_hike_odds
+    url: https://gamma-api.polymarket.com/markets?closed=false&limit=100&order=volume24hr&ascending=false
+    note: 2026-09-03 加息 25bp 51.5%、不变 47.5%
+verification_signals:
+  - id: v1
+    description: 10 年盈亏平衡 30 日内上行超过 20bp 且 10 年实际收益率同期不升（体制切换至 A 的量化签名）
+    type: quant
+    rule: {indicator_id: t10yie, op: change_gt, value: 0.20, window_days: 30}
+    next_check: 2026-09-30
+  - id: v2
+    description: Brent 现货重回 100 美元以上（第二波能源冲击确认，proposed 指标 brent_spot）
+    type: quant
+    rule: {indicator_id: brent_spot, op: gt, value: 100}
+    next_check: 2026-09-17
+  - id: v3
+    description: 9 月 16 日 FOMC 在 PCE 3.7% 的背景下不加息且声明继续把通胀归因于供给冲击（联储偏被动的定性信号）
+    type: qual
+    next_check: 2026-09-16
+  - id: v4
+    description: 核心 CPI 三个月年化重新升破 3%（冲击从能源扩散到核心，滞胀成色提高；proposed 指标 cpi_core_3m_ann）
+    type: quant
+    rule: {indicator_id: cpi_core_3m_ann, op: gt, value: 3.0}
+    next_check: 2026-10-14
+  - id: v5
+    description: 金油比回升至 55 以上（黄金开始相对原油承接通胀溢价）
+    type: quant
+    rule: {indicator_id: gold_oil_ratio, op: gt, value: 55}
+    next_check: 2026-10-31
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，10 年盈亏平衡仍低于 2.3% 且 10 年实际收益率高于 2.3%——通胀冲击始终被定价为暂时且联储可信，滞胀多头版本证伪
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: t10yie, op: lt, value: 2.3}
+        - {indicator_id: dfii10, op: gt, value: 2.3}
+    deadline: 2026-12-31
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31 整体 CPI 同比回落至 3% 以下且 Brent 低于 75 美元——能源冲击自行消退，叙事退潮而非证伪（AI 结合 BLS 与 EIA 数据判定）
+    type: qual
+    deadline: 2026-12-31
+tensions:
+  - narrative_id: risk_on_bear_case
+    note: 增长强劲与信用宽松否定“滞”，但同一组数据支持联储继续加息
+  - narrative_id: geopolitical_war_premium
+    note: 同一事件的两个侧面；在体制 B 下战争升级通过油价与加息路径反而利空黄金
+  - narrative_id: credible_fed_regime
+    note: 簇一叙事（id 待对齐）；联储可信则本叙事对金价方向为空
+news_queries:
+  - Strait of Hormuz oil shipments
+  - CPI energy inflation Fed hike September
+  - Brent crude Hormuz reopening
+  - Warsh underlying inflation trend
+  - stagflation gold real yields
+counterargument: >-
+  这不是 1970 年代式滞胀：核心 CPI 2.48% 且三个月年化 1.6%，通胀集中在能源；失业率 4.1% 并在回落；
+  联储主席 Warsh 8 月 28 日明言“联储当前的首要焦点应是价格”，市场通胀预期锚定。供给冲击加鹰派联储在历史上通过实际利率利空黄金，
+  2026 年 3 月至 7 月已经演示过一次。WGC 7 月评论亦指出“第二波通胀本身并不意味着黄金大涨”。
+sources:
+  - title: BLS Public API, CPI-U series CUUR0000SA0 / SA0E / SA0L1E / SACL1E（数据至 2026 年 7 月）
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/
+    publisher: U.S. Bureau of Labor Statistics
+    accessed: 2026-09-03
+    type: primary
+  - title: Personal Income and Outlays, July 2026（PCE 同比 3.7%，核心 3.3%）
+    url: https://www.bea.gov/news/2026/personal-income-and-outlays-july-2026
+    publisher: U.S. Bureau of Economic Analysis
+    accessed: 2026-09-03
+    type: primary
+  - title: GDP (Second Estimate) and Corporate Profits, 2nd Quarter 2026
+    url: https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-2nd-quarter-2026
+    publisher: U.S. Bureau of Economic Analysis
+    accessed: 2026-09-03
+    type: primary
+  - title: Europe Brent Spot Price FOB, Daily（数据至 2026-08-31，发布 2026-09-02）
+    url: https://www.eia.gov/dnav/pet/hist/RBRTEd.htm
+    publisher: U.S. Energy Information Administration
+    accessed: 2026-09-03
+    type: primary
+  - title: Short-Term Energy Outlook, August 2026
+    url: https://www.eia.gov/outlooks/steo/
+    publisher: U.S. Energy Information Administration
+    accessed: 2026-09-03
+    type: primary
+  - title: FOMC Statement, July 29, 2026
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Summary of Economic Projections, June 17, 2026
+    url: https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Keynote remarks by Chairman Warsh, Jackson Hole, August 28, 2026
+    url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: Daily Treasury Par Yield Curve and Real Yield Curve Rates, 2026
+    url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_real_yield_curve&field_tdr_date_value=2026&page&_format=csv
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Market Commentary, July 2026 – Making waves
+    url: https://www.gold.org/goldhub/research/gold-market-commentary-july-2026
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: secondary
+proposed_indicators:
+  - id: brent_spot
+    name: Brent 现货日价
+    source: U.S. Energy Information Administration
+    url: https://www.eia.gov/dnav/pet/hist/RBRTEd.htm
+    frequency: daily
+    lag: 1 个交易日，周更
+    tier: 1
+    rationale: 能源冲击的直接度量，替代 FRED 的 DCOILBRENTEU
+  - id: cpi_energy_yoy
+    name: CPI 能源分项同比
+    source: U.S. Bureau of Labor Statistics
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/CUUR0000SA0E
+    frequency: monthly
+    lag: 约 2 周
+    tier: 2
+    rationale: 冲击向消费者价格的传导
+  - id: cpi_core_3m_ann
+    name: 核心 CPI 三个月年化
+    source: 派生自 BLS CUSR0000SA0L1E
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/CUSR0000SA0L1E
+    frequency: monthly
+    lag: 约 2 周
+    tier: 2
+    rationale: 判断冲击是否扩散到核心，比同比更灵敏
+  - id: pce_core_yoy
+    name: 核心 PCE 同比（联储目标口径）
+    source: U.S. Bureau of Economic Analysis
+    url: https://www.bea.gov/data/personal-consumption-expenditures-price-index
+    frequency: monthly
+    lag: 约 4 周
+    tier: 2
+    rationale: 联储反应函数的直接输入
+history: []

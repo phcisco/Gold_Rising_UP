@@ -47,10 +47,10 @@ evidence_indicators:
     expected_sign: down
     weight: high
     rationale: 金价与实际利率负相关的直接结果
-  - indicator_id: ff_path
+  - indicator_id: ff_cum_change_bp
     expected_sign: up
     weight: medium
-    rationale: 联邦基金期货条上倾（Sep26 3.70% → Sep27 4.24%）表明市场为加息周期定价
+    rationale: 联邦基金期货条上倾（ZQU26 3.70% → ZQU27 4.24%，相对 EFFR 3.63% 约 +60bp）表明市场为加息周期定价
 pricing_proxies:
   - indicator_id: cot_mm_net_pctl
     note: 拥挤度，8 月 25 日 78.5 百分位（五年），尚未出清
@@ -83,8 +83,9 @@ verification_signals:
         - {indicator_id: t10yie, op: lt, value: 2.5}
     next_check: 2026-09-30
   - id: v5
-    description: 金价与 10Y 实际收益率 60 日滚动相关系数显著为负（需新增派生指标 gold_real_yield_corr_60d）
-    type: qual
+    description: 未来 12 个月联邦基金期货累计隐含变动维持在 +40bp 以上（加息周期定价不退）
+    type: quant
+    rule: {indicator_id: ff_cum_change_bp, op: gt, value: 40, window_days: 20}
     next_check: 2026-10-15
 falsification_conditions:
   - id: f1

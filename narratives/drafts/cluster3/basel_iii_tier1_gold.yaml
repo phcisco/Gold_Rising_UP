@@ -1,0 +1,110 @@
+id: basel_iii_tier1_gold
+name: 巴塞尔 III 把黄金列为一级资产
+status: archived
+lifecycle_state: 已证伪
+lifecycle_since: 2026-09-03
+lifecycle_rationale: >-
+  核对 BIS 巴塞尔框架原文后，这条叙事是范畴错误：（1）CAP10.1 规定“监管资本由三类构成：普通股一级资本、其他一级资本、二级资本”，
+  “一级”是对银行资本工具的分类，不存在“一级资产”概念；（2）CRE20 规定“存放于本行或以分配形式存放于他行的金条，在以金条负债对应的范围内”
+  适用 0% 风险权重——这是巴塞尔 II 以来一直存在的条款，2025 年没有变化；（3）NSF30（2019-12-15 生效版）把“实物交易商品，包括黄金”
+  列入 85% 所需稳定资金（RSF）档，与非 HQLA 证券和一年以上贷款同档，即 NSFR 对黄金是惩罚性而非优待；（4）LCR30 的 HQLA 一级与二级资产
+  清单中没有黄金。世界黄金协会 2025 年 5 月 29 日的研究报告自己承认：“在巴塞尔 III 框架下，黄金不被归类为 HQLA……NSFR 给黄金 85% 的高 RSF 系数”。
+  叙事声称的“2025 年 7 月起银行因新规增持黄金推动金价”没有监管文本依据。
+pricing_degree: 已出清
+pricing_rationale: >-
+  没有可观察的“银行资产负债表增持黄金”证据渠道被市场定价；央行购金（Q2 289 吨，WGC）与亚洲场外买盘是真实的需求来源，
+  但它们与银行资本规则无关。该叙事主要在社交媒体流传，未见于 WGC、LBMA 或联储的官方需求解释。
+direction: bull
+horizon: years
+thesis: 巴塞尔 III 把实物黄金升级为“一级资产”使银行增持黄金——BIS 原文显示不存在该分类，且 NSFR 对黄金实际是 85% RSF 的不利待遇，叙事不成立。
+logic_chain:
+  - 叙事主张：新规使黄金在银行资本计算中等同现金，银行有动力增持实物黄金
+  - 事实一：一级/二级是资本工具分类，不是资产分类（CAP10）
+  - 事实二：分配形式且有金条负债对应的黄金 0% 风险权重是长期存在的条款（CRE20），非 2025 年新规
+  - 事实三：NSFR 给实物黄金 85% RSF，LCR 不承认黄金为 HQLA，规则整体不利于银行持有非分配黄金
+  - 结论：叙事的机制不存在，价格影响为零
+regime_dependency:
+  passive_fed: mixed
+  credible_fed: mixed
+  note: 监管条文不随联储体制变化；该叙事在任何体制下都没有机制支撑。
+evidence_indicators:
+  - indicator_id: cb_purchases
+    expected_sign: up
+    weight: low
+    rationale: 叙事常把央行购金误归因于巴塞尔规则；央行购金与银行资本规则无关，列出以便区分
+  - indicator_id: gc_term_spread
+    expected_sign: up
+    weight: low
+    rationale: 若银行真的因监管增持实物并减少非分配敞口，实物融资成本上升应体现为近月相对次月走强；2021 至 2022 年 NSFR 实施时曾短暂出现
+pricing_proxies:
+  - name: lbma_vault_holdings
+    url: https://www.lbma.org.uk/prices-and-data/london-vault-holdings-data
+    note: 伦敦金库持仓月度数据，若银行因监管增持应体现为金库存量与分配账户上升
+verification_signals:
+  - id: v1
+    description: 重新激活条件：BIS 发布修订，把黄金纳入 LCR 的 HQLA 或把 NSFR 中黄金 RSF 由 85% 下调（AI 核对 BIS 巴塞尔框架变更记录）
+    type: qual
+    next_check: 2026-12-31
+  - id: v2
+    description: 重新激活条件：美国或欧盟监管机构在资本或流动性规则最终文本中给予黄金优于现行框架的待遇
+    type: qual
+    next_check: 2026-12-31
+  - id: v3
+    description: 重新激活条件：LBMA 伦敦金库黄金持仓连续三个月上升且 LBMA 或 WGC 把增量归因于银行分配账户（proposed 指标 lbma_vault_gold_tonnes；AI 判定）
+    type: qual
+    next_check: 2026-12-31
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 已命中：截至 2026-09-03，BIS 巴塞尔框架 CAP10、CRE20、NSF30、LCR30 原文中不存在把黄金列为“一级资产”的条款；NSF30 维持 85% RSF；LCR30 未列黄金为 HQLA
+    type: qual
+    deadline: 2026-09-03
+tensions:
+  - narrative_id: risk_on_bear_case
+    note: 无直接冲突；列出以提示该叙事不应被用作反驳看空叙事的“结构性需求”证据
+news_queries:
+  - Basel III gold Tier 1 asset
+  - NSFR unallocated gold 85% RSF bullion banks
+  - BIS Basel framework gold HQLA
+  - LBMA Basel III NSFR clearing
+counterargument: >-
+  NSFR 确实改变过黄金市场：2021 至 2022 年欧盟与英国实施 NSFR 后，非分配黄金融资成本上升，部分需求由非分配转向分配或实物，
+  这是真实但二阶的结构效应；WGC 与 Baur 等学者也在推动把黄金纳入 HQLA。若未来监管真的把黄金纳入 HQLA，
+  会产生一条新的、真实的多头叙事——但那将是“未来可能的规则”，不是“2025 年已生效的规则”。
+sources:
+  - title: Basel Framework CRE20 – Standardised approach, individual exposures（含金条 0% 风险权重条款，版本 inforce 2023-01-01）
+    url: https://www.bis.org/basel_framework/chapter/CRE/20.htm?inforce=20230101&published=20201126
+    publisher: Bank for International Settlements
+    accessed: 2026-09-03
+    type: primary
+  - title: Basel Framework NSF30 – Net stable funding ratio, required stable funding（“physical traded commodities, including gold”列入 85% RSF）
+    url: https://www.bis.org/basel_framework/chapter/NSF/30.htm?inforce=20191215&published=20191215
+    publisher: Bank for International Settlements
+    accessed: 2026-09-03
+    type: primary
+  - title: Basel Framework LCR30 – High-quality liquid assets（全文无 gold）
+    url: https://www.bis.org/basel_framework/chapter/LCR/30.htm?inforce=20191215&published=20191215
+    publisher: Bank for International Settlements
+    accessed: 2026-09-03
+    type: primary
+  - title: Basel Framework CAP10 – Definition of eligible capital（一级为资本分类）
+    url: https://www.bis.org/basel_framework/chapter/CAP/10.htm?inforce=20191215&published=20191215
+    publisher: Bank for International Settlements
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold – an HQLA in all but name（2025-05-29，承认黄金非 HQLA 且 RSF 85%）
+    url: https://www.gold.org/goldhub/research/gold-an-hqla-in-all-but-name
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+proposed_indicators:
+  - id: lbma_vault_gold_tonnes
+    name: LBMA 伦敦金库黄金持仓（吨，月度）
+    source: London Bullion Market Association
+    url: https://www.lbma.org.uk/prices-and-data/london-vault-holdings-data
+    frequency: monthly
+    lag: 约 1 个月
+    tier: 3
+    rationale: 检验任何“银行或机构在伦敦增持实物黄金”的说法
+history: []

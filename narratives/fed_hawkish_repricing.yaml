@@ -1,0 +1,165 @@
+id: fed_hawkish_repricing
+name: 降息交易已出清并反转为加息周期定价
+status: active
+lifecycle_state: 共识
+lifecycle_since: 2026-07-29
+lifecycle_rationale: 7 月 FOMC 纪要记载："市场已完全定价 9 月会议加息 25bp，并在明年一季度末前再加一次"；6 月 SEP 联邦基金利率中位数由 3 月的 3.4% 上修至 2026 年末 3.8% （区间 3.4–4.4），即委员会中位数自身也隐含一次加息。9 月 3 日 CME 联邦基金期货（经 Yahoo）：ZQU26 3.70%、ZQV26 3.785%、ZQZ26 3.955%、ZQH27 4.105%、 ZQU27 4.24%，相对有效联邦基金利率 3.63%（纽约联储，9 月 1 日）隐含 12 个月内约 2.4 次 25bp 加息；2 年期国债 4.39%（财政部，9 月 2 日）高于 EFFR 76bp。 Polymarket：9 月加息 25bp 51.5%、10 月前加息 65.5%、2026 年内加息 70.5%、2026 年零降息 89%。降息交易不仅出清，而且已反向成为共识。
+pricing_degree: 充分
+pricing_rationale: 期货条已定价比 6 月 SEP 中位数更鹰的路径（市场 2027 年 3 月 4.1% 对比 SEP 2027 年末中位数 3.6%），Polymarket 2026 年末上限 4.0% 的概率 41%、3.75% 为 24.5%。 这意味着鹰派冲击对金价的边际利空已基本释放，风险反而不对称地偏向"联储不如市场鹰"——7 月纪要显示纽约联储 Desk 调查中位受访者预期 2026–2027 年不变、2028 年初降息， 与期货定价明显背离。CFTC 与 GLD 持仓虽仍偏多（见 real_rate_anchor 卡），但利率端的加息预期已充分。
+direction: bear
+horizon: weeks
+thesis: 市场已把 2026 年的降息预期全部出清并定价约 2 次加息，黄金失去"降息交易"支撑；但加息已被充分定价，进一步利空需要联储比市场更鹰，否则风险偏向金价反弹。
+logic_chain:
+- CPI 5 月同比 4.25% 见顶、7 月 3.36%，核心 2.48%；PCE 12 个月 3.7%、6 个月年化 4.1%（Warsh 8 月 28 日引用），通胀高于目标
+- 6 月声明写入"will deliver price stability"，7 月三票主张加息，纽约联储 Desk 调查与市场定价转向加息
+- 2Y 收益率升至 4.39%、联邦基金期货条上倾，"降息交易"完全出清
+- 更高的短端利率与更强美元抬高黄金持有成本，压制投机多头
+- 但市场路径已比委员会中位数更鹰，若 9 月 16 日不加息或加息后转鸽，短端利率回落将成为金价反弹的触发
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 体制 B 下加息定价压制金价（当前）。若联储在通胀 3%+ 时拒绝跟随市场加息（体制 A 迹象），则"市场定价加息而联储不动"会被解读为落后曲线， 盈亏平衡与金价反而上行。因此本叙事对金价的方向取决于联储是否兑现市场定价。
+evidence_indicators:
+- indicator_id: ff_next_change_bp
+  expected_sign: up
+  weight: high
+  rationale: 下次 FOMC 隐含变动是本叙事的直接度量；ZQU26 3.70% 对比 EFFR 3.63% 隐含 9 月加息约 +15bp（概率约 60%，会议 9 月 16 日、新利率覆盖当月 14 天）
+- indicator_id: ff_cum_change_bp
+  expected_sign: up
+  weight: high
+  rationale: 未来 12 个月累计隐含变动约 +60bp（ZQU27 4.24% 对 EFFR 3.63%），即约 2.4 次加息
+- indicator_id: dgs2
+  expected_sign: up
+  weight: high
+  rationale: 2Y 4.39%（9 月 2 日）高于 EFFR 3.63%，是加息定价的最干净读数
+- indicator_id: effr
+  expected_sign: up
+  weight: medium
+  rationale: 3.63%（目标区间 3.50–3.75%），加息落地后应跳升至约 3.88%
+- indicator_id: dxy
+  expected_sign: up
+  weight: low
+  rationale: 美元指数 99.4（9 月 3 日）；加息预期支撑美元、压制金价
+- indicator_id: curve_2s10s
+  expected_sign: down
+  weight: medium
+  rationale: 2s10s 由 1 月 0.71 熊平至 0.40（9 月 2 日），加息定价推动短端
+pricing_proxies:
+- name: polymarket_fed_sep_hike
+  url: https://gamma-api.polymarket.com/events?tag_slug=fed
+  note: 9 月加息 25bp 51.5%；"Fed rate hike in 2026" 70.5%；零降息 89%
+- name: sep_median_ffr_2026
+  url: https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm
+  note: 6 月 SEP 2026 年末中位 3.8%、2027 年 3.6%；市场比委员会更鹰
+- indicator_id: move
+  note: MOVE 79.7（9 月 2 日）从 69 回升，利率不确定性上升
+verification_signals:
+- id: v1
+  description: 9 月 16 日 FOMC 加息 25bp 且异议为鸽派（要求不加）——加息周期得到确认
+  type: qual
+  next_check: 2026-09-16
+- id: v2
+  description: 2Y 收益率升破 4.50%（进一步定价第三次加息）
+  type: quant
+  rule:
+    indicator_id: dgs2
+    op: gt
+    value: 4.5
+    window_days: 30
+  next_check: 2026-10-15
+- id: v3
+  description: 未来 12 个月累计隐含变动升破 +75bp（定价第三次加息）；Polymarket "Fed rate hike in 2026" 同步升至 85% 以上
+  type: quant
+  rule:
+    indicator_id: ff_cum_change_bp
+    op: gt
+    value: 75
+    window_days: 30
+  next_check: 2026-10-15
+- id: v4
+  description: 有效联邦基金利率升至 3.85% 以上（加息实际落地）
+  type: quant
+  rule:
+    indicator_id: effr
+    op: gt
+    value: 3.85
+    window_days: 30
+  next_check: 2026-09-17
+- id: v5
+  description: BLS 8 月 CPI 核心环比高于 0.3%，巩固加息预期
+  type: qual
+  next_check: 2026-09-11
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 到 2026-12-31，2Y 收益率回落至 3.60% 以下且未来 12 个月累计隐含变动转为负值（市场重新定价降息）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: dgs2
+      op: lt
+      value: 3.6
+    - indicator_id: ff_cum_change_bp
+      op: lt
+      value: 0
+  deadline: 2026-12-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 9 月与 10 月 FOMC 均不加息且声明或主席表态转向宽松倾向（定性）
+  type: qual
+  deadline: 2026-10-28
+tensions:
+- narrative_id: fed_independence_erosion
+  note: 若白宫施压导致联储不兑现加息，本叙事的"加息共识"将崩塌
+- narrative_id: inflation_risk_premium_repricing
+  note: 加息兑现压低通胀风险溢价；不兑现则抬高
+news_queries:
+- FOMC September 16 2026 rate hike
+- fed funds futures pricing hike Warsh
+- Hammack Kashkari Logan dissent hike
+- Treasury 2-year yield Fed hike expectations
+counterargument: 期货条定价约 2.4 次加息，而 6 月 SEP 中位数只隐含 1 次、Desk 调查中位数为零；委员会九位多数在 7 月选择等待，Warsh 强调"承诺一种纪律而非一项决定"。 若联储 9 月按兵不动，短端将大幅重定价，金价获得反弹；即使加息，"买预期卖事实"也可能出现。此外 CPI 6–7 月环比已转负或接近零（-0.35%、-0.01%，NSA）， 通胀动能减弱削弱加息必要性。
+sources:
+- title: Minutes of the Federal Open Market Committee, July 28-29, 2026
+  url: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260729.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Summary of Economic Projections, June 17, 2026 (Table 1)
+  url: https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Effective Federal Funds Rate (last 10)
+  url: https://markets.newyorkfed.org/api/rates/unsecured/effr/last/10.json
+  publisher: Federal Reserve Bank of New York
+  accessed: 2026-09-03
+  type: primary
+- title: Daily Treasury Par Yield Curve Rates, 2026
+  url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv
+  publisher: U.S. Department of the Treasury
+  accessed: 2026-09-03
+  type: primary
+- title: CME 30-Day Fed Funds futures ZQU26–ZQZ27 (via Yahoo chart API)
+  url: https://query1.finance.yahoo.com/v8/finance/chart/ZQU26.CBT?range=5d&interval=1d
+  publisher: CME via Yahoo Finance
+  accessed: 2026-09-03
+  type: secondary
+- title: CPI-U All Items and Core (CUUR0000SA0, CUUR0000SA0L1E)
+  url: https://api.bls.gov/publicAPI/v2/timeseries/data/
+  publisher: U.S. Bureau of Labor Statistics
+  accessed: 2026-09-03
+  type: primary
+- title: Polymarket Fed decision markets (Gamma API)
+  url: https://gamma-api.polymarket.com/events?closed=false&tag_slug=fed
+  publisher: Polymarket
+  accessed: 2026-09-03
+  type: secondary
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster1），初始状态 共识 / 定价 充分
+cluster: cluster1

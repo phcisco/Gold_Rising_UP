@@ -116,3 +116,22 @@ def test_collection_detects_duplicates_and_dangling_tensions(tmp_path: Path) -> 
     assert any("不一致" in m for m in msgs)  # 文件名 b.yaml 与 id a
     assert any("解析失败" in m for m in msgs)
     assert any("credible_fed_regime" in m for m in msgs)
+
+
+def test_load_cards_skips_drafts_and_meta(tmp_path: Path) -> None:
+    (tmp_path / "a.yaml").write_text(yaml.safe_dump(_card(id="a"), allow_unicode=True), encoding="utf-8")
+    (tmp_path / "_library.yaml").write_text("version: 1\n", encoding="utf-8")
+    (tmp_path / "drafts" / "c1").mkdir(parents=True)
+    (tmp_path / "drafts" / "c1" / "b.yaml").write_text(
+        yaml.safe_dump(_card(id="b"), allow_unicode=True), encoding="utf-8"
+    )
+    assert [p.name for p in load_cards(tmp_path)] == ["a.yaml"]
+    assert len(load_cards(tmp_path, include_drafts=True)) == 2
+
+
+def test_indicator_narrative_map_excludes_archived() -> None:
+    from goldrising.narratives import indicator_narrative_map
+
+    cards = {Path("a.yaml"): _card(id="a"), Path("b.yaml"): _card(id="b", status="archived", lifecycle_state="归档")}
+    m = indicator_narrative_map(cards)
+    assert [x["narrative_id"] for x in m["t10yie"]] == ["a"]

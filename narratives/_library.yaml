@@ -1,0 +1,23 @@
+version: 1
+generated: 2026-09-03
+regime:
+  state: B
+  label: 联储主动且可信
+  since: 2026-06-17
+  rationale: FOMC 6/17 与 7/29 声明“will deliver price stability”，7/29 三票主张加息，四家储备银行申请上调贴现率；7 月纪要把名义收益率上行归因于实际利率；ACM 2026 年期限溢价持平而风险中性利率 +60bp；8/28 Warsh 讲话重申 2% 为 firm, fixed target。
+  switch_to_A_requires:
+  - 联储在 PCE 通胀高于 3% 时降息或明确停止紧缩，声明删去 deliver price stability
+  - 10Y 盈亏平衡与 ACM 期限溢价同时上行（通胀补偿与财政溢价同升）
+  - 10Y 实际收益率与金价脱钩：gold_real_yield_corr_60d 持续接近零或为正，且金价在实际利率高位创新高
+  watch: gold_real_yield_corr_60d 于 2026-09-02 为 +0.03（8 月金价逆宏观反弹所致），与体制 B 的负相关签名不符，属待确认状态；9/16 FOMC 与 9/4 CFTC 数据是最近的判定点
+active_cap: 12
+active_policy: 活跃指生命周期为新兴、边际、主导、共识的卡，进入 L3 地图主视图，上限 12。退潮卡仍每日核对验证与证伪条件但折叠显示。已证伪与归档卡保留重新激活条件。
+counts:
+  active: 12
+  retreating: 5
+  archived: 3
+sources:
+- docs/research/drafts/cluster1_monetary_fiscal.md
+- docs/research/drafts/cluster2_structural_demand_supply.md
+- docs/research/drafts/cluster3_cross_asset_risk.md
+- docs/research/gold-narratives-2026-09.md

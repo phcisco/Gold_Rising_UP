@@ -66,10 +66,17 @@ class CardProblem:
         return f"[{self.level}] {self.card_id}: {self.message}"
 
 
-def load_cards(directory: Path) -> dict[Path, dict[str, Any]]:
-    """递归读取目录下全部 .yaml 叙事卡；解析失败的文件以 {'__error__': msg} 表示。"""
+def load_cards(directory: Path, include_drafts: bool = False) -> dict[Path, dict[str, Any]]:
+    """递归读取目录下的 .yaml 叙事卡；跳过下划线开头的元数据文件，默认跳过 drafts/ 子目录。
+
+    解析失败的文件以 {'__error__': msg} 表示。
+    """
     cards: dict[Path, dict[str, Any]] = {}
     for path in sorted(directory.rglob("*.yaml")):
+        if path.name.startswith("_"):
+            continue
+        if not include_drafts and "drafts" in path.relative_to(directory).parts:
+            continue
         try:
             with path.open("r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
@@ -264,3 +271,26 @@ def validate_collection(cards: dict[Path, dict[str, Any]], registry: Registry | 
                     CardProblem(str(card.get("id")), "warning", f"张力引用了不存在的叙事 {t['narrative_id']}")
                 )
     return problems
+
+
+def indicator_narrative_map(cards: dict[Path, dict[str, Any]]) -> dict[str, list[dict[str, str]]]:
+    """从叙事卡的证据指标字段生成 指标 id → [{narrative_id, expected_sign, weight}] 的映射。
+
+    叙事映射的唯一来源是叙事卡，注册表不重复维护，避免漂移。
+    """
+    out: dict[str, list[dict[str, str]]] = {}
+    for card in cards.values():
+        cid = card.get("id")
+        if not isinstance(cid, str) or card.get("status") == "archived":
+            continue
+        for e in card.get("evidence_indicators") or []:
+            if not isinstance(e, dict) or not e.get("indicator_id"):
+                continue
+            out.setdefault(str(e["indicator_id"]), []).append(
+                {
+                    "narrative_id": cid,
+                    "expected_sign": str(e.get("expected_sign", "")),
+                    "weight": str(e.get("weight", "")),
+                }
+            )
+    return dict(sorted(out.items()))

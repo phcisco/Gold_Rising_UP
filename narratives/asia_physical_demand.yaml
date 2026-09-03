@@ -1,0 +1,205 @@
+id: asia_physical_demand
+name: 亚洲实物需求与定价权东移
+status: active
+lifecycle_state: 退潮
+lifecycle_since: 2026-06-30
+lifecycle_rationale: 上半年的东方买盘极强（WGC：中国 H1 金条金币 314t 创纪录，中国净进口 H1 764t、同比 +138%，6 月 152t 为 2024 年 3 月以来最高；印度 H1 金条金币 113t 为 2013 年以来最强上半年）， 但 6 月以来动能明显退潮：上金所出库量 7 月 80t（同比 -15%），8 月月报显示出库量进一步降至 62.1t（环比 -22%）；上海金相对国际价小幅贴水（9 月 2 日约 -0.6% 至 -1.0%，方法学见备注）； 印度国内价格持续低于进口平价（8 月中折价约 45 美元/盎司，5 至 6 月曾达 100 美元）；亚洲 ETF 6 月创历史最大单月流出。 投资端（中国 ETF 8 月前 12 日 +8t、人民银行购金）仍强，但批发与金饰端在退潮，整体判定为“退潮”而非“主导”。
+pricing_degree: 部分
+pricing_rationale: 卖方与 WGC 已把“亚洲投资主导”写入展望（GDT Q2 展望：OTC 与亚洲买盘是下半年主要增量），但当前价格并未体现东方溢价——上海与印度同时贴水说明边际实物买家此刻不在东方； 市场为“东方地板”付了部分溢价（金价在无西方 ETF 买盘的上半年仍站稳 4,000 美元），但未为“东方追涨”付溢价。
+direction: bull
+horizon: 3-12m
+thesis: 中国与印度的实物投资需求（金条金币、进口、本地 ETF）取代西方成为金价的结构性买家，但其力度在 2026 年下半年是否恢复取决于本地利率、股市与节日季，而非美国宏观。
+logic_chain:
+- 中国低利率、房地产疲弱、股市波动与增值税改革（投资品免税）把家庭储蓄推向金条金币与积存金
+- 人民银行连续购金强化国内投资者对黄金的信心，形成官方与民间同向的买盘
+- 印度节日季与婚庆需求叠加以旧换新，进口在价格回落后反弹（7 月进口额 41.6 亿美元，环比翻倍）
+- 东方买盘在价格回落时进场（逢低买入），压低回撤深度；但在价格快速上涨时转为观望甚至卖旧金，抑制追涨
+- 上海溢价与印度溢价是东方边际买家是否在场的即时读数：溢价为正说明金属向东流、支撑价格；贴水说明本地供给过剩
+regime_dependency:
+  passive_fed: bull
+  credible_fed: mixed
+  note: 东方需求主要由本地因素驱动（中国利率与房地产、印度节日与关税），与美国体制弱相关；但“联储可信”体制下美元走强会抬高人民币与卢比计价金价， 压制金饰消费并触发以旧换新供给，使实物端由买方转为卖方；投资端（ETF、金条）则更看本地股市与利率，方向不确定。
+evidence_indicators:
+- indicator_id: shanghai_premium
+  expected_sign: up
+  weight: high
+  rationale: 上海金相对国际价溢价转正且持续，是东方边际买家回归最直接的证据；当前为小幅贴水
+- indicator_id: sge_au9999
+  expected_sign: up
+  weight: medium
+  rationale: 人民币金价突破 60 日均线（WGC 提及 8 月初约 920 元/克）有助于唤醒国内投资需求
+- indicator_id: xau_cny
+  expected_sign: up
+  weight: low
+  rationale: 人民币计价金价与美元金价的背离衡量本地需求独立性
+- indicator_id: usdcny
+  expected_sign: down
+  weight: medium
+  rationale: 人民币走强降低本地金价、利于国内买盘；人民币贬值则本地价格被动抬高、抑制消费
+pricing_proxies:
+- indicator_id: shanghai_premium
+  note: 溢价本身就是定价读数：正溢价 = 东方在付价；贴水 = 东方缺席
+- name: india_ncdex_discount
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/india-gold-market-update-recovery-taking-shape
+  note: 印度国内价格相对进口平价的折价，WGC 月度引用 NCDEX 数据
+- name: china_gold_etf_tonnes
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/china-gold-market-update-strong-official-sector-buying-july
+  note: 中国黄金 ETF 持仓吨数（7 月末 282t），WGC 月度更新
+verification_signals:
+- id: v1
+  description: 上金所 9 月月报出库量回到 80t 以上（较 8 月 62.1t 反弹超 25%），显示金饰商节前补库
+  type: quant
+  rule:
+    indicator_id: sge_withdrawals
+    op: gt
+    value: 80
+    window_days: 31
+  next_check: 2026-10-08
+- id: v2
+  description: 上海金对国际价溢价连续 10 个交易日为正
+  type: quant
+  rule:
+    indicator_id: shanghai_premium
+    op: gt
+    value: 0
+    window_days: 14
+  next_check: 2026-09-30
+- id: v3
+  description: WGC 印度 9 月更新显示 8 月进口不低于 40t 且国内折价收窄到 20 美元/盎司以内
+  type: qual
+  next_check: 2026-09-20
+- id: v4
+  description: WGC 中国 8 月更新显示中国黄金 ETF 8 月净流入不低于 8t，且 8 月净进口不低于 100t
+  type: qual
+  next_check: 2026-09-15
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 至 2026-12-31，上金所 9 至 11 月月度出库量均低于 80t（十年月均约 130t 以上的显著低位），且上海金溢价月均值为负
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: sge_withdrawals
+      op: lt
+      value: 80
+      window_days: 92
+    - indicator_id: shanghai_premium
+      op: lt
+      value: 0
+      window_days: 92
+  deadline: 2026-12-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: GDT Q3 2026 中国金条金币需求低于 70t 且印度低于 35t（同比双双下滑超 30%）
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: china_bar_coin_q
+      op: lt
+      value: 70
+      window_days: 92
+    - indicator_id: india_bar_coin_q
+      op: lt
+      value: 35
+      window_days: 92
+  deadline: 2026-10-30
+tensions:
+- narrative_id: etf_western_investor_return
+  note: 两者争夺“边际买家”身份；东方贴水 + 西方流入意味着定价权暂时回到西方
+- narrative_id: cb_reserve_reallocation
+  note: 同向但不同主体：人民银行购金强化国内投资信心，但不能替代批发需求
+news_queries:
+- 上海黄金交易所 出库量 月报
+- Shanghai gold premium discount SGE Au99.99
+- India gold imports Ministry of Commerce festive season discount
+- China gold ETF inflows Huaan Bosera
+- China net gold imports HS7108 customs
+counterargument: 东方需求是价格的函数而非驱动：2026 年上半年的进口与金条热发生在价格从 5,595 美元回落的阶段，属逢低买入；当价格重回 4,500 美元以上时上海与印度同时贴水， 说明东方是“地板”而非“天花板”，且金饰（278t，疫情以来最低季度）与批发出库持续走弱，东方对金价上行的贡献被高估。
+sources:
+- title: Gold Demand Trends Q2 2026 — Investment（中国 107t、印度 50t 金条金币）
+  url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/investment
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: 上海黄金交易所 2026 年 8 月月报（本月出库量 62,147.88 千克；Au99.99 收 962.00 元/克）
+  url: https://www.sge.com.cn/upload/file/202609/03/31e71479a1e44d81a6f2c6167fa61a8e.pdf
+  publisher: 上海黄金交易所
+  accessed: 2026-09-03
+  type: primary
+- title: 上海黄金交易所 2026 年 7 月月报（本月出库量 79,840.10 千克）
+  url: https://www.sge.com.cn/upload/file/202608/04/c90650fec85943d7b76d4c185a2124e6.pdf
+  publisher: 上海黄金交易所
+  accessed: 2026-09-03
+  type: primary
+- title: 上海黄金交易所每日行情 2026-09-02（Au99.99 收 937.50 元/克）
+  url: https://www.sge.com.cn/sjzx/quotation_daily_new?start_date=2026-09-02&end_date=2026-09-02
+  publisher: 上海黄金交易所
+  accessed: 2026-09-03
+  type: primary
+- title: China gold market update — Strong official sector buying in July（出库 80t、净进口 6 月 152t、ETF 282t）
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/china-gold-market-update-strong-official-sector-buying-july
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+- title: India gold market update — Recovery taking shape（7 月进口 41.6 亿美元、折价 45 美元/盎司）
+  url: https://www.gold.org/goldhub/gold-focus/2026/08/india-gold-market-update-recovery-taking-shape
+  publisher: World Gold Council
+  accessed: 2026-09-03
+  type: primary
+proposed_indicators:
+- id: shanghai_premium
+  name: 上海金对国际价溢价（%，上金所 Au99.99 收盘 vs 国际价折人民币/克）
+  source: 派生：上金所每日行情 Au99.99 与 LBMA PM（由 GLD NAV 反推）或 Yahoo GC=F，经 USDCNY 折算
+  url: https://www.sge.com.cn/sjzx/quotation_daily_new
+  frequency: daily
+  lag: 1 个交易日
+  tier: 1
+  rationale: schema 种子表列有此 id 但 registry 尚未登记，故在卡内声明；两种国际价基准相差约 0.4 个百分点且有 7.5 小时时点差，落地时需固定方法并标注误差
+- id: sge_withdrawals
+  name: 上金所月度出库量（千克）
+  source: 上海黄金交易所 行情月报 PDF“交割情况表 — 本月出库量”
+  url: https://www.sge.com.cn/sjzx/hqyb
+  frequency: monthly
+  lag: 约 3 天（次月 3 日左右发布）
+  tier: 1
+  rationale: 中国批发实物需求的官方免费代理；WGC 中国月度评论直接引用
+- id: china_gold_etf_tonnes
+  name: 中国黄金 ETF 持仓吨数
+  source: WGC 中国市场月度更新 / 基金公司公告
+  url: https://www.gold.org/goldhub/gold-focus
+  frequency: monthly
+  lag: 约 2 周
+  tier: 2
+  rationale: 东方投资端与批发端分化时的关键区分指标
+- id: india_gold_import_value
+  name: 印度月度黄金进口额（美元）
+  source: 印度商工部月度贸易数据（WGC 印度月度更新转述）
+  url: https://www.gold.org/goldhub/gold-focus
+  frequency: monthly
+  lag: 约 2 至 3 周
+  tier: 2
+  rationale: 印度实物需求的官方代理；本机未直接抓取商工部站点，暂经 WGC 转述
+- id: china_bar_coin_q
+  name: 中国季度金条金币需求（吨）
+  source: WGC GDT 投资章节
+  url: https://www.gold.org/goldhub/research/gold-demand-trends
+  frequency: quarterly
+  lag: 约 1 个月
+  tier: 2
+  rationale: 证伪条件 f2 所需
+- id: india_bar_coin_q
+  name: 印度季度金条金币需求（吨）
+  source: WGC GDT 投资章节
+  url: https://www.gold.org/goldhub/research/gold-demand-trends
+  frequency: quarterly
+  lag: 约 1 个月
+  tier: 2
+  rationale: 证伪条件 f2 所需
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster2），初始状态 退潮 / 定价 部分
+cluster: cluster2

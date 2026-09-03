@@ -1,0 +1,152 @@
+id: physical_market_stress
+name: 实物市场紧张（金库、EFP、租赁利率）
+status: active
+lifecycle_state: 退潮
+lifecycle_since: 2026-03-31
+lifecycle_rationale: >-
+  LBMA 官方金库数据：伦敦金库黄金 2026 年 7 月末 9,534t（+0.74% 环比），自 2025 年 12 月 9,106t 起连续 7 个月上升，较 2025 年 2 月低点 8,477t 增加 12.5%，金属在流入伦敦而非被抽离；
+  上金所场内黄金同业租借参考费率：8 月 24 至 28 日周 6 个月 0.20%、1 年 0.27%（加权），低于 7 月 6 至 10 日的 0.30%/0.26%，处于极低水平，无实物借贷紧张迹象；
+  上海金相对国际价小幅贴水，印度折价约 45 美元/盎司。2024 至 2025 年关税抢运造成的 COMEX 库存堆积与 EFP 异常已成过去（旧报告称 COMEX 库存自 1 月峰值回落 26.5%，本轮未能核实）。
+  “实物紧张/挤兑”叙事当前处于退潮。
+pricing_degree: 已出清
+pricing_rationale: >-
+  实物紧张溢价已从价格中出清：伦敦金库连续增库、租赁费率贴近零、东方双贴水，三者共同说明实物市场供给充裕；市场对 EFP 或租赁利率飙升没有任何定价。
+  这意味着该叙事若重现将是“从零起步”的新信息，短期弹性大，但当前无仓位。
+direction: bull
+horizon: weeks
+thesis: 实物市场结构指标（伦敦金库、租赁利率、地区溢价、EFP）当前一致显示供给充裕、无紧张；本卡的作用是监控该状态的逆转，逆转时对金价为短期强多。
+logic_chain:
+  - 实物紧张的三个可观察症状：金库存量下降、租赁利率飙升（借金成本上升）、地区溢价与 EFP 走阔
+  - 当前三者均处于反向：伦敦增库、上金所租借费率 0.2 至 0.3%、上海与印度贴水
+  - 紧张若重现，通常源于央行或亚洲实物买盘在短期内抽走可交割金属，或美国关税/制裁预期引发跨市场搬运
+  - 紧张状态下期货相对现货升水收窄甚至倒挂、GLD 折溢价异常，是数周尺度的强多信号
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bull
+  note: >-
+    方向不反转，但发生概率不同：联储被动、财政主导与制裁扩张的体制下，主权对实物的争夺更可能触发紧张；
+    联储可信体制下实物需求低迷，紧张状态难以出现，本卡多为“无信号”。
+evidence_indicators:
+  - indicator_id: shanghai_premium
+    expected_sign: up
+    weight: high
+    rationale: 上海溢价走阔至 1% 以上是亚洲抽金的首要读数
+  - indicator_id: gc_term_spread
+    expected_sign: down
+    weight: medium
+    rationale: 近月对次月价差收窄或倒挂反映即期实物紧张（借金成本上升）
+  - indicator_id: gld_tonnes
+    expected_sign: down
+    weight: low
+    rationale: 紧张时 GLD 常被用作实物来源而遭赎回（金属被拿走）；需与价格结合判读
+pricing_proxies:
+  - name: sge_lease_rate_1y
+    url: https://www.sge.com.cn/sjzx/hjzjckll
+    note: 上金所每周发布的场内黄金同业租借参考费率（当前 1 年 0.27%），免费官方，是唯一可自动抓取的租赁利率
+  - name: lbma_vault_gold_tonnes
+    url: https://cdn.lbma.org.uk/downloads/LBMA-London-Vault-Holdings-Data-July-2026.xlsx
+    note: LBMA 月度金库存量 xlsx（免费），7 月 9,534t
+verification_signals:
+  - id: v1
+    description: 上金所 1 年期黄金租借加权费率单周升至 1.0% 以上（约当前 4 倍）
+    type: quant
+    rule: {indicator_id: sge_lease_rate_1y, op: gt, value: 1.0}
+    next_check: 2026-09-14
+  - id: v2
+    description: LBMA 8 月金库数据（约 10 月初发布）出现环比下降超过 1%
+    type: quant
+    rule: {indicator_id: lbma_vault_gold_tonnes, op: change_lt, value: -1, window_days: 45}
+    next_check: 2026-10-05
+  - id: v3
+    description: 上海溢价 5 个交易日均值走阔至 +1% 以上且印度折价转为溢价
+    type: quant
+    rule: {indicator_id: shanghai_premium, op: gt, value: 1.0, window_days: 7}
+    next_check: 2026-09-30
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 至 2026-12-31，上金所 1 年期租借费率始终低于 0.6%，LBMA 金库逐月不降，上海溢价月均为负——“紧张重现”在本年度内未发生（本卡维持退潮并转归档）
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: sge_lease_rate_1y, op: lt, value: 0.6, window_days: 120}
+        - {indicator_id: shanghai_premium, op: lt, value: 0, window_days: 92}
+    deadline: 2026-12-31
+tensions:
+  - narrative_id: asia_physical_demand
+    note: 同源：亚洲实物需求恢复是实物紧张的最可能触发器；东方贴水则两卡同时无信号
+  - narrative_id: cb_reserve_reallocation
+    note: 央行集中提取实物（如自英格兰银行回运本土，2026 调查中 9% 已增加本土存储）可触发伦敦金库下降
+news_queries:
+  - gold lease rate spike London bullion
+  - COMEX gold inventories registered eligible
+  - EFP gold exchange for physical premium
+  - London vault gold holdings LBMA monthly
+  - gold repatriation central bank Bank of England vault
+counterargument: >-
+  实物紧张在 2024 至 2025 年主要由美国关税抢运造成，是政策噱头而非结构性短缺；伦敦金库连续增库与近零租赁费率说明当前金属过剩，
+  监控该叙事的价值在于其低概率高弹性，而非当下有信号。
+sources:
+  - title: LBMA London Vault Holdings Data (xlsx, July 2026)
+    url: https://cdn.lbma.org.uk/downloads/LBMA-London-Vault-Holdings-Data-July-2026.xlsx
+    publisher: LBMA
+    accessed: 2026-09-03
+    type: primary
+  - title: LBMA London Vault Data page（2026 年 7 月 9,534t，+0.74% m/m）
+    url: https://www.lbma.org.uk/prices-and-data/london-vault-data
+    publisher: LBMA
+    accessed: 2026-09-03
+    type: primary
+  - title: 上海黄金交易所场内黄金同业租借参考费率统计表（20260824-20260828）
+    url: https://www.sge.com.cn/upload/file/202608/31/7986f4b041a34822b6ff2c9d8c1ce48b.pdf
+    publisher: 上海黄金交易所
+    accessed: 2026-09-03
+    type: primary
+  - title: 上海黄金交易所场内黄金同业租借参考费率统计表（20260706-20260710）
+    url: https://www.sge.com.cn/upload/file/202607/13/25892998386d440598dfcf06578a8ae8.pdf
+    publisher: 上海黄金交易所
+    accessed: 2026-09-03
+    type: primary
+proposed_indicators:
+  - id: shanghai_premium
+    name: 上海金对国际价溢价（%，上金所 Au99.99 收盘 vs 国际价折人民币/克）
+    source: 派生：上金所每日行情 Au99.99 与 LBMA PM（由 GLD NAV 反推）或 Yahoo GC=F，经 USDCNY 折算
+    url: https://www.sge.com.cn/sjzx/quotation_daily_new
+    frequency: daily
+    lag: 1 个交易日
+    tier: 1
+    rationale: schema 种子表列有此 id 但 registry 尚未登记，故在卡内声明；两种国际价基准相差约 0.4 个百分点且有 7.5 小时时点差，落地时需固定方法并标注误差
+  - id: sge_lease_rate_1y
+    name: 上金所场内黄金同业租借参考费率（1 年加权，%）
+    source: 上海黄金交易所 黄金租借参考费率 周度 PDF
+    url: https://www.sge.com.cn/sjzx/hjzjckll
+    frequency: weekly
+    lag: 1 至 3 天（周初发布上周）
+    tier: 2
+    rationale: 伦敦无免费租赁利率（GOFO 已于 2015 年停发）；上金所费率是唯一免费官方替代
+  - id: lbma_vault_gold_tonnes
+    name: 伦敦金库黄金存量（吨，月末）
+    source: LBMA London Vault Holdings xlsx
+    url: https://www.lbma.org.uk/prices-and-data/london-vault-data
+    frequency: monthly
+    lag: 约 1 个月（文件名随月份变化，需按页面链接发现）
+    tier: 2
+    rationale: 免费官方；本轮已下载并核实 2016 年 7 月以来完整序列
+  - id: comex_gold_stocks
+    name: COMEX 黄金库存（注册 + 合格，盎司）
+    source: CME Group Metals Depository Statistics（Gold_Stocks.xls）
+    url: https://www.cmegroup.com/delivery_reports/Gold_Stocks.xls
+    frequency: daily
+    lag: 1 个交易日
+    tier: 3
+    rationale: 本机 IP 被 CME 以“疑似抓取”封禁（403 JSON），CME 公开 FTP 的 delivery_reports 目录不含金属；暂无免费自动化来源，只能人工浏览器查看
+  - id: gold_efp
+    name: COMEX 黄金 EFP（期货对伦敦现货价差）
+    source: 无免费官方来源（CME DataMine 与经纪商报价为付费）
+    url: https://www.cmegroup.com/
+    frequency: daily
+    lag: 无
+    tier: 3
+    rationale: 核实结论：“无免费源”成立；可用 gc_term_spread 与 GLD 折溢价作为间接代理
+history: []

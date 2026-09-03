@@ -1,0 +1,153 @@
+id: inflation_risk_premium_repricing
+name: 通胀风险溢价重定价（盈亏平衡通胀、TIPS）
+status: active
+lifecycle_state: 退潮
+lifecycle_since: 2026-06-17
+lifecycle_rationale: 2026 年上半年的中东冲突能源冲击把 CPI 同比推至 5 月 4.25%（BLS CUUR0000SA0），10Y 盈亏平衡 5 月 4 日升至 2.50% 的年内高点。 但 6 月 17 日声明后通胀补偿回落：9 月 2 日 10Y 盈亏平衡 2.34%、5Y 2.35%、30Y 2.29%（财政部名义与实际曲线之差），6 月 24 日最低 2.18%。 7 月纪要："近端通胀补偿在 6 月会议后显著下降……长期通胀补偿保持稳定并与 2% 目标一致"，且归因于"投资者对委员会兑现物价稳定决心的认知"。 与此同时实际通胀仍高：CPI 7 月同比 3.36%、核心 2.48%；Warsh 引用 PCE 12 个月 3.7%、6 个月年化 4.1%，PCE 篮子中 54% 的项目涨幅超过 3%。 通胀高于盈亏平衡约 100bp 而市场不要求溢价——通胀风险溢价叙事在本周期已退潮，被"联储可信"叙事压制。
+pricing_degree: 已出清
+pricing_rationale: 盈亏平衡处于 2026 年区间（2.18–2.50%）的下半部；30Y 盈亏平衡 2.29% 低于 10Y，曲线上没有远期通胀溢价（5y5y 远期约 2.33%，由 5Y/10Y 盈亏平衡推算）。 6 月 SEP 中位数 PCE 通胀 2026 年 3.6%、2027 年 2.3%、2028 年 2.0%，市场与委员会都相信回落路径。TIPS 拍卖需求（7 月 23 日 10Y TIPS 投标倍数 2.30、间接 58.3%）正常， 没有抢购通胀保护的迹象。
+direction: bull
+horizon: 3-12m
+thesis: 若通胀在 3%+ 徘徊而联储不再加息（或加息后被迫停止），市场会把 100bp 的"通胀—盈亏平衡"缺口重新定价为通胀风险溢价，盈亏平衡与黄金同步上行；当前该缺口被联储可信度压住。
+logic_chain:
+- 通胀（CPI 3.4%、PCE 3.7%）持续高于盈亏平衡（2.3%）约 100bp，缺口靠"联储将兑现 2%"的信念维持
+- 触发：8–9 月 CPI 核心环比再度走高而联储不加息，或加息后因增长/政治原因停止
+- 市场要求补偿：盈亏平衡上行，尤其 5Y 与 5y5y 远期；TIPS 需求上升、实际收益率下行
+- 实际收益率下行 + 通胀补偿上行 = 黄金的最佳组合（体制 A 的标准形态）
+- 反向路径：加息落地、CPI 环比接近零（6 月 -0.35%、7 月 -0.01%，NSA）→ 盈亏平衡进一步下探，金价承压
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: 体制 B 下联储加息把通胀补偿压回 2.2–2.4%，实际利率上行压制黄金；体制 A 下通胀补偿上行、实际利率下行推升黄金。 当前 100bp 的通胀—盈亏平衡缺口是本叙事的"弹簧"，弹簧释放方向由联储 9–12 月的行动决定。
+evidence_indicators:
+- indicator_id: t10yie
+  expected_sign: up
+  weight: high
+  rationale: 叙事的直接度量；当前 2.34%
+- indicator_id: dfii10
+  expected_sign: down
+  weight: high
+  rationale: 通胀溢价重定价通常伴随实际利率下行（联储落后曲线）
+- indicator_id: gc_front
+  expected_sign: up
+  weight: medium
+  rationale: 盈亏平衡上行 + 实际利率下行的组合对金价最有利
+- indicator_id: gold_oil_ratio
+  expected_sign: down
+  weight: low
+  rationale: 能源冲击是本轮通胀来源，油价再涨会先压低金油比再推升通胀补偿
+pricing_proxies:
+- indicator_id: t10yie
+  note: 2.34%，2026 区间下半部
+- name: be_30y_treasury
+  url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_real_yield_curve&field_tdr_date_value=2026&page&_format=csv
+  note: 30Y 盈亏平衡 2.29%（30Y 名义 5.27 - 30Y 实际 2.98），低于 10Y，无远期溢价
+- name: tips_auction_demand
+  url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query
+  note: 7 月 23 日 10Y TIPS 投标倍数 2.30、间接 58.3%
+verification_signals:
+- id: v1
+  description: 10Y 盈亏平衡 20 日内上行超过 15bp
+  type: quant
+  rule:
+    indicator_id: t10yie
+    op: change_gt
+    value: 0.15
+    window_days: 20
+  next_check: 2026-09-30
+- id: v2
+  description: 30Y 盈亏平衡升破 2.50%（远期通胀溢价出现；需 proposed_indicator be_30y）
+  type: qual
+  next_check: 2026-10-15
+- id: v3
+  description: BLS 8 月 CPI（9 月 11 日前后发布）核心环比 ≥0.3% 且 9 月 16 日 FOMC 不加息
+  type: qual
+  next_check: 2026-09-16
+- id: v4
+  description: 10Y 盈亏平衡上行同时 10Y 实际收益率下行（20 日窗口）——体制 A 组合
+  type: quant
+  rule:
+    all_of:
+    - indicator_id: t10yie
+      op: change_gt
+      value: 0.1
+      window_days: 20
+    - indicator_id: dfii10
+      op: change_lt
+      value: -0.1
+      window_days: 20
+  next_check: 2026-10-15
+- id: v5
+  description: 9 月 SEP 上修 2027 年 PCE 中位数至 2.5% 以上（委员会承认通胀更持久）
+  type: qual
+  next_check: 2026-09-16
+falsification_conditions:
+- id: f1
+  version: 1
+  created: 2026-09-03
+  description: 到 2026-12-31，10Y 盈亏平衡低于 2.20%（跌破 6 月 24 日低点，通胀风险溢价在本周期彻底出清）
+  type: quant
+  rule:
+    indicator_id: t10yie
+    op: lt
+    value: 2.2
+  deadline: 2026-12-31
+- id: f2
+  version: 1
+  created: 2026-09-03
+  description: 到 2027-03-31，核心 PCE 同比回落至 2.5% 以下且 10Y 盈亏平衡低于 2.4%（通胀确实回落，无溢价可定价；定性，AI 依据 BEA 数据判定）
+  type: qual
+  deadline: 2027-03-31
+tensions:
+- narrative_id: fed_hawkish_repricing
+  note: 加息兑现直接压制通胀补偿
+- narrative_id: real_rate_anchor_regime_switch
+  note: 体制 B 下盈亏平衡稳定是主锚有效的前提
+news_queries:
+- breakeven inflation 10-year TIPS 2026
+- CPI August 2026 core services energy
+- inflation expectations unanchored Fed Warsh
+- 5y5y forward inflation swap
+counterargument: 纪要与 Warsh 均确认长期通胀预期"well anchored"，且市场用真金白银（盈亏平衡回落、TIPS 需求平淡）投票相信联储；CPI 6–7 月环比接近零，能源冲击正在消退； 委员会中有三票要求加息、四家储备银行申请上调贴现率，联储"落后曲线"的概率被市场定价为低。若加息落地，本叙事可能进一步走向"已证伪"。
+sources:
+- title: CPI-U All Items and Core, NSA and SA (BLS Public API)
+  url: https://api.bls.gov/publicAPI/v2/timeseries/data/
+  publisher: U.S. Bureau of Labor Statistics
+  accessed: 2026-09-03
+  type: primary
+- title: Daily Treasury Par Real Yield Curve Rates, 2026
+  url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_real_yield_curve&field_tdr_date_value=2026&page&_format=csv
+  publisher: U.S. Department of the Treasury
+  accessed: 2026-09-03
+  type: primary
+- title: Daily Treasury Par Yield Curve Rates, 2026
+  url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv
+  publisher: U.S. Department of the Treasury
+  accessed: 2026-09-03
+  type: primary
+- title: Minutes of the Federal Open Market Committee, July 28-29, 2026 (inflation compensation)
+  url: https://www.federalreserve.gov/monetarypolicy/fomcminutes20260729.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Summary of Economic Projections, June 17, 2026
+  url: https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Chairman Kevin Warsh, "In Our Time", Jackson Hole, August 28, 2026 (inflation assessment)
+  url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+  publisher: Federal Reserve
+  accessed: 2026-09-03
+  type: primary
+- title: Treasury Securities Auctions Data (10Y TIPS, July 23, 2026)
+  url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query?sort=-auction_date
+  publisher: U.S. Department of the Treasury, Fiscal Data
+  accessed: 2026-09-03
+  type: primary
+history:
+- date: 2026-09-03
+  event: created
+  by: research_stage0
+  note: 第 0 阶段调研建卡（cluster1），初始状态 退潮 / 定价 已出清
+cluster: cluster1

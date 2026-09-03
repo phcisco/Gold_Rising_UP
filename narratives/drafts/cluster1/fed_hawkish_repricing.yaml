@@ -29,10 +29,14 @@ regime_dependency:
     体制 B 下加息定价压制金价（当前）。若联储在通胀 3%+ 时拒绝跟随市场加息（体制 A 迹象），则"市场定价加息而联储不动"会被解读为落后曲线，
     盈亏平衡与金价反而上行。因此本叙事对金价的方向取决于联储是否兑现市场定价。
 evidence_indicators:
-  - indicator_id: ff_path
+  - indicator_id: ff_next_change_bp
     expected_sign: up
     weight: high
-    rationale: 联邦基金期货隐含路径是本叙事的直接度量；ZQU26 3.70% 对比 EFFR 3.63% 隐含 9 月加息概率约 60%（会议 9 月 16 日，新利率覆盖当月 14 天）
+    rationale: 下次 FOMC 隐含变动是本叙事的直接度量；ZQU26 3.70% 对比 EFFR 3.63% 隐含 9 月加息约 +15bp（概率约 60%，会议 9 月 16 日、新利率覆盖当月 14 天）
+  - indicator_id: ff_cum_change_bp
+    expected_sign: up
+    weight: high
+    rationale: 未来 12 个月累计隐含变动约 +60bp（ZQU27 4.24% 对 EFFR 3.63%），即约 2.4 次加息
   - indicator_id: dgs2
     expected_sign: up
     weight: high
@@ -69,9 +73,10 @@ verification_signals:
     rule: {indicator_id: dgs2, op: gt, value: 4.5, window_days: 30}
     next_check: 2026-10-15
   - id: v3
-    description: Polymarket "Fed rate hike in 2026" 赔率升至 85% 以上
-    type: qual
-    next_check: 2026-09-16
+    description: 未来 12 个月累计隐含变动升破 +75bp（定价第三次加息）；Polymarket "Fed rate hike in 2026" 同步升至 85% 以上
+    type: quant
+    rule: {indicator_id: ff_cum_change_bp, op: gt, value: 75, window_days: 30}
+    next_check: 2026-10-15
   - id: v4
     description: 有效联邦基金利率升至 3.85% 以上（加息实际落地）
     type: quant
@@ -85,9 +90,12 @@ falsification_conditions:
   - id: f1
     version: 1
     created: 2026-09-03
-    description: 到 2026-12-31，2Y 收益率回落至 3.60% 以下（低于当前 EFFR，市场重新定价降息）
+    description: 到 2026-12-31，2Y 收益率回落至 3.60% 以下且未来 12 个月累计隐含变动转为负值（市场重新定价降息）
     type: quant
-    rule: {indicator_id: dgs2, op: lt, value: 3.6}
+    rule:
+      all_of:
+        - {indicator_id: dgs2, op: lt, value: 3.6}
+        - {indicator_id: ff_cum_change_bp, op: lt, value: 0}
     deadline: 2026-12-31
   - id: f2
     version: 1

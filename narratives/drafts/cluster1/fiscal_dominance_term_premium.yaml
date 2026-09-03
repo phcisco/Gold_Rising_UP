@@ -1,0 +1,164 @@
+id: fiscal_dominance_term_premium
+name: 财政贬值与财政主导（赤字、利息支出、拍卖需求、期限溢价）
+status: active
+lifecycle_state: 边际
+lifecycle_since: 2026-06-17
+lifecycle_rationale: >-
+  结构性事实全部成立但当前不是边际定价因素。财政部数据：公共债务总额 40.11 万亿美元、公众持有 32.42 万亿（Debt to the Penny，2026-09-01）；
+  FY2026 前 10 个月（2025-10 至 2026-07）赤字 1.799 万亿美元，已超过 FY2025 全年 1.775 万亿（MTS 表 1，7 月）；同期公共债务利息支出 1.170 万亿
+  （公众持有部分 0.900 万亿 + 政府账户 0.270 万亿），可流通债务平均利率 3.443%（7 月）并逐月上升（5 月 3.386%、6 月 3.411%）。
+  30Y 收益率 5.27%（9 月 2 日；8 月 17 日 5.31% 为年内高点）。但纽约联储 ACM 模型 10Y 期限溢价 0.78%（9 月 1 日）年初至今持平，2026 年 10Y 收益率上行
+  几乎全部来自风险中性利率；拍卖需求正常：8 月 12 日 10Y 投标倍数 2.53、间接投标 61.0%；8 月 13 日 30Y 投标倍数 2.39、间接 53.1%、得标 5.216%；
+  8 月 19 日 20Y 投标倍数 2.53。金价在赤字创纪录的同时下跌 16%，说明市场当前不按"财政贬值"给黄金定价。
+pricing_degree: 部分
+pricing_rationale: >-
+  ACM 10Y 期限溢价 0.78% 处于 2010 年以来第 80 百分位，说明相对上一轮低利率时代，市场已经嵌入了一部分财政溢价；但 2026 年内溢价没有随赤字扩张而上升
+  （区间 0.46%–0.89%），且 2s30s 熊平至 0.88。CFTC 与 GLD 的多头并非因财政叙事而建（金价与实际利率同步反向）。因此财政叙事只被"结构性"定价，未被"周期性"定价。
+direction: bull
+horizon: years
+thesis: 赤字与利息支出的复利结构使美国财政对利率高度敏感，一旦联储转向被动（不再对通胀充分加息或重启资产购买），期限溢价与通胀补偿上行、美元贬值，黄金作为财政贬值对冲重新获得溢价。
+logic_chain:
+  - FY2026 前 10 个月赤字 1.80 万亿、利息支出 1.17 万亿，平均利率 3.44% 且仍低于当前 2Y–30Y 市场收益率（4.39%–5.27%），再融资持续抬升利息负担
+  - 利息支出挤占预算，政治上对高利率的容忍度下降，联储加息的财政成本上升
+  - 若联储为财政让路（体制 A），期限溢价与通胀补偿上行、实际利率被压低
+  - 黄金作为不依赖主权信用的储备资产被重新定价（与簇二的央行购金相互强化）
+  - 在体制 B（当前），同样的财政担忧表现为更高的实际收益率，反而压制金价
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    这是 8/31 教训的核心案例：同样的赤字数字在体制 B 下通过更高实际利率压制黄金，在体制 A 下通过期限溢价与贬值预期推升黄金。
+    区分两者的实时读数是 ACM 分解——期限溢价上行且盈亏平衡上行为 A，风险中性利率上行为 B。
+evidence_indicators:
+  - indicator_id: curve_2s30s
+    expected_sign: up
+    weight: high
+    rationale: 财政主导的曲线形态是牛陡或熊陡；当前熊平 0.88 与叙事相悖
+  - indicator_id: dgs30
+    expected_sign: up
+    weight: medium
+    rationale: 30Y 5.27% 接近年内高点 5.31%，长端承压
+  - indicator_id: t10yie
+    expected_sign: up
+    weight: medium
+    rationale: 财政贬值预期应先体现在通胀补偿；当前 2.34% 未见
+  - indicator_id: dxy
+    expected_sign: down
+    weight: medium
+    rationale: 贬值叙事需要美元走弱；当前 99.4
+  - indicator_id: dfii10
+    expected_sign: down
+    weight: medium
+    rationale: 体制 A 下实际利率被压低；当前 2.45% 在年内高位
+pricing_proxies:
+  - name: acm_term_premium_10y
+    url: https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls
+    note: 0.78%（9 月 1 日），2010 年以来第 80 百分位，2026 年内持平
+  - name: auction_indirect_share_30y
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query
+    note: 8 月 13 日 30Y 间接投标 53.1%、投标倍数 2.39，需求正常
+  - indicator_id: cot_mm_net_pctl
+    note: 多头拥挤度 78.5 百分位，但成因是利率而非财政
+verification_signals:
+  - id: v1
+    description: ACM 10Y 期限溢价升破 1.00%（超过 2025-05-21 的 0.895% 高点），且同期 10Y 盈亏平衡上行
+    type: qual
+    next_check: 2026-10-15
+  - id: v2
+    description: 2s30s 走陡超过 1.20 个百分点而 10Y 实际收益率下行（牛陡：联储让路、长端要溢价）
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: curve_2s30s, op: gt, value: 1.2}
+        - {indicator_id: dfii10, op: change_lt, value: 0, window_days: 20}
+    next_check: 2026-10-31
+  - id: v3
+    description: 30Y 或 20Y 拍卖间接投标份额低于 50% 且尾部大于 2bp（拍卖需求转弱）
+    type: qual
+    next_check: 2026-09-17
+  - id: v4
+    description: MTS 9 月报表（10 月中旬发布）显示 FY2026 全年利息支出超过 1.40 万亿、赤字超过 2.0 万亿
+    type: qual
+    next_check: 2026-10-20
+  - id: v5
+    description: 11 月再融资声明上调附息债拍卖规模或明确以短债为主融资（财政部主动缩短久期）
+    type: qual
+    next_check: 2026-11-04
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2027-03-31，2s30s 仍低于 0.60 个百分点且 10Y 盈亏平衡低于 2.4%——长端未加入财政溢价，叙事在本周期内不成立
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: curve_2s30s, op: lt, value: 0.6}
+        - {indicator_id: t10yie, op: lt, value: 2.4}
+    deadline: 2027-03-31
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: ACM 10Y 期限溢价到 2027-03-31 仍低于 0.5%（需 proposed_indicator term_premium_10y 上线后由程序判定；上线前 AI 判定）
+    type: qual
+    deadline: 2027-03-31
+  - id: f3
+    version: 1
+    created: 2026-09-03
+    description: FY2027 赤字（2027 年 10 月 MTS）低于 1.5 万亿美元且利息支出同比下降（定性，财政路径改善）
+    type: qual
+    deadline: 2027-10-31
+tensions:
+  - narrative_id: real_rate_anchor_regime_switch
+    note: 体制 B 下财政担忧以更高实际利率表达，压制金价，与本叙事方向相反
+  - narrative_id: fed_hawkish_repricing
+    note: 加息定价兑现意味着联储未为财政让路
+news_queries:
+  - Treasury quarterly refunding November 2026 coupon sizes
+  - 30-year Treasury auction tail indirect bidders
+  - US interest expense fiscal 2026 record
+  - term premium Treasury fiscal deficit gold
+counterargument: >-
+  2026 年收益率上行的 ACM 分解几乎全部是风险中性利率（预期政策路径），期限溢价未动；拍卖投标倍数与间接投标份额稳定；短债占可流通债务 22.2%（MSPD 7 月）并未失控；
+  金价在赤字创纪录的同时下跌 16%。市场正在说：只要联储可信，财政问题由更高的实际利率而不是黄金来定价。
+sources:
+  - title: Debt to the Penny (record_date 2026-09-01)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny?sort=-record_date&page%5Bsize%5D=3
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: Monthly Treasury Statement, Table 1 (July 2026)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1?filter=record_date:eq:2026-07-31
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: Interest Expense on the Public Debt Outstanding (July 2026)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/interest_expense?sort=-record_date
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: Average Interest Rates on U.S. Treasury Securities (July 2026)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates?sort=-record_date
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: Treasury Securities Auctions Data (Aug 2026 10Y/20Y/30Y)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/od/auctions_query?sort=-auction_date
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: Monthly Statement of the Public Debt, Table 1 (July 2026)
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/debt/mspd/mspd_table_1?sort=-record_date
+    publisher: U.S. Department of the Treasury, Fiscal Data
+    accessed: 2026-09-03
+    type: primary
+  - title: ACM Treasury Term Premia (Excel)
+    url: https://www.newyorkfed.org/medialibrary/media/research/data_indicators/ACMTermPremium.xls
+    publisher: Federal Reserve Bank of New York
+    accessed: 2026-09-03
+    type: primary
+  - title: Daily Treasury Par Yield Curve Rates, 2026
+    url: https://home.treasury.gov/resource-center/data-chart-center/interest-rates/daily-treasury-rates.csv/2026/all?type=daily_treasury_yield_curve&field_tdr_date_value=2026&page&_format=csv
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+history: []

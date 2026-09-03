@@ -1,0 +1,133 @@
+id: tariff_inflation
+name: 关税通胀：关税推升美国通胀并抬高黄金的通胀对冲需求
+status: archived
+lifecycle_state: 归档
+lifecycle_since: 2026-09-03
+lifecycle_rationale: >-
+  官方数据显示关税的通胀冲击既小又在消退：BLS 核心商品 CPI 同比在 2025 年 12 月见顶于 1.41%，2026 年 7 月回落至 0.78%，
+  新车价格同比 0.54%；2026 年的通胀上行全部来自能源（能源分项 +14.7%），联储 6 月 SEP 上修通胀预测与 7 月声明都把原因归于
+  “包括能源在内的供给冲击”，Warsh 8 月 28 日讲话全篇未提关税。关税收入本身也在收缩：财政部 MTS 关税月收入由 2025 年 10 月峰值
+  331 亿美元降至 2026 年 7 月 248 亿美元（FY2026 前十个月累计 2,692 亿美元，仍比上年同期 1,417 亿高 90%）。
+  最高法院 2026 年 1 月 26 日判决 Learning Resources, Inc. v. Trump（No. 24-1287，607 U.S. 229）；本次未能取回判决全文，
+  但判决后关税月收入的台阶式下降与之时间吻合。作为黄金叙事它已失去证据支撑，归档而非“已证伪”，因为关税并未消失、仍可能以其他法律依据重启。
+pricing_degree: 已出清
+pricing_rationale: >-
+  10 年盈亏平衡 2.34%，与 2025 年关税宣布前后水平相当，市场不再为关税通胀定价；黄金 2025 年 4 月的关税恐慌溢价早已被
+  更大的能源与联储因素覆盖。
+direction: mixed
+horizon: 3-12m
+thesis: 关税会通过进口商品价格推升核心通胀并强化黄金的通胀对冲需求——2026 年核心商品通胀不到 1% 且回落，叙事在数据上失效。
+logic_chain:
+  - 关税抬高进口商品成本，传导至核心商品 CPI
+  - 通胀预期上行，黄金作为通胀对冲获得配置
+  - 实证：核心商品 CPI 峰值仅 1.41%，2026 年 7 月 0.78%；进口价格（税前）上涨源自美元与外国通胀而非关税
+  - 联储与市场都把通胀归因于能源；关税收入自 2026 年初回落
+  - 结论：机制的第一环（传导）幅度太小，叙事对黄金无边际信息
+regime_dependency:
+  passive_fed: bull
+  credible_fed: bear
+  note: >-
+    若关税真的推高核心通胀，体制 A 下黄金受益于通胀预期上行，体制 B 下联储加息使实际利率上升而黄金承压——与能源滞胀叙事同构。
+    但传导幅度不足使两种体制下的效应都可忽略。
+evidence_indicators:
+  - indicator_id: t10yie
+    expected_sign: up
+    weight: medium
+    rationale: 关税通胀若被定价应体现为盈亏平衡上行
+  - indicator_id: dxy
+    expected_sign: up
+    weight: low
+    rationale: 关税历史上推升美元，对黄金形成反向力
+pricing_proxies:
+  - name: customs_duties_monthly
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_4?filter=classification_desc:eq:Customs%20Duties&sort=-record_date&page%5Bsize%5D=24
+    note: 关税实际征收规模，2026 年 7 月 248 亿美元，峰值 2025 年 10 月 331 亿
+  - name: core_goods_cpi_yoy
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/CUSR0000SACL1E
+    note: 传导的直接度量，2026 年 7 月 0.78%
+verification_signals:
+  - id: v1
+    description: 重新激活条件：核心商品 CPI 同比升破 2.5%（proposed 指标 core_goods_cpi_yoy）
+    type: quant
+    rule: {indicator_id: core_goods_cpi_yoy, op: gt, value: 2.5}
+    next_check: 2026-10-14
+  - id: v2
+    description: 重新激活条件：关税月收入重回 300 亿美元以上（新一轮广泛关税生效；proposed 指标 customs_duties_monthly，单位美元）
+    type: quant
+    rule: {indicator_id: customs_duties_monthly, op: gt, value: 30000000000}
+    next_check: 2026-10-15
+  - id: v3
+    description: 重新激活条件：FOMC 声明或 SEP 把通胀上行明确归因于关税
+    type: qual
+    next_check: 2026-09-16
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 已命中：自 2025 年关税实施以来核心商品 CPI 同比从未超过 2.0%（峰值 1.41%，2025-12），且 2026 年 7 月回落至 0.78%——传导幅度不足以构成黄金叙事
+    type: qual
+    deadline: 2026-09-03
+tensions:
+  - narrative_id: energy_stagflation
+    note: 同一“供给侧通胀”框架，但 2026 年的通胀全部来自能源；把关税与能源混为一谈会误判联储反应
+news_queries:
+  - tariff inflation core goods CPI pass-through
+  - Supreme Court IEEPA tariffs Learning Resources refund
+  - Section 232 tariffs 2026
+  - customs duties receipts Monthly Treasury Statement
+counterargument: >-
+  关税并非没有效果：核心商品通胀从 2024 年的约零升至 1.4%，关税年收入约 3,000 亿美元相当于一次财政紧缩，且行业关税（232 条款等）仍在；
+  若政府以其他授权重启广泛关税，或者进口价格（不含燃料，7 月同比 +4.46%）持续走高并与关税叠加，核心商品通胀可能再起。
+  但这仍是二阶因素，远小于能源与联储路径。
+sources:
+  - title: BLS Public API, CUSR0000SACL1E 核心商品、CUSR0000SETA01 新车、EIUIR / EIUIREXFUELS 进口价格（至 2026 年 7 月）
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/
+    publisher: U.S. Bureau of Labor Statistics
+    accessed: 2026-09-03
+    type: primary
+  - title: Monthly Treasury Statement Table 4 – Customs Duties（Fiscal Data API，至 2026-07-31）
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_4?filter=classification_desc:eq:Customs%20Duties&sort=-record_date&page%5Bsize%5D=24
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+  - title: Supreme Court Slip Opinions, October Term 2025（No. 24-1287 Learning Resources, Inc. v. Trump，2026-01-26，607 U.S. 229；仅取得清单，未取得全文）
+    url: https://www.supremecourt.gov/opinions/slipopinion/25
+    publisher: Supreme Court of the United States
+    accessed: 2026-09-03
+    type: primary
+  - title: Summary of Economic Projections, June 17, 2026
+    url: https://www.federalreserve.gov/monetarypolicy/fomcprojtabl20260617.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: FOMC Statement, July 29, 2026
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+proposed_indicators:
+  - id: core_goods_cpi_yoy
+    name: 核心商品 CPI 同比（BLS CUSR0000SACL1E）
+    source: U.S. Bureau of Labor Statistics
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/CUSR0000SACL1E
+    frequency: monthly
+    lag: 约 2 周
+    tier: 3
+    rationale: 关税传导的直接度量
+  - id: customs_duties_monthly
+    name: 关税月收入（MTS 表 4）
+    source: U.S. Department of the Treasury, Fiscal Data API
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_4?filter=classification_desc:eq:Customs%20Duties&sort=-record_date&page%5Bsize%5D=24
+    frequency: monthly
+    lag: 约 2 周
+    tier: 3
+    rationale: 关税政策实际强度的硬数据
+  - id: import_price_exfuel_yoy
+    name: 进口价格指数（不含燃料）同比
+    source: U.S. Bureau of Labor Statistics
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/EIUIREXFUELS
+    frequency: monthly
+    lag: 约 2 周
+    tier: 3
+    rationale: 区分美元与外国通胀导致的进口成本上升与关税
+history: []

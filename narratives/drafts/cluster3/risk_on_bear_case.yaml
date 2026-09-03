@@ -1,0 +1,216 @@
+id: risk_on_bear_case
+name: 看空叙事：风险偏好回升、信用利差收窄与 AI 生产率红利压制黄金
+status: active
+lifecycle_state: 退潮
+lifecycle_since: 2026-08-03
+lifecycle_rationale: >-
+  这条叙事在 2026 年 3 月至 7 月是主导：黄金自 1 月 29 日高点回撤 25%，Q2 全球黄金 ETF 净流出 45 吨、6 月单月流出 74 吨（WGC），
+  北美年内仍为净流出；同期标普 500 年内 +12%（8 月 13 日创新高 7,799），VIX 15.2（10 年 35 分位、1 年 12 分位），
+  HYG/LQD 比值 0.751 为两年最高（信用利差收窄），10 年实际收益率 2.45%。Warsh 8 月 28 日称信用利差“接近历史区间低端”、
+  设备与无形资产投资四季度同比约 9%、标普利润增长超 20%。但 8 月黄金在这些条件全部维持的情况下反弹 10.9%，
+  叙事失去对价格的控制，故判为退潮；其宏观输入并未消失，是需要每日复核的张力。
+  两条支撑腿已被官方数据否定：财政修复——FY2026 前十个月赤字 1.799 万亿美元已超过 FY2025 全年 1.775 万亿（财政部 MTS，7 月）；
+  AI 生产率红利——BLS 非农生产率 2026 年 Q1 0.8%、Q2 1.4%，远低于 2025 年 Q2 至 Q3 的 4.2% 与 5.2%。
+pricing_degree: 部分
+pricing_rationale: >-
+  看空押注已部分出清：CFTC 管理基金净多由 6 月初 105,863 手回升至 8 月 25 日 144,747 手（5 年 79 分位，高于 1 月高点时的 137,444 手），
+  7 月全球 ETF 转为净流入 30 亿美元（欧洲主导）。但北美 ETF 年内仍净流出、Q2 投资需求（不含场外）同比 -46%，
+  说明部分美国机构仍按看空叙事配置。
+direction: bear
+horizon: 3-12m
+thesis: 增长有韧性、信用宽松、股市新高与实际利率 2.4% 以上的组合抬高黄金机会成本并抽走避险需求；但其“财政修复”与“AI 生产率”两条腿在硬数据上不成立，真正起作用的只有实际利率与风险偏好。
+logic_chain:
+  - AI 资本开支拉动投资与利润，增长预期上修
+  - 风险资产上涨、信用利差收窄、波动率走低，避险需求下降
+  - 联储因通胀高于目标维持或提高利率，实际收益率上行，黄金机会成本上升
+  - 若财政赤字收窄，主权信用溢价叙事失去依据，黄金失去另一根支柱
+  - 结果：ETF 流出、投机多头减仓、金价回落
+regime_dependency:
+  passive_fed: mixed
+  credible_fed: bear
+  note: >-
+    体制 B 是这条叙事的自然栖息地：实际利率上行与风险偏好回升叠加。体制 A 下风险偏好回升与货币贬值同时抬升股票与黄金
+    （2024 至 2025 年形态），叙事的机会成本腿失效，只剩“避险需求下降”一腿，方向不明。
+evidence_indicators:
+  - indicator_id: dfii10
+    expected_sign: up
+    weight: high
+    rationale: 机会成本腿的直接度量，2.45% 为年内高位区
+  - indicator_id: gld_tonnes
+    expected_sign: down
+    weight: high
+    rationale: 美国机构按看空叙事配置的最直接证据
+  - indicator_id: cot_mm_net_pctl
+    expected_sign: down
+    weight: medium
+    rationale: 投机多头减仓
+  - indicator_id: vix
+    expected_sign: down
+    weight: medium
+    rationale: 风险偏好回升的度量；当前 15.2 已处低位
+  - indicator_id: hy_oas
+    expected_sign: down
+    weight: medium
+    rationale: 信用利差收窄；FRED 不可用时用 HYG/LQD 比值代理（proposed）
+  - indicator_id: ma200_dist
+    expected_sign: down
+    weight: low
+    rationale: 黄金失守 200 日均线（当前 4,518.6，价格低于其 0.9%）是技术面确认
+pricing_proxies:
+  - indicator_id: gld_tonnes
+    note: 北美 ETF 持仓，看空押注的存量
+  - indicator_id: cot_mm_net_pctl
+    note: 5 年 79 分位，说明看空押注已大部分出清
+  - name: wgc_monthly_etf_flows
+    url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows/2026/08
+    note: 分地区流向，北美年内净流出
+  - name: hyg_lqd_ratio
+    url: https://query1.finance.yahoo.com/v8/finance/chart/HYG?range=2y&interval=1d
+    note: 两年新高 0.751，信用市场无风险定价
+verification_signals:
+  - id: v1
+    description: GLD 持仓 30 日内下降超过 3%（看空叙事重新获得资金流支持）
+    type: quant
+    rule: {indicator_id: gld_tonnes, op: change_lt, value: -0.03, window_days: 30}
+    next_check: 2026-09-30
+  - id: v2
+    description: 10 年实际收益率升破 2.60%（创周期新高，机会成本腿加强）
+    type: quant
+    rule: {indicator_id: dfii10, op: gt, value: 2.60}
+    next_check: 2026-09-30
+  - id: v3
+    description: BLS 非农生产率连续两个季度年化增速不低于 3%（AI 红利在硬数据上出现；Q3 数据 11 月初发布）
+    type: qual
+    next_check: 2026-11-06
+  - id: v4
+    description: 财政部 MTS 显示 FY2027 前两个月赤字同比收窄（财政修复腿复活；proposed 指标 deficit_fytd_yoy）
+    type: qual
+    next_check: 2026-12-12
+  - id: v5
+    description: 黄金 20 日与 60 日动量同时转负且 VIX 低于 18
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: mom_20, op: lt, value: 0}
+        - {indicator_id: mom_60, op: lt, value: 0}
+        - {indicator_id: vix, op: lt, value: 18}
+    next_check: 2026-09-30
+falsification_conditions:
+  - id: f1
+    version: 1
+    created: 2026-09-03
+    description: 到 2027-03-31，黄金收盘创历史新高（高于 5,318，GC 主力口径）且当日 VIX 低于 20——黄金在风险偏好完好时创新高，看空叙事证伪
+    type: quant
+    rule:
+      all_of:
+        - {indicator_id: gc_front, op: gt, value: 5318}
+        - {indicator_id: vix, op: lt, value: 20}
+    deadline: 2027-03-31
+  - id: f2
+    version: 1
+    created: 2026-09-03
+    description: 到 2026-12-31，10 年实际收益率跌破 1.8%——机会成本腿消失，叙事失去主要机制
+    type: quant
+    rule: {indicator_id: dfii10, op: lt, value: 1.8}
+    deadline: 2026-12-31
+  - id: f3
+    version: 1
+    created: 2026-09-03
+    description: 财政修复腿：FY2026 全年赤字（10 月中旬 MTS 公布）高于 FY2025 的 1.775 万亿美元，则该腿正式证伪（前十个月已达 1.799 万亿，几乎必然命中）
+    type: qual
+    deadline: 2026-10-31
+tensions:
+  - narrative_id: energy_stagflation
+    note: 通胀高于目标是本叙事加息腿的来源，但若冲击扩散为滞胀则增长腿被否定
+  - narrative_id: geopolitical_war_premium
+    note: 冲突升级会打断风险偏好腿
+  - narrative_id: fiscal_dominance
+    note: 簇一叙事（id 待对齐）：赤字扩大直接否定财政修复腿
+news_queries:
+  - gold ETF outflows risk appetite
+  - credit spreads record tight high yield
+  - AI productivity boom Fed Warsh capex
+  - S&P 500 record high gold price
+  - Monthly Treasury Statement deficit customs receipts
+counterargument: >-
+  叙事最强的部分是实际利率与风险偏好，其余两腿已被官方数据否定：FY2026 前十个月赤字 1.799 万亿美元已超 FY2025 全年，
+  关税收入同比 +90% 也没能弥补；生产率 Q1 0.8%、Q2 1.4%，没有可测量的 AI 红利。信用利差近低端、VIX 低位、
+  Warsh 自称“很难把广义金融条件描述为限制性”——这是晚周期而非早周期特征，历史上此类组合之后黄金并不必然下跌，
+  8 月黄金 +10.9% 就发生在这一组合完好无损的情况下。
+sources:
+  - title: Keynote remarks by Chairman Warsh, Jackson Hole, August 28, 2026（信用利差、资本开支、利润与金融条件的表述）
+    url: https://www.federalreserve.gov/newsevents/speech/warsh20260828a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: FOMC Statement, July 29, 2026（“Productivity growth and capital investment are strong”）
+    url: https://www.federalreserve.gov/newsevents/pressreleases/monetary20260729a.htm
+    publisher: Federal Reserve
+    accessed: 2026-09-03
+    type: primary
+  - title: BLS Public API, PRS85006092 非农生产率（至 2026 Q2）与 LNS14000000 失业率（至 2026 年 7 月）
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/
+    publisher: U.S. Bureau of Labor Statistics
+    accessed: 2026-09-03
+    type: primary
+  - title: Monthly Treasury Statement Table 1（Fiscal Data API，record_date 2026-07-31）
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1?sort=-record_date&page%5Bsize%5D=30
+    publisher: U.S. Department of the Treasury
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold Demand Trends Q2 2026 – Investment
+    url: https://www.gold.org/goldhub/research/gold-demand-trends/gold-demand-trends-q2-2026/investment
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: Gold ETF Flows, July 2026（发布 2026-08-06）
+    url: https://www.gold.org/goldhub/research/gold-etfs-holdings-and-flows/2026/08
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: primary
+  - title: CFTC Disaggregated Futures Only, COMEX Gold 088691（至 2026-08-25）
+    url: https://publicreporting.cftc.gov/resource/72hh-3qpy.json?$where=cftc_contract_market_code='088691'&$order=report_date_as_yyyy_mm_dd%20DESC&$limit=10
+    publisher: U.S. Commodity Futures Trading Commission
+    accessed: 2026-09-03
+    type: primary
+  - title: Cboe VIX History CSV（至 2026-09-02）
+    url: https://cdn.cboe.com/api/global/us_indices/daily_prices/VIX_History.csv
+    publisher: Cboe
+    accessed: 2026-09-03
+    type: primary
+  - title: Yahoo Finance chart API, ^GSPC / HYG / LQD / GLD（日频至 2026-09-02）
+    url: https://query1.finance.yahoo.com/v8/finance/chart/HYG?range=2y&interval=1d
+    publisher: Yahoo Finance
+    accessed: 2026-09-03
+    type: secondary
+  - title: What's a bear case for gold – A historical perspective（2025-07-10）
+    url: https://www.gold.org/goldhub/research/whats-a-bear-case-for-gold
+    publisher: World Gold Council
+    accessed: 2026-09-03
+    type: secondary
+proposed_indicators:
+  - id: hyg_lqd_ratio
+    name: HYG/LQD 价格比（信用利差方向代理）
+    source: 派生自 Yahoo HYG 与 LQD
+    url: https://query1.finance.yahoo.com/v8/finance/chart/HYG?range=2y&interval=1d
+    frequency: daily
+    lag: 0
+    tier: 2
+    rationale: FRED 高收益 OAS 不可用，需一个日频信用风险代理
+  - id: deficit_fytd_yoy
+    name: 财政年度累计赤字同比（MTS 表 1）
+    source: U.S. Department of the Treasury, Fiscal Data API
+    url: https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v1/accounting/mts/mts_table_1?sort=-record_date&page%5Bsize%5D=30
+    frequency: monthly
+    lag: 约 2 周
+    tier: 2
+    rationale: 直接判定“财政修复”腿
+  - id: productivity_qoq_ann
+    name: 非农生产率季环比年化（BLS PRS85006092）
+    source: U.S. Bureau of Labor Statistics
+    url: https://api.bls.gov/publicAPI/v1/timeseries/data/PRS85006092
+    frequency: quarterly
+    lag: 约 5 周
+    tier: 3
+    rationale: 直接判定“AI 生产率红利”腿
+history: []
