@@ -338,7 +338,7 @@ Gold_Rising_UP/
 
 ## 10. 需要你准备的事项
 
-- GitHub 仓库与 Pages 开通（公开链接，页面加 noindex）。
+- ~~GitHub 仓库与 Pages 开通~~ 已完成（2026-09-03）：仓库 https://github.com/phcisco/Gold_Rising_UP ，站点 https://phcisco.github.io/Gold_Rising_UP/ ，Pages 来源为 GitHub Actions，提交身份为 phcisco 的 noreply 邮箱。
 - 在本机 `.env` 中配置 FRED API key、Tushare token、飞书群 webhook。我不读取该文件，只提供 `.env.example`。
 - Mac 在工作日早上 07:30 前后保持开机，或接受当日跳过。
 

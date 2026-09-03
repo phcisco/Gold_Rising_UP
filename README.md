@@ -1,5 +1,7 @@
 # 黄金大作手仪表盘
 
+站点：https://phcisco.github.io/Gold_Rising_UP/ （公开链接，已设 noindex，仅供小范围参考）
+
 每日更新的黄金跨资产行情与叙事仪表盘。规则程序负责事实，AI 分析师负责判断，读者只读参考。
 
 - 设计文档：[docs/design/dashboard-design.md](docs/design/dashboard-design.md)
