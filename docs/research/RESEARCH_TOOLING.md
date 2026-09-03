@@ -25,3 +25,10 @@ WebFetch 与 WebSearch 在本环境会因权限判定超时而挂起，**禁止�
 - BIS 巴塞尔框架：`https://www.bis.org/basel_framework/`；中国央行储备（外汇局）：`https://www.safe.gov.cn/`；上金所：`https://www.sge.com.cn/`
 
 进度汇报：每完成一条叙事或每 10 分钟，向 `docs/research/drafts/<cluster>_progress.md` 追加一行 `HH:MM 状态`，让主会话能监控。
+
+## 2026-09-04 补充：实测可用的搜索与绕行方式
+- DuckDuckGo 与 Bing 对本机 curl 均不可用（人机验证或结果不可解析）；**Brave 搜索可用**：`curl -sL -m 30 -A "Mozilla/5.0" "https://search.brave.com/search?q=<urlencoded>"` 再用正则抽链接。学术文献用 Semantic Scholar 与 OpenAlex 的公开 API 搜索更稳。
+- Wayback 的 availability API 易 429，直连 `https://web.archive.org/web/2026id_/<原url>` 更稳（`id_` 取原始内容）。imf.org、tcd.ie、cmegroup.com 等对 curl 拒绝的站点多可经 Wayback 取得。
+- 美联储的讲话与新闻稿有 JSON 索引：`https://www.federalreserve.gov/json/ne-speeches.json`、`ne-press.json`、`ne-testimony.json`。
+- 财政部 Fiscal Data API 的方括号参数必须 URL 编码（`page%5Bsize%5D`）。
+- 世界黄金协会的方法 PDF 与数据下载在免费注册门后，页面文本可读。
