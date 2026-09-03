@@ -71,4 +71,16 @@ def compute_derived(indicator: Indicator, inputs: Mapping[str, pd.Series]) -> pd
         a = df[ids[0]].pct_change(window) * 100.0
         b = df[ids[1]].pct_change(window) * 100.0
         return (a - b).dropna()
+    if op == "yoy":
+        periods = int(params.get("periods", 12))
+        return ((s / s.shift(periods) - 1.0) * 100.0).dropna()
+    if op == "rolling_corr":
+        df = _align(inputs, ids)
+        ra = df[ids[0]].pct_change()
+        rb = df[ids[1]].pct_change()
+        return ra.rolling(window, min_periods=window).corr(rb).dropna()
+    if op == "realized_vol":
+        logret = pd.Series(np.log((s / s.shift(1)).to_numpy(dtype=float)), index=s.index)
+        per_year = float(params.get("per_year", 252))
+        return (logret.rolling(window, min_periods=window).std(ddof=1) * np.sqrt(per_year) * 100.0).dropna()
     raise ValueError(f"{indicator.id}: 未知派生运算 {op}")

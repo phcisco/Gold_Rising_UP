@@ -10,6 +10,14 @@ import pandas as pd
 
 HORIZONS: dict[str, int] = {"1d": 1, "5d": 5, "20d": 20, "60d": 60, "250d": 250}
 WEEKLY_HORIZONS: dict[str, int] = {"1d": 1, "5d": 1, "20d": 4, "60d": 13, "250d": 52}
+MONTHLY_HORIZONS: dict[str, int] = {"1d": 1, "5d": 1, "20d": 1, "60d": 3, "250d": 12}
+QUARTERLY_HORIZONS: dict[str, int] = {"1d": 1, "5d": 1, "20d": 1, "60d": 1, "250d": 4}
+HORIZONS_BY_FREQUENCY: dict[str, dict[str, int]] = {
+    "daily": HORIZONS,
+    "weekly": WEEKLY_HORIZONS,
+    "monthly": MONTHLY_HORIZONS,
+    "quarterly": QUARTERLY_HORIZONS,
+}
 
 
 def _clean(v: float) -> float | None:
@@ -49,10 +57,16 @@ def zscore_of_last_change(values: pd.Series, window: int = 250, min_obs: int = 3
     return _clean((float(diffs.iloc[-1]) - float(diffs.mean())) / sd)
 
 
-def changes(values: pd.Series, weekly: bool = False) -> dict[str, dict[str, float | None]]:
+def changes(
+    values: pd.Series, weekly: bool = False, frequency: str | None = None
+) -> dict[str, dict[str, float | None]]:
+    """多期变动。frequency 指定时按频率选期限表（月频的 250d 即 12 个月）；否则按 weekly 开关。"""
     s = values.dropna()
     out: dict[str, dict[str, float | None]] = {}
-    horizons = WEEKLY_HORIZONS if weekly else HORIZONS
+    if frequency is not None:
+        horizons = HORIZONS_BY_FREQUENCY.get(frequency, HORIZONS)
+    else:
+        horizons = WEEKLY_HORIZONS if weekly else HORIZONS
     last = float(s.iloc[-1]) if not s.empty else None
     for label, n in horizons.items():
         if last is None or s.shape[0] <= n:

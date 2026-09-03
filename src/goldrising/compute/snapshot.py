@@ -86,7 +86,7 @@ def _entry(ind_id: str, registry: Registry, series: IndicatorSeries, today: date
         "last": series.last_value,
         "last_date": series.last_date.isoformat() if series.last_date else None,
         "staleness_days": staleness_days(series.last_date, today),
-        "changes": changes(v, weekly=weekly),
+        "changes": changes(v, frequency=ind.frequency),
         # 窗口分位只在历史覆盖该窗口至少 80% 时给出，避免把 3 年历史标成"10 年分位"
         "pct_1y": percentile_of_last(v, window=per_year, min_obs=max(30, int(per_year * 0.8))),
         "pct_5y": percentile_of_last(v, window=per_year * 5, min_obs=max(30, int(per_year * 5 * 0.8))),

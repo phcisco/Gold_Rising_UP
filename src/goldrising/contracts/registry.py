@@ -11,7 +11,7 @@ import yaml
 VALID_TIERS: frozenset[str] = frozenset({"1", "2", "3", "target"})
 VALID_FREQUENCIES: frozenset[str] = frozenset({"daily", "weekly", "monthly", "quarterly"})
 VALID_UNITS: frozenset[str] = frozenset(
-    {"pct", "pctl", "usd", "index", "ratio", "contracts", "tonnes", "bp", "pct_change", "count"}
+    {"pct", "pctl", "usd", "usd_mn", "index", "ratio", "contracts", "tonnes", "bp", "pct_change", "count"}
 )
 KNOWN_PROVIDERS: frozenset[str] = frozenset(
     {
@@ -30,7 +30,20 @@ KNOWN_PROVIDERS: frozenset[str] = frozenset(
     }
 )
 DERIVED_OPS: frozenset[str] = frozenset(
-    {"sub", "div", "mul", "pct_rank", "ma_dist", "mom", "beta", "lev_decay", "ratio_pct_change_diff"}
+    {
+        "sub",
+        "div",
+        "mul",
+        "pct_rank",
+        "ma_dist",
+        "mom",
+        "beta",
+        "lev_decay",
+        "ratio_pct_change_diff",
+        "yoy",
+        "rolling_corr",
+        "realized_vol",
+    }
 )
 
 

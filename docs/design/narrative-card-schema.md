@@ -109,6 +109,15 @@ history: []                          # 程序维护，只追加
 | platinum, palladium | 铂、钯 | Yahoo |
 | gdx, gdxj, gdxu, gdx_gld_ratio, gdx_beta_60, gdxu_decay | 矿业股组 | Yahoo，派生 |
 | aisc_margin | 矿商 AISC 利润率（季） | WGC / 矿商季报 |
+| dgs5, dfii5, dfii30, be_5y, be_30y | 5Y 名义与实际、30Y 实际、5Y 与 30Y 盈亏平衡 | 财政部 |
+| term_premium_10y, acm_rny10 | ACM 期限溢价与风险中性收益率 | 纽约联储 |
+| gold_real_yield_corr_60d, gold_dxy_corr_60d, gold_btc_corr_60d | 金价与实际利率、美元、比特币的 60 日滚动相关 | 派生 |
+| cpi_headline_yoy, cpi_core_yoy, cpi_energy_yoy, pce_core_yoy | 通胀同比（月） | BLS/BEA 经 FRED |
+| fed_ust_bills, fed_ust_coupons | 联储持有国库券与名义中长期国债（周） | 联储 H.4.1 经 FRED |
+| usd_broad | 美元广义指数 | 联储经 FRED |
+| ovx, vxslv, gold_rvol_20, gvz_realized_spread | 原油与白银波动率、金价已实现波动率、GVZ 减已实现 | Cboe，派生 |
+| hyg, lqd, hyg_lqd_ratio | 信用 ETF 与比价 | Yahoo，派生 |
+| btc_gold_ratio, gold_platinum_ratio | 比特币/黄金、金铂比 | 派生 |
 
 不在表中的指标写入卡片的 `proposed_indicators`：
 
