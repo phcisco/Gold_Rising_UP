@@ -1,0 +1,694 @@
+# 指标注册表 v1（第 1 阶段种子集）。
+# 级别 tier：1 常驻体制仪表 | 2 叙事证据 | 3 背景与观察池 | target 交易标的监控。
+# gold_sign：该指标上行对金价的经典方向，+1 利多 / -1 利空 / 0 不定或本身即金价；供热力图与背离规则使用，体制依赖由叙事卡处理。
+# collect: false 表示尚未接入（stage 标注计划阶段），注册表保留条目以便后续只改配置。
+# 数据质量规则见 docs/design/dashboard-design.md 3.2 节：只取官方或一手来源，每个数据点带出处与滞后。
+version: 1
+groups:
+  - {id: price, name: 黄金价格基准, order: 0, question: 金价本身在哪里，以什么口径}
+  - {id: opportunity_cost, name: 机会成本与政策路径, order: 1, question: 持有黄金的代价在升还是降}
+  - {id: dollar_credit, name: 美元信用, order: 2, question: 是黄金强，还是美元弱}
+  - {id: risk_tail, name: 避险与尾部, order: 3, question: 市场在为哪种风险定价}
+  - {id: flows_positioning, name: 资金与持仓, order: 4, question: 谁在买，有多拥挤}
+  - {id: physical_east, name: 实物与东方需求, order: 5, question: 底部的结构性买盘还在不在}
+  - {id: internals, name: 市场内部结构, order: 6, question: 市场自己在怎么投票}
+  - {id: miners, name: 标的监控组（矿业股与 ETF）, order: 7, question: 交易标的相对金价的表现}
+
+indicators:
+  # ---------------- 黄金价格基准 ----------------
+  - id: gc_front
+    name: COMEX 黄金近月连续（Yahoo GC=F）
+    group: price
+    tier: "3"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "GC=F", publisher: CME Group 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/GC%3DF"}
+    note: Yahoo 连续序列按到期最近合约拼接，含交割月冷门合约，历史报价系统性低于活跃合约；仅作长历史参考
+
+  - id: gold_nav_implied
+    name: GLD 官方 NAV 隐含金价（≈ LBMA 下午定盘）
+    group: price
+    tier: "1"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 1
+    gold_sign: 0
+    source: {provider: spdr, series: nav_implied_gold, publisher: SPDR Gold Trust（State Street）, url: "https://www.spdrgoldshares.com/usa/historical-data/"}
+    note: 由官方 NAV/份 除以 每份含金盎司 推算，等于当日 LBMA 定盘价扣除极小信托费用
+
+  - id: gld_close
+    name: GLD 收盘价
+    group: price
+    tier: target
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: 0
+    source: {provider: spdr, series: close, publisher: SPDR Gold Trust（State Street）, url: "https://www.spdrgoldshares.com/usa/historical-data/"}
+
+  - id: eurusd
+    name: 欧元兑美元
+    group: dollar_credit
+    tier: "2"
+    unit: ratio
+    decimals: 4
+    frequency: daily
+    lag_days: 0
+    gold_sign: 1
+    source: {provider: yahoo, symbol: "EURUSD=X", publisher: Yahoo Finance, url: "https://finance.yahoo.com/quote/EURUSD%3DX"}
+
+  - id: usdjpy
+    name: 美元兑日元
+    group: dollar_credit
+    tier: "2"
+    unit: ratio
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "JPY=X", publisher: Yahoo Finance, url: "https://finance.yahoo.com/quote/JPY%3DX"}
+
+  - id: usdcny
+    name: 美元兑人民币（在岸）
+    group: dollar_credit
+    tier: "2"
+    unit: ratio
+    decimals: 4
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "CNY=X", publisher: Yahoo Finance, url: "https://finance.yahoo.com/quote/CNY%3DX"}
+    note: Yahoo 的离岸 CNH=X 无历史数据，改用在岸 CNY=X
+
+  - id: xau_eur
+    name: 欧元计价金价
+    group: price
+    tier: "2"
+    unit: index
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gold_nav_implied, eurusd]}
+    note: 用于区分“黄金强”与“美元弱”
+
+  - id: xau_jpy
+    name: 日元计价金价
+    group: price
+    tier: "2"
+    unit: index
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: mul, inputs: [gold_nav_implied, usdjpy]}
+
+  - id: xau_cny
+    name: 人民币计价金价
+    group: price
+    tier: "2"
+    unit: index
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: mul, inputs: [gold_nav_implied, usdcny]}
+
+  # ---------------- 机会成本与政策路径 ----------------
+  - id: dgs2
+    name: 2 年期美债收益率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: treasury, series: "nominal:2 Yr", publisher: 美国财政部, url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"}
+
+  - id: dgs10
+    name: 10 年期美债收益率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: treasury, series: "nominal:10 Yr", publisher: 美国财政部, url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"}
+
+  - id: dgs30
+    name: 30 年期美债收益率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: treasury, series: "nominal:30 Yr", publisher: 美国财政部, url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"}
+
+  - id: dfii10
+    name: 10 年期 TIPS 实际收益率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: treasury, series: "real:10 YR", publisher: 美国财政部, url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve"}
+    note: 旧定价锚
+
+  - id: dfii5
+    name: 5 年期 TIPS 实际收益率
+    group: opportunity_cost
+    tier: "3"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: treasury, series: "real:5 YR", publisher: 美国财政部, url: "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve"}
+
+  - id: t10yie
+    name: 10 年期盈亏平衡通胀
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: 1
+    source: {provider: derived}
+    derived: {op: sub, inputs: [dgs10, dfii10]}
+    note: 与 FRED T10YIE 同口径：名义 10Y 减实际 10Y
+
+  - id: curve_2s10s
+    name: 2s10s 曲线斜率
+    group: opportunity_cost
+    tier: "2"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: 1
+    source: {provider: derived}
+    derived: {op: sub, inputs: [dgs10, dgs2]}
+
+  - id: curve_2s30s
+    name: 2s30s 曲线斜率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: 1
+    source: {provider: derived}
+    derived: {op: sub, inputs: [dgs30, dgs2]}
+    note: 财政与期限溢价叙事的核心变量；方向具有体制依赖
+
+  - id: effr
+    name: 有效联邦基金利率
+    group: opportunity_cost
+    tier: "1"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: -1
+    source: {provider: nyfed, series: effr, publisher: 纽约联储, url: "https://www.newyorkfed.org/markets/reference-rates/effr"}
+
+  - id: ff_next_change_bp
+    name: 下次 FOMC 隐含变动（基点）
+    group: opportunity_cost
+    tier: "1"
+    unit: bp
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: -1
+    source: {provider: fedfunds, series: next_change_bp, publisher: CME 联邦基金期货经 Yahoo 分发，按 CME FedWatch 公开方法复算, url: "https://www.cmegroup.com/education/demos-and-tutorials/fed-funds-futures-probability-tree-calculator.html"}
+    note: 负值为隐含降息
+
+  - id: ff_cum_change_bp
+    name: 未来 12 个月累计隐含变动（基点）
+    group: opportunity_cost
+    tier: "1"
+    unit: bp
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: -1
+    source: {provider: fedfunds, series: cum_change_bp, publisher: CME 联邦基金期货经 Yahoo 分发，按 CME FedWatch 公开方法复算, url: "https://www.cmegroup.com/education/demos-and-tutorials/fed-funds-futures-probability-tree-calculator.html"}
+
+  # ---------------- 美元信用 ----------------
+  - id: dxy
+    name: 美元指数
+    group: dollar_credit
+    tier: "1"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: -1
+    source: {provider: yahoo, symbol: "DX-Y.NYB", publisher: ICE 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/DX-Y.NYB"}
+
+  # ---------------- 避险与尾部 ----------------
+  - id: vix
+    name: VIX
+    group: risk_tail
+    tier: "1"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 1
+    source: {provider: cboe, series: VIX, publisher: Cboe, url: "https://www.cboe.com/tradable_products/vix/vix_historical_data/"}
+
+  - id: move
+    name: MOVE 美债波动率指数
+    group: risk_tail
+    tier: "2"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 1
+    source: {provider: yahoo, symbol: "^MOVE", publisher: ICE BofA 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/%5EMOVE"}
+
+  - id: hy_oas
+    name: 美国高收益债利差
+    group: risk_tail
+    tier: "2"
+    unit: pct
+    decimals: 2
+    frequency: daily
+    lag_days: 1
+    gold_sign: 1
+    source: {provider: fred, series: BAMLH0A0HYM2, publisher: ICE BofA 经 FRED, url: "https://fred.stlouisfed.org/series/BAMLH0A0HYM2"}
+    note: 需要 FRED_API_KEY；本机直连 FRED CSV 被拦截
+
+  - id: spx
+    name: 标普 500
+    group: risk_tail
+    tier: "3"
+    unit: index
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: -1
+    source: {provider: yahoo, symbol: "^GSPC", publisher: S&P DJI 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/%5EGSPC"}
+
+  - id: brent
+    name: 布伦特原油
+    group: risk_tail
+    tier: "3"
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 1
+    source: {provider: yahoo, symbol: "BZ=F", publisher: ICE 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/BZ%3DF"}
+
+  - id: wti
+    name: WTI 原油
+    group: risk_tail
+    tier: "3"
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "CL=F", publisher: NYMEX 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/CL%3DF"}
+
+  - id: copper
+    name: COMEX 铜
+    group: risk_tail
+    tier: "3"
+    unit: usd
+    decimals: 3
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "HG=F", publisher: CME Group 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/HG%3DF"}
+
+  - id: gold_copper_ratio
+    name: 金铜比
+    group: risk_tail
+    tier: "2"
+    unit: ratio
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gold_nav_implied, copper]}
+
+  - id: gold_oil_ratio
+    name: 金油比
+    group: risk_tail
+    tier: "2"
+    unit: ratio
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gold_nav_implied, brent]}
+
+  - id: btc
+    name: 比特币
+    group: risk_tail
+    tier: "3"
+    unit: usd
+    decimals: 0
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "BTC-USD", publisher: CoinMarketCap 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/BTC-USD"}
+    note: “数字黄金替代”叙事的观察指标
+
+  # ---------------- 资金与持仓 ----------------
+  - id: cot_mm_net
+    name: CFTC 管理基金黄金净多头（手）
+    group: flows_positioning
+    tier: "2"
+    unit: contracts
+    decimals: 0
+    frequency: weekly
+    lag_days: 3
+    gold_sign: 1
+    source: {provider: cftc, series: mm_net, publisher: 美国商品期货交易委员会, url: "https://publicreporting.cftc.gov/d/72hh-3qpy"}
+    note: 周二持仓，周五发布
+
+  - id: cot_oi
+    name: COMEX 黄金期货总持仓量（手）
+    group: flows_positioning
+    tier: "3"
+    unit: contracts
+    decimals: 0
+    frequency: weekly
+    lag_days: 3
+    gold_sign: 0
+    source: {provider: cftc, series: oi, publisher: 美国商品期货交易委员会, url: "https://publicreporting.cftc.gov/d/72hh-3qpy"}
+
+  - id: cot_mm_net_pctl
+    name: 管理基金净多头 5 年分位
+    group: flows_positioning
+    tier: "1"
+    unit: pctl
+    decimals: 0
+    frequency: weekly
+    lag_days: 3
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: pct_rank, inputs: [cot_mm_net], params: {window: 260}}
+    note: 拥挤度
+
+  - id: gld_tonnes
+    name: GLD 信托持金（吨）
+    group: flows_positioning
+    tier: "1"
+    unit: tonnes
+    decimals: 1
+    frequency: daily
+    lag_days: 1
+    gold_sign: 1
+    source: {provider: spdr, series: tonnes, publisher: SPDR Gold Trust（State Street）, url: "https://www.spdrgoldshares.com/usa/historical-data/"}
+
+  - id: gc_c1
+    name: COMEX 黄金活跃合约（GC 主力）
+    group: price
+    tier: "1"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo_gc_contract, publisher: CME Group 经 Yahoo Finance 分发, url: "https://www.cmegroup.com/markets/metals/precious/gold.html", position: 1}
+
+  - id: gc_c2
+    name: COMEX 黄金次近活跃合约
+    group: flows_positioning
+    tier: "3"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo_gc_contract, publisher: CME Group 经 Yahoo Finance 分发, url: "https://www.cmegroup.com/markets/metals/precious/gold.html", position: 2}
+
+  - id: gc_term_spread
+    name: COMEX 近月与次月价差
+    group: flows_positioning
+    tier: "2"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: sub, inputs: [gc_c2, gc_c1]}
+    note: 期限结构；EFP 与租赁利率的代理
+
+  # ---------------- 实物与东方需求（第 2 阶段接入） ----------------
+  - id: sge_au9999
+    name: 上金所 Au99.99 收盘（元/克）
+    group: physical_east
+    tier: "2"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    collect: false
+    stage: 2
+    source: {provider: tushare, series: sge_au9999, publisher: 上海黄金交易所经 Tushare, url: "https://www.sge.com.cn/"}
+
+  - id: shfe_au
+    name: 上期所黄金主力（元/克）
+    group: physical_east
+    tier: "2"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    collect: false
+    stage: 2
+    source: {provider: tushare, series: shfe_au, publisher: 上海期货交易所经 Tushare, url: "https://www.shfe.com.cn/"}
+
+  - id: cb_purchases
+    name: 全球央行净购金（吨，月）
+    group: physical_east
+    tier: "1"
+    unit: tonnes
+    decimals: 0
+    frequency: monthly
+    lag_days: 45
+    gold_sign: 1
+    collect: false
+    stage: 2
+    source: {provider: manual, series: cb_purchases, publisher: 世界黄金协会 / IMF IFS, url: "https://www.gold.org/goldhub/data/gold-reserves-by-country"}
+    note: 低频常驻；免费可得性由第 0 阶段调研确认
+
+  # ---------------- 市场内部结构 ----------------
+  - id: silver
+    name: COMEX 白银
+    group: internals
+    tier: "3"
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "SI=F", publisher: CME Group 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/SI%3DF"}
+
+  - id: gold_silver_ratio
+    name: 金银比
+    group: internals
+    tier: "2"
+    unit: ratio
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gold_nav_implied, silver]}
+
+  - id: gvz
+    name: GVZ 黄金隐含波动率
+    group: internals
+    tier: "1"
+    unit: index
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: cboe, series: GVZ, publisher: Cboe, url: "https://www.cboe.com/us/indices/dashboard/gvz/"}
+
+  - id: gvz_vix_ratio
+    name: GVZ 对 VIX 之比
+    group: internals
+    tier: "1"
+    unit: ratio
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gvz, vix]}
+    note: 黄金自身波动相对股市波动的溢价
+
+  - id: ma200_dist
+    name: 金价对 200 日均线偏离
+    group: internals
+    tier: "1"
+    unit: pct_change
+    decimals: 1
+    frequency: daily
+    lag_days: 1
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: ma_dist, inputs: [gold_nav_implied], params: {window: 200}}
+
+  - id: mom_20
+    name: 金价 20 日动量
+    group: internals
+    tier: "1"
+    unit: pct_change
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: mom, inputs: [gold_nav_implied], params: {window: 20}}
+
+  - id: mom_60
+    name: 金价 60 日动量
+    group: internals
+    tier: "2"
+    unit: pct_change
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: mom, inputs: [gold_nav_implied], params: {window: 60}}
+
+  - id: platinum
+    name: NYMEX 铂
+    group: internals
+    tier: "3"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "PL=F", publisher: CME Group 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/PL%3DF"}
+
+  - id: palladium
+    name: NYMEX 钯
+    group: internals
+    tier: "3"
+    unit: usd
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: "PA=F", publisher: CME Group 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/PA%3DF"}
+
+  # ---------------- 标的监控组 ----------------
+  - id: gdx
+    name: GDX 金矿股 ETF
+    group: miners
+    tier: target
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: GDX, publisher: NYSE Arca 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/GDX"}
+
+  - id: gdxj
+    name: GDXJ 小型金矿股 ETF
+    group: miners
+    tier: target
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: GDXJ, publisher: NYSE Arca 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/GDXJ"}
+
+  - id: gdxu
+    name: GDXU 三倍做多金矿股 ETN
+    group: miners
+    tier: target
+    unit: usd
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: yahoo, symbol: GDXU, publisher: NYSE Arca 经 Yahoo Finance 分发, url: "https://finance.yahoo.com/quote/GDXU"}
+
+  - id: gdx_gld_ratio
+    name: GDX 对 GLD 比值
+    group: miners
+    tier: target
+    unit: ratio
+    decimals: 3
+    frequency: daily
+    lag_days: 1
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: div, inputs: [gdx, gld_close]}
+    note: 矿业股相对金价的强弱
+
+  - id: gdx_beta_60
+    name: GDX 对金价 60 日 beta
+    group: miners
+    tier: target
+    unit: ratio
+    decimals: 2
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: beta, inputs: [gdx, gold_nav_implied], params: {window: 60}}
+
+  - id: gdxu_decay
+    name: GDXU 60 日相对三倍 GDX 的损耗
+    group: miners
+    tier: target
+    unit: pct_change
+    decimals: 1
+    frequency: daily
+    lag_days: 0
+    gold_sign: 0
+    source: {provider: derived}
+    derived: {op: lev_decay, inputs: [gdxu, gdx], params: {window: 60, leverage: 3}}
+    note: 杠杆产品的路径损耗，负值为损耗
+
+  - id: aisc_margin
+    name: 矿商 AISC 利润率（美元/盎司，季）
+    group: miners
+    tier: target
+    unit: usd
+    decimals: 0
+    frequency: quarterly
+    lag_days: 60
+    gold_sign: 0
+    collect: false
+    stage: 2
+    source: {provider: manual, series: aisc_margin, publisher: 世界黄金协会 / 矿商季报, url: "https://www.gold.org/goldhub/data/gold-mine-production"}

@@ -1,0 +1,7 @@
+pyproject.toml
+src/goldrising.egg-info/PKG-INFO
+src/goldrising.egg-info/SOURCES.txt
+src/goldrising.egg-info/dependency_links.txt
+src/goldrising.egg-info/entry_points.txt
+src/goldrising.egg-info/requires.txt
+src/goldrising.egg-info/top_level.txt
